@@ -1,0 +1,11 @@
+CREATE TABLE `invlobs` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `SEQ_REF` bigint(20) NOT NULL,
+  `QR_CODE` longtext COLLATE utf8mb4_general_ci,
+  `INVOICE_HASH` longtext COLLATE utf8mb4_general_ci,
+  `INVOICE_XML` longtext COLLATE utf8mb4_general_ci,
+  `SIGNED_XML` longtext COLLATE utf8mb4_general_ci,
+  `PDF` longtext COLLATE utf8mb4_general_ci,
+  `ZATCA_RESPONSE` longtext COLLATE utf8mb4_general_ci,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

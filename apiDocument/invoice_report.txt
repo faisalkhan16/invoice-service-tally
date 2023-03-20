@@ -1,0 +1,25 @@
+CREATE TABLE `invoice_report` (
+  `SEQ_ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(30) NOT NULL,
+  `UUID` varchar(50) NOT NULL,
+  `SUB_TYPE` varchar(20) NOT NULL,
+  `BUYER_EMAIL` varchar(200) DEFAULT NULL,
+  `VAT_NUMBER` varchar(15) NOT NULL,
+  `EGS_SERIAL_NO` varchar(200) NOT NULL,
+  `INVOICE_HASH` tinytext CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `SIGNED_XML` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `ZATCA_RESPONSE` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci,
+  `STS` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `CR_DT` timestamp NOT NULL,
+  `UPD_DT` timestamp NULL DEFAULT NULL,
+  `CERT` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `CERT_KEY` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `CERT_STS` varchar(1) NOT NULL,
+  `QR_CODE` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `PDF` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `INVOICE_DT` timestamp NOT NULL,
+  PRIMARY KEY (`SEQ_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE invoice_report
+ADD CONSTRAINT UQ_INVRPT UNIQUE (ID, UUID,VAT_NUMBER,EGS_SERIAL_NO);

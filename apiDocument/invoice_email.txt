@@ -1,0 +1,9 @@
+CREATE TABLE `invoice_email` (
+  `SEQ_ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `INV_ID` varchar(30) NOT NULL,
+  `STS` varchar(1) NOT NULL,
+  `CR_DT` timestamp NOT NULL,
+  `UPD_DT` timestamp NULL DEFAULT NULL,
+  `BUYER_EMAIL` varchar(200) NOT NULL,
+  PRIMARY KEY (`SEQ_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

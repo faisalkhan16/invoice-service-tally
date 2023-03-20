@@ -1,0 +1,1420 @@
+{
+	"info": {
+		"_postman_id": "98cbc001-18ab-48a4-883a-53889c541fd7",
+		"name": "Invoice Service ISSUER",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Invoice Generate 02",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCQ01EQVRadlNVY0xTX1F4cTNyaXBUajZDVGJ6SXhuZ005dHh0U1BkUGZRIn0.eyJleHAiOjE2NjQxMzg3MTcsImlhdCI6MTY2NDEzODQxNywianRpIjoiYWQzOTRhNDctOTJkYS00YjcwLThhZGYtMjA2YzQxOTNkZTA2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MTgwL2F1dGgvcmVhbG1zL0VJbnZvaWNlIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjIwMjI3OTllLTAxYzktNGIxOS05NDRlLTc4NmFiZDcxNjM5MCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBvc3RtYW4tY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1laW52b2ljZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJhcHAtdXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InBvc3RtYW4tY2xpZW50Ijp7InJvbGVzIjpbInVzZXIiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZhaXNhbCBLaGFuIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmFpc2FsMTYiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJLaGFuIiwiZW1haWwiOiJmYWlzYWwudGVjaG1ldGlzQGdtYWlsLmNvbSJ9.VnUJ2PpG4Qfdi_TOLsf5u1Xuvsfg01okFzLYqFO-_DQ8rfb2wEspNv8uCdEITPoCqcrINRaSqsvE6VbQhJEaX6b6S-8fy-3SmrXcsCweQC3e2L78Az3y7sgUApmsOY-Qs2Fj39onH0gh1ow3oQYhV9q7WHf2716Mig9q26Y6pn-AZhpjKfdWgNi4dCqyq4jq1OyTxFe5KOVTN6rE1yXh_x19Vo5BtBBIYSrKoEFF0ocCz2H3hmKZDsnFVQIePQ_tZSMxevjYOoDfPnXIeF4u-tolRN2uJ1fWGSsusb8w2m5LWVZfn8Zzp5GtQaaSHttR-Wd7ZlOCOruiNIoRAVcPsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "faisal16",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "root",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "postman-client",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "aQgtjrV8fJjPHqpVR2TFyeRnareJrXTq",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "keycloak-bearer-token",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\":\r\n{\r\n  \"id\": \"123\",\r\n  \"invoice_type_code\": \"388\",\r\n  \"invoice_sub_type\": \"0200000\",\r\n  \"original_invoice_id\":\"\",\r\n  \"invoice_note_reason\":\"\",\r\n  \"supply_date\": \"2022-01-01\",\r\n  \"supply_end_date\":\"2022-01-02\",\r\n  \"seller_id_number\": \"2469971358\",\r\n  \"seller_id_type\": \"CRN\",\r\n  \"seller_name_english\": \"Faisal\",\r\n  \"seller_name_arabic\": \"فیصل\",\r\n  \"seller_building_no\": \"7587\",\r\n  \"seller_street\": \"Ibn Alqamah At Taimi\",\r\n  \"seller_address_line\": \"\",\r\n  \"seller_district\": \"As Suwaidi\",\r\n  \"seller_additional_no\": \"2365\",\r\n  \"seller_postal_code\": \"12313\",\r\n  \"seller_city\": \"Riyadh\",\r\n  \"seller_country\": \"SA\",\r\n  \"payment_means_code\":\"10\",\r\n  \"seller_region\":\"Riyadh\",\r\n  \"buyer_id_type\": \"IQA\",\r\n  \"buyer_postal_code\": \"12313\",\r\n  \"buyer_country\": \"SA\",\r\n  \"purchase_order_id\":\"123\",\r\n  \"contract_id\":\"456\",\r\n\"invoice_lines\": [\r\n{\r\n\t\"id\" : \"1\",\r\n\t\"item_name\" : \"Test Product 1\",\r\n\t\"invoiced_quantity\" : \"3\",\r\n\t\"unit_price\" : \"100\",\r\n\t\"net_price\" : \"300\",\r\n\t\"discount\" : \"10\",\r\n\t\"taxable_amount\" : \"290\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"43.50\",\r\n\t\"sub_total_incl_vat\" : \"333.50\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n},\r\n{\r\n\t\"id\" : \"2\",\r\n\t\"item_name\" : \"Test Product 2\",\r\n\t\"invoiced_quantity\" : \"4\",\r\n\t\"unit_price\" : \"20\",\r\n\t\"net_price\" : \"80\",\r\n\t\"discount\" : \"0\",\r\n\t\"taxable_amount\" : \"80\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"12\",\r\n\t\"sub_total_incl_vat\" : \"92\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n}\r\n  ],\r\n  \"total_amount\": 370,\r\n  \"total_discount\": 0,\r\n  \"total_exclusive_vat\": 370,\r\n  \"total_vat\": 55.5,\r\n  \"total_inclusive_vat\": 425.5,\r\n  \"invoice_currency\":\"USD\",\r\n  \"exchange_rate\":3.75,\r\n  \"total_tax_sar\":208.125,\r\n  \"total_amount_sar\":1595.625\r\n}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoice Generate 01",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCQ01EQVRadlNVY0xTX1F4cTNyaXBUajZDVGJ6SXhuZ005dHh0U1BkUGZRIn0.eyJleHAiOjE2NjQxMzg3MTcsImlhdCI6MTY2NDEzODQxNywianRpIjoiYWQzOTRhNDctOTJkYS00YjcwLThhZGYtMjA2YzQxOTNkZTA2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MTgwL2F1dGgvcmVhbG1zL0VJbnZvaWNlIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjIwMjI3OTllLTAxYzktNGIxOS05NDRlLTc4NmFiZDcxNjM5MCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBvc3RtYW4tY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1laW52b2ljZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJhcHAtdXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InBvc3RtYW4tY2xpZW50Ijp7InJvbGVzIjpbInVzZXIiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZhaXNhbCBLaGFuIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmFpc2FsMTYiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJLaGFuIiwiZW1haWwiOiJmYWlzYWwudGVjaG1ldGlzQGdtYWlsLmNvbSJ9.VnUJ2PpG4Qfdi_TOLsf5u1Xuvsfg01okFzLYqFO-_DQ8rfb2wEspNv8uCdEITPoCqcrINRaSqsvE6VbQhJEaX6b6S-8fy-3SmrXcsCweQC3e2L78Az3y7sgUApmsOY-Qs2Fj39onH0gh1ow3oQYhV9q7WHf2716Mig9q26Y6pn-AZhpjKfdWgNi4dCqyq4jq1OyTxFe5KOVTN6rE1yXh_x19Vo5BtBBIYSrKoEFF0ocCz2H3hmKZDsnFVQIePQ_tZSMxevjYOoDfPnXIeF4u-tolRN2uJ1fWGSsusb8w2m5LWVZfn8Zzp5GtQaaSHttR-Wd7ZlOCOruiNIoRAVcPsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "faisal16",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "root",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "postman-client",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "aQgtjrV8fJjPHqpVR2TFyeRnareJrXTq",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "keycloak-bearer-token",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\":\r\n{\r\n  \"id\": \"123\",\r\n  \"invoice_type_code\": \"388\",\r\n  \"invoice_sub_type\": \"0100000\",\r\n  \"original_invoice_id\":\"\",\r\n  \"invoice_note_reason\":\"\",\r\n  \"supply_date\": \"2022-01-01\",\r\n  \"supply_end_date\":\"2022-01-02\",\r\n  \"seller_id_number\": \"2469971358\",\r\n  \"seller_id_type\": \"CRN\",\r\n  \"seller_name_english\": \"Faisal\",\r\n  \"seller_name_arabic\": \"فیصل\",\r\n  \"seller_building_no\": \"7587\",\r\n  \"seller_street\": \"Ibn Alqamah At Taimi\",\r\n  \"seller_address_line\": \"\",\r\n  \"seller_district\": \"As Suwaidi\",\r\n  \"seller_additional_no\": \"2365\",\r\n  \"seller_postal_code\": \"12313\",\r\n  \"seller_city\": \"Riyadh\",\r\n  \"seller_country\": \"SA\",\r\n  \"payment_means_code\":\"10\",\r\n  \"seller_region\":\"Riyadh\",\r\n  \"buyer_id_number\": \"2490411689\",\r\n  \"buyer_id_type\": \"IQA\",\r\n  \"buyer_name_arabic\": \"سعد\",\r\n  \"buyer_vat_number\": \"300075588702033\",\r\n  \"buyer_building_no\": \"8096\",\r\n  \"buyer_street\": \"King Fahad Road\",\r\n  \"buyer_address_line\": null,\r\n  \"buyer_district\": \"Al Olaya\",\r\n  \"buyer_additional_no\": \"6586\",\r\n  \"buyer_postal_code\": \"12313\",\r\n  \"buyer_city\": \"Riyadh\",\r\n  \"buyer_country\": \"SA\",\r\n  \"buyer_name_english\":\"Saad\",\r\n  \"buyer_region\":\"Riyadh\",\r\n  \"purchase_order_id\":\"123\",\r\n  \"contract_id\":\"456\",\r\n\"invoice_lines\": [\r\n{\r\n\t\"id\" : \"1\",\r\n\t\"item_name\" : \"Test Product 1\",\r\n\t\"invoiced_quantity\" : \"3\",\r\n\t\"unit_price\" : \"100\",\r\n\t\"net_price\" : \"300\",\r\n\t\"discount\" : \"10\",\r\n\t\"taxable_amount\" : \"290\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"43.50\",\r\n\t\"sub_total_incl_vat\" : \"333.50\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n},\r\n{\r\n\t\"id\" : \"2\",\r\n\t\"item_name\" : \"Test Product 2\",\r\n\t\"invoiced_quantity\" : \"4\",\r\n\t\"unit_price\" : \"20\",\r\n\t\"net_price\" : \"80\",\r\n\t\"discount\" : \"0\",\r\n\t\"taxable_amount\" : \"80\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"12\",\r\n\t\"sub_total_incl_vat\" : \"92\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n}\r\n  ],\r\n  \"total_amount\": 370,\r\n  \"total_discount\": 0,\r\n  \"total_exclusive_vat\": 370,\r\n  \"total_vat\": 55.5,\r\n  \"total_inclusive_vat\": 425.5,\r\n  \"invoice_currency\":\"USD\",\r\n  \"exchange_rate\":3.75,\r\n  \"total_tax_sar\":208.125,\r\n  \"total_amount_sar\":1595.625\r\n}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoice Generate 02 Credit",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCQ01EQVRadlNVY0xTX1F4cTNyaXBUajZDVGJ6SXhuZ005dHh0U1BkUGZRIn0.eyJleHAiOjE2NjQxMzg3MTcsImlhdCI6MTY2NDEzODQxNywianRpIjoiYWQzOTRhNDctOTJkYS00YjcwLThhZGYtMjA2YzQxOTNkZTA2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MTgwL2F1dGgvcmVhbG1zL0VJbnZvaWNlIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjIwMjI3OTllLTAxYzktNGIxOS05NDRlLTc4NmFiZDcxNjM5MCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBvc3RtYW4tY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1laW52b2ljZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJhcHAtdXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InBvc3RtYW4tY2xpZW50Ijp7InJvbGVzIjpbInVzZXIiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZhaXNhbCBLaGFuIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmFpc2FsMTYiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJLaGFuIiwiZW1haWwiOiJmYWlzYWwudGVjaG1ldGlzQGdtYWlsLmNvbSJ9.VnUJ2PpG4Qfdi_TOLsf5u1Xuvsfg01okFzLYqFO-_DQ8rfb2wEspNv8uCdEITPoCqcrINRaSqsvE6VbQhJEaX6b6S-8fy-3SmrXcsCweQC3e2L78Az3y7sgUApmsOY-Qs2Fj39onH0gh1ow3oQYhV9q7WHf2716Mig9q26Y6pn-AZhpjKfdWgNi4dCqyq4jq1OyTxFe5KOVTN6rE1yXh_x19Vo5BtBBIYSrKoEFF0ocCz2H3hmKZDsnFVQIePQ_tZSMxevjYOoDfPnXIeF4u-tolRN2uJ1fWGSsusb8w2m5LWVZfn8Zzp5GtQaaSHttR-Wd7ZlOCOruiNIoRAVcPsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "faisal16",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "root",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "postman-client",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "aQgtjrV8fJjPHqpVR2TFyeRnareJrXTq",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "keycloak-bearer-token",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\":\r\n{\r\n  \"id\": \"123\",\r\n  \"invoice_type_code\": \"381\",\r\n  \"invoice_sub_type\": \"0200000\",\r\n  \"original_invoice_id\":\"EGS2221203000007\",\r\n  \"invoice_note_reason\":\"Credit Reson\",\r\n  \"supply_date\": \"2022-01-01\",\r\n  \"supply_end_date\":\"2022-01-02\",\r\n  \"seller_id_number\": \"2469971358\",\r\n  \"seller_id_type\": \"CRN\",\r\n  \"seller_name_english\": \"Faisal\",\r\n  \"seller_name_arabic\": \"فیصل\",\r\n  \"seller_building_no\": \"7587\",\r\n  \"seller_street\": \"Ibn Alqamah At Taimi\",\r\n  \"seller_address_line\": \"\",\r\n  \"seller_district\": \"As Suwaidi\",\r\n  \"seller_additional_no\": \"2365\",\r\n  \"seller_postal_code\": \"12313\",\r\n  \"seller_city\": \"Riyadh\",\r\n  \"seller_country\": \"SA\",\r\n  \"payment_means_code\":\"10\",\r\n  \"seller_region\":\"Riyadh\",\r\n  \"buyer_id_type\": \"IQA\",\r\n  \"buyer_postal_code\": \"12313\",\r\n  \"buyer_country\": \"SA\",\r\n  \"purchase_order_id\":\"123\",\r\n  \"contract_id\":\"456\",\r\n\"invoice_lines\": [\r\n{\r\n\t\"id\" : \"1\",\r\n\t\"item_name\" : \"Test Product 1\",\r\n\t\"invoiced_quantity\" : \"3\",\r\n\t\"unit_price\" : \"100\",\r\n\t\"net_price\" : \"300\",\r\n\t\"discount\" : \"10\",\r\n\t\"taxable_amount\" : \"290\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"43.50\",\r\n\t\"sub_total_incl_vat\" : \"333.50\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n},\r\n{\r\n\t\"id\" : \"2\",\r\n\t\"item_name\" : \"Test Product 2\",\r\n\t\"invoiced_quantity\" : \"4\",\r\n\t\"unit_price\" : \"20\",\r\n\t\"net_price\" : \"80\",\r\n\t\"discount\" : \"0\",\r\n\t\"taxable_amount\" : \"80\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"12\",\r\n\t\"sub_total_incl_vat\" : \"92\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n}\r\n  ],\r\n  \"total_amount\": 370,\r\n  \"total_discount\": 0,\r\n  \"total_exclusive_vat\": 370,\r\n  \"total_vat\": 55.5,\r\n  \"total_inclusive_vat\": 425.5,\r\n  \"invoice_currency\":\"USD\",\r\n  \"exchange_rate\":3.75,\r\n  \"total_tax_sar\":208.125,\r\n  \"total_amount_sar\":1595.625\r\n}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoice Generate 02 Debit",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCQ01EQVRadlNVY0xTX1F4cTNyaXBUajZDVGJ6SXhuZ005dHh0U1BkUGZRIn0.eyJleHAiOjE2NjQxMzg3MTcsImlhdCI6MTY2NDEzODQxNywianRpIjoiYWQzOTRhNDctOTJkYS00YjcwLThhZGYtMjA2YzQxOTNkZTA2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MTgwL2F1dGgvcmVhbG1zL0VJbnZvaWNlIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjIwMjI3OTllLTAxYzktNGIxOS05NDRlLTc4NmFiZDcxNjM5MCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBvc3RtYW4tY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1laW52b2ljZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJhcHAtdXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InBvc3RtYW4tY2xpZW50Ijp7InJvbGVzIjpbInVzZXIiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZhaXNhbCBLaGFuIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmFpc2FsMTYiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJLaGFuIiwiZW1haWwiOiJmYWlzYWwudGVjaG1ldGlzQGdtYWlsLmNvbSJ9.VnUJ2PpG4Qfdi_TOLsf5u1Xuvsfg01okFzLYqFO-_DQ8rfb2wEspNv8uCdEITPoCqcrINRaSqsvE6VbQhJEaX6b6S-8fy-3SmrXcsCweQC3e2L78Az3y7sgUApmsOY-Qs2Fj39onH0gh1ow3oQYhV9q7WHf2716Mig9q26Y6pn-AZhpjKfdWgNi4dCqyq4jq1OyTxFe5KOVTN6rE1yXh_x19Vo5BtBBIYSrKoEFF0ocCz2H3hmKZDsnFVQIePQ_tZSMxevjYOoDfPnXIeF4u-tolRN2uJ1fWGSsusb8w2m5LWVZfn8Zzp5GtQaaSHttR-Wd7ZlOCOruiNIoRAVcPsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "faisal16",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "root",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "postman-client",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "aQgtjrV8fJjPHqpVR2TFyeRnareJrXTq",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "keycloak-bearer-token",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\":\r\n{\r\n  \"id\": \"123\",\r\n  \"invoice_type_code\": \"383\",\r\n  \"invoice_sub_type\": \"0200000\",\r\n  \"original_invoice_id\":\"EGS2221203000008\",\r\n  \"invoice_note_reason\":\"Debit Reson\",\r\n  \"supply_date\": \"2022-01-01\",\r\n  \"supply_end_date\":\"2022-01-02\",\r\n  \"seller_id_number\": \"2469971358\",\r\n  \"seller_id_type\": \"CRN\",\r\n  \"seller_name_english\": \"Faisal\",\r\n  \"seller_name_arabic\": \"فیصل\",\r\n  \"seller_building_no\": \"7587\",\r\n  \"seller_street\": \"Ibn Alqamah At Taimi\",\r\n  \"seller_address_line\": \"\",\r\n  \"seller_district\": \"As Suwaidi\",\r\n  \"seller_additional_no\": \"2365\",\r\n  \"seller_postal_code\": \"12313\",\r\n  \"seller_city\": \"Riyadh\",\r\n  \"seller_country\": \"SA\",\r\n  \"payment_means_code\":\"10\",\r\n  \"seller_region\":\"Riyadh\",\r\n  \"buyer_id_type\": \"IQA\",\r\n  \"buyer_postal_code\": \"12313\",\r\n  \"buyer_country\": \"SA\",\r\n  \"purchase_order_id\":\"123\",\r\n  \"contract_id\":\"456\",\r\n\"invoice_lines\": [\r\n{\r\n\t\"id\" : \"1\",\r\n\t\"item_name\" : \"Test Product 1\",\r\n\t\"invoiced_quantity\" : \"3\",\r\n\t\"unit_price\" : \"100\",\r\n\t\"net_price\" : \"300\",\r\n\t\"discount\" : \"10\",\r\n\t\"taxable_amount\" : \"290\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"43.50\",\r\n\t\"sub_total_incl_vat\" : \"333.50\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n},\r\n{\r\n\t\"id\" : \"2\",\r\n\t\"item_name\" : \"Test Product 2\",\r\n\t\"invoiced_quantity\" : \"4\",\r\n\t\"unit_price\" : \"20\",\r\n\t\"net_price\" : \"80\",\r\n\t\"discount\" : \"0\",\r\n\t\"taxable_amount\" : \"80\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"12\",\r\n\t\"sub_total_incl_vat\" : \"92\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n}\r\n  ],\r\n  \"total_amount\": 370,\r\n  \"total_discount\": 0,\r\n  \"total_exclusive_vat\": 370,\r\n  \"total_vat\": 55.5,\r\n  \"total_inclusive_vat\": 425.5,\r\n  \"invoice_currency\":\"USD\",\r\n  \"exchange_rate\":3.75,\r\n  \"total_tax_sar\":208.125,\r\n  \"total_amount_sar\":1595.625\r\n}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoice Generate 01 Credit",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCQ01EQVRadlNVY0xTX1F4cTNyaXBUajZDVGJ6SXhuZ005dHh0U1BkUGZRIn0.eyJleHAiOjE2NjQxMzg3MTcsImlhdCI6MTY2NDEzODQxNywianRpIjoiYWQzOTRhNDctOTJkYS00YjcwLThhZGYtMjA2YzQxOTNkZTA2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MTgwL2F1dGgvcmVhbG1zL0VJbnZvaWNlIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjIwMjI3OTllLTAxYzktNGIxOS05NDRlLTc4NmFiZDcxNjM5MCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBvc3RtYW4tY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1laW52b2ljZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJhcHAtdXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InBvc3RtYW4tY2xpZW50Ijp7InJvbGVzIjpbInVzZXIiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZhaXNhbCBLaGFuIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmFpc2FsMTYiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJLaGFuIiwiZW1haWwiOiJmYWlzYWwudGVjaG1ldGlzQGdtYWlsLmNvbSJ9.VnUJ2PpG4Qfdi_TOLsf5u1Xuvsfg01okFzLYqFO-_DQ8rfb2wEspNv8uCdEITPoCqcrINRaSqsvE6VbQhJEaX6b6S-8fy-3SmrXcsCweQC3e2L78Az3y7sgUApmsOY-Qs2Fj39onH0gh1ow3oQYhV9q7WHf2716Mig9q26Y6pn-AZhpjKfdWgNi4dCqyq4jq1OyTxFe5KOVTN6rE1yXh_x19Vo5BtBBIYSrKoEFF0ocCz2H3hmKZDsnFVQIePQ_tZSMxevjYOoDfPnXIeF4u-tolRN2uJ1fWGSsusb8w2m5LWVZfn8Zzp5GtQaaSHttR-Wd7ZlOCOruiNIoRAVcPsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "faisal16",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "root",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "postman-client",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "aQgtjrV8fJjPHqpVR2TFyeRnareJrXTq",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "keycloak-bearer-token",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\":\r\n{\r\n  \"id\": \"123\",\r\n  \"invoice_type_code\": \"381\",\r\n  \"invoice_sub_type\": \"0100000\",\r\n  \"original_invoice_id\":\"EGS2221203000010\",\r\n  \"invoice_note_reason\":\"Credit Reason\",\r\n  \"supply_date\": \"2022-01-01\",\r\n  \"supply_end_date\":\"2022-01-02\",\r\n  \"seller_id_number\": \"2469971358\",\r\n  \"seller_id_type\": \"CRN\",\r\n  \"seller_name_english\": \"Faisal\",\r\n  \"seller_name_arabic\": \"فیصل\",\r\n  \"seller_building_no\": \"7587\",\r\n  \"seller_street\": \"Ibn Alqamah At Taimi\",\r\n  \"seller_address_line\": \"\",\r\n  \"seller_district\": \"As Suwaidi\",\r\n  \"seller_additional_no\": \"2365\",\r\n  \"seller_postal_code\": \"12313\",\r\n  \"seller_city\": \"Riyadh\",\r\n  \"seller_country\": \"SA\",\r\n  \"payment_means_code\":\"10\",\r\n  \"seller_region\":\"Riyadh\",\r\n  \"buyer_id_number\": \"2490411689\",\r\n  \"buyer_id_type\": \"IQA\",\r\n  \"buyer_name_arabic\": \"سعد\",\r\n  \"buyer_vat_number\": \"300075588702033\",\r\n  \"buyer_building_no\": \"8096\",\r\n  \"buyer_street\": \"King Fahad Road\",\r\n  \"buyer_address_line\": null,\r\n  \"buyer_district\": \"Al Olaya\",\r\n  \"buyer_additional_no\": \"6586\",\r\n  \"buyer_postal_code\": \"12313\",\r\n  \"buyer_city\": \"Riyadh\",\r\n  \"buyer_country\": \"SA\",\r\n  \"buyer_name_english\":\"Saad\",\r\n  \"buyer_region\":\"Riyadh\",\r\n  \"purchase_order_id\":\"123\",\r\n  \"contract_id\":\"456\",\r\n\"invoice_lines\": [\r\n{\r\n\t\"id\" : \"1\",\r\n\t\"item_name\" : \"Test Product 1\",\r\n\t\"invoiced_quantity\" : \"3\",\r\n\t\"unit_price\" : \"100\",\r\n\t\"net_price\" : \"300\",\r\n\t\"discount\" : \"10\",\r\n\t\"taxable_amount\" : \"290\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"43.50\",\r\n\t\"sub_total_incl_vat\" : \"333.50\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n},\r\n{\r\n\t\"id\" : \"2\",\r\n\t\"item_name\" : \"Test Product 2\",\r\n\t\"invoiced_quantity\" : \"4\",\r\n\t\"unit_price\" : \"20\",\r\n\t\"net_price\" : \"80\",\r\n\t\"discount\" : \"0\",\r\n\t\"taxable_amount\" : \"80\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"12\",\r\n\t\"sub_total_incl_vat\" : \"92\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n}\r\n  ],\r\n  \"total_amount\": 370,\r\n  \"total_discount\": 0,\r\n  \"total_exclusive_vat\": 370,\r\n  \"total_vat\": 55.5,\r\n  \"total_inclusive_vat\": 425.5,\r\n  \"invoice_currency\":\"USD\",\r\n  \"exchange_rate\":3.75,\r\n  \"total_tax_sar\":208.125,\r\n  \"total_amount_sar\":1595.625\r\n}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoice Generate 01 Debit",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCQ01EQVRadlNVY0xTX1F4cTNyaXBUajZDVGJ6SXhuZ005dHh0U1BkUGZRIn0.eyJleHAiOjE2NjQxMzg3MTcsImlhdCI6MTY2NDEzODQxNywianRpIjoiYWQzOTRhNDctOTJkYS00YjcwLThhZGYtMjA2YzQxOTNkZTA2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MTgwL2F1dGgvcmVhbG1zL0VJbnZvaWNlIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjIwMjI3OTllLTAxYzktNGIxOS05NDRlLTc4NmFiZDcxNjM5MCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBvc3RtYW4tY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1laW52b2ljZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJhcHAtdXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InBvc3RtYW4tY2xpZW50Ijp7InJvbGVzIjpbInVzZXIiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZhaXNhbCBLaGFuIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmFpc2FsMTYiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJLaGFuIiwiZW1haWwiOiJmYWlzYWwudGVjaG1ldGlzQGdtYWlsLmNvbSJ9.VnUJ2PpG4Qfdi_TOLsf5u1Xuvsfg01okFzLYqFO-_DQ8rfb2wEspNv8uCdEITPoCqcrINRaSqsvE6VbQhJEaX6b6S-8fy-3SmrXcsCweQC3e2L78Az3y7sgUApmsOY-Qs2Fj39onH0gh1ow3oQYhV9q7WHf2716Mig9q26Y6pn-AZhpjKfdWgNi4dCqyq4jq1OyTxFe5KOVTN6rE1yXh_x19Vo5BtBBIYSrKoEFF0ocCz2H3hmKZDsnFVQIePQ_tZSMxevjYOoDfPnXIeF4u-tolRN2uJ1fWGSsusb8w2m5LWVZfn8Zzp5GtQaaSHttR-Wd7ZlOCOruiNIoRAVcPsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "faisal16",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "root",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "postman-client",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "aQgtjrV8fJjPHqpVR2TFyeRnareJrXTq",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "keycloak-bearer-token",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\":\r\n{\r\n  \"id\": \"123\",\r\n  \"invoice_type_code\": \"383\",\r\n  \"invoice_sub_type\": \"0100000\",\r\n  \"original_invoice_id\":\"EGS2221203000011\",\r\n  \"invoice_note_reason\":\"Debit Reason\",\r\n  \"supply_date\": \"2022-01-01\",\r\n  \"supply_end_date\":\"2022-01-02\",\r\n  \"seller_id_number\": \"2469971358\",\r\n  \"seller_id_type\": \"CRN\",\r\n  \"seller_name_english\": \"Faisal\",\r\n  \"seller_name_arabic\": \"فیصل\",\r\n  \"seller_building_no\": \"7587\",\r\n  \"seller_street\": \"Ibn Alqamah At Taimi\",\r\n  \"seller_address_line\": \"\",\r\n  \"seller_district\": \"As Suwaidi\",\r\n  \"seller_additional_no\": \"2365\",\r\n  \"seller_postal_code\": \"12313\",\r\n  \"seller_city\": \"Riyadh\",\r\n  \"seller_country\": \"SA\",\r\n  \"payment_means_code\":\"10\",\r\n  \"seller_region\":\"Riyadh\",\r\n  \"buyer_id_number\": \"2490411689\",\r\n  \"buyer_id_type\": \"IQA\",\r\n  \"buyer_name_arabic\": \"سعد\",\r\n  \"buyer_vat_number\": \"300075588702033\",\r\n  \"buyer_building_no\": \"8096\",\r\n  \"buyer_street\": \"King Fahad Road\",\r\n  \"buyer_address_line\": null,\r\n  \"buyer_district\": \"Al Olaya\",\r\n  \"buyer_additional_no\": \"6586\",\r\n  \"buyer_postal_code\": \"12313\",\r\n  \"buyer_city\": \"Riyadh\",\r\n  \"buyer_country\": \"SA\",\r\n  \"buyer_name_english\":\"Saad\",\r\n  \"buyer_region\":\"Riyadh\",\r\n  \"purchase_order_id\":\"123\",\r\n  \"contract_id\":\"456\",\r\n\"invoice_lines\": [\r\n{\r\n\t\"id\" : \"1\",\r\n\t\"item_name\" : \"Test Product 1\",\r\n\t\"invoiced_quantity\" : \"3\",\r\n\t\"unit_price\" : \"100\",\r\n\t\"net_price\" : \"300\",\r\n\t\"discount\" : \"10\",\r\n\t\"taxable_amount\" : \"290\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"43.50\",\r\n\t\"sub_total_incl_vat\" : \"333.50\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n},\r\n{\r\n\t\"id\" : \"2\",\r\n\t\"item_name\" : \"Test Product 2\",\r\n\t\"invoiced_quantity\" : \"4\",\r\n\t\"unit_price\" : \"20\",\r\n\t\"net_price\" : \"80\",\r\n\t\"discount\" : \"0\",\r\n\t\"taxable_amount\" : \"80\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"12\",\r\n\t\"sub_total_incl_vat\" : \"92\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n}\r\n  ],\r\n  \"total_amount\": 370,\r\n  \"total_discount\": 0,\r\n  \"total_exclusive_vat\": 370,\r\n  \"total_vat\": 55.5,\r\n  \"total_inclusive_vat\": 425.5,\r\n  \"invoice_currency\":\"USD\",\r\n  \"exchange_rate\":3.75,\r\n  \"total_tax_sar\":208.125,\r\n  \"total_amount_sar\":1595.625\r\n}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pending Records",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCQ01EQVRadlNVY0xTX1F4cTNyaXBUajZDVGJ6SXhuZ005dHh0U1BkUGZRIn0.eyJleHAiOjE2NjQxMzg3MTcsImlhdCI6MTY2NDEzODQxNywianRpIjoiYWQzOTRhNDctOTJkYS00YjcwLThhZGYtMjA2YzQxOTNkZTA2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MTgwL2F1dGgvcmVhbG1zL0VJbnZvaWNlIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjIwMjI3OTllLTAxYzktNGIxOS05NDRlLTc4NmFiZDcxNjM5MCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBvc3RtYW4tY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1laW52b2ljZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJhcHAtdXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InBvc3RtYW4tY2xpZW50Ijp7InJvbGVzIjpbInVzZXIiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZhaXNhbCBLaGFuIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmFpc2FsMTYiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJLaGFuIiwiZW1haWwiOiJmYWlzYWwudGVjaG1ldGlzQGdtYWlsLmNvbSJ9.VnUJ2PpG4Qfdi_TOLsf5u1Xuvsfg01okFzLYqFO-_DQ8rfb2wEspNv8uCdEITPoCqcrINRaSqsvE6VbQhJEaX6b6S-8fy-3SmrXcsCweQC3e2L78Az3y7sgUApmsOY-Qs2Fj39onH0gh1ow3oQYhV9q7WHf2716Mig9q26Y6pn-AZhpjKfdWgNi4dCqyq4jq1OyTxFe5KOVTN6rE1yXh_x19Vo5BtBBIYSrKoEFF0ocCz2H3hmKZDsnFVQIePQ_tZSMxevjYOoDfPnXIeF4u-tolRN2uJ1fWGSsusb8w2m5LWVZfn8Zzp5GtQaaSHttR-Wd7ZlOCOruiNIoRAVcPsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "faisal16",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "root",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "postman-client",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "aQgtjrV8fJjPHqpVR2TFyeRnareJrXTq",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "keycloak-bearer-token",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "username",
+						"value": "faisalkhan16",
+						"type": "default"
+					},
+					{
+						"key": "password",
+						"value": "abcd@1234",
+						"type": "default"
+					},
+					{
+						"key": "vat_number",
+						"value": "300075588700003",
+						"type": "default"
+					},
+					{
+						"key": "egs_serial_no",
+						"value": "1-EGS|2-SNP|3-V1.1=3",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/pending",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"pending"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoice Generate 02 Report",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCQ01EQVRadlNVY0xTX1F4cTNyaXBUajZDVGJ6SXhuZ005dHh0U1BkUGZRIn0.eyJleHAiOjE2NjQxMzg3MTcsImlhdCI6MTY2NDEzODQxNywianRpIjoiYWQzOTRhNDctOTJkYS00YjcwLThhZGYtMjA2YzQxOTNkZTA2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MTgwL2F1dGgvcmVhbG1zL0VJbnZvaWNlIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjIwMjI3OTllLTAxYzktNGIxOS05NDRlLTc4NmFiZDcxNjM5MCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBvc3RtYW4tY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1laW52b2ljZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJhcHAtdXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InBvc3RtYW4tY2xpZW50Ijp7InJvbGVzIjpbInVzZXIiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZhaXNhbCBLaGFuIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmFpc2FsMTYiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJLaGFuIiwiZW1haWwiOiJmYWlzYWwudGVjaG1ldGlzQGdtYWlsLmNvbSJ9.VnUJ2PpG4Qfdi_TOLsf5u1Xuvsfg01okFzLYqFO-_DQ8rfb2wEspNv8uCdEITPoCqcrINRaSqsvE6VbQhJEaX6b6S-8fy-3SmrXcsCweQC3e2L78Az3y7sgUApmsOY-Qs2Fj39onH0gh1ow3oQYhV9q7WHf2716Mig9q26Y6pn-AZhpjKfdWgNi4dCqyq4jq1OyTxFe5KOVTN6rE1yXh_x19Vo5BtBBIYSrKoEFF0ocCz2H3hmKZDsnFVQIePQ_tZSMxevjYOoDfPnXIeF4u-tolRN2uJ1fWGSsusb8w2m5LWVZfn8Zzp5GtQaaSHttR-Wd7ZlOCOruiNIoRAVcPsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "faisal16",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "root",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "postman-client",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "aQgtjrV8fJjPHqpVR2TFyeRnareJrXTq",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "keycloak-bearer-token",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\":\r\n{\r\n  \"id\": \"123\",\r\n  \"invoice_type_code\": \"388\",\r\n  \"invoice_sub_type\": \"0200000\",\r\n  \"original_invoice_id\":\"\",\r\n  \"invoice_note_reason\":\"\",\r\n  \"supply_date\": \"2022-01-01\",\r\n  \"supply_end_date\":\"2022-01-02\",\r\n  \"seller_id_number\": \"2469971358\",\r\n  \"seller_id_type\": \"CRN\",\r\n  \"seller_name_english\": \"Faisal\",\r\n  \"seller_name_arabic\": \"فیصل\",\r\n  \"seller_building_no\": \"7587\",\r\n  \"seller_street\": \"Ibn Alqamah At Taimi\",\r\n  \"seller_address_line\": \"\",\r\n  \"seller_district\": \"As Suwaidi\",\r\n  \"seller_additional_no\": \"2365\",\r\n  \"seller_postal_code\": \"12313\",\r\n  \"seller_city\": \"Riyadh\",\r\n  \"seller_country\": \"SA\",\r\n  \"payment_means_code\":\"10\",\r\n  \"seller_region\":\"Riyadh\",\r\n  \"buyer_id_type\": \"IQA\",\r\n  \"buyer_postal_code\": \"12313\",\r\n  \"buyer_country\": \"SA\",\r\n  \"purchase_order_id\":\"123\",\r\n  \"contract_id\":\"456\",\r\n\"invoice_lines\": [\r\n{\r\n\t\"id\" : \"1\",\r\n\t\"item_name\" : \"Test Product 1\",\r\n\t\"invoiced_quantity\" : \"3\",\r\n\t\"unit_price\" : \"100\",\r\n\t\"net_price\" : \"300\",\r\n\t\"discount\" : \"10\",\r\n\t\"taxable_amount\" : \"290\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"43.50\",\r\n\t\"sub_total_incl_vat\" : \"333.50\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n},\r\n{\r\n\t\"id\" : \"2\",\r\n\t\"item_name\" : \"Test Product 2\",\r\n\t\"invoiced_quantity\" : \"4\",\r\n\t\"unit_price\" : \"20\",\r\n\t\"net_price\" : \"80\",\r\n\t\"discount\" : \"0\",\r\n\t\"taxable_amount\" : \"80\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"12\",\r\n\t\"sub_total_incl_vat\" : \"92\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n}\r\n  ],\r\n  \"total_amount\": 370,\r\n  \"total_discount\": 0,\r\n  \"total_exclusive_vat\": 370,\r\n  \"total_vat\": 55.5,\r\n  \"total_inclusive_vat\": 425.5,\r\n  \"invoice_currency\":\"USD\",\r\n  \"exchange_rate\":3.75,\r\n  \"total_tax_sar\":208.125,\r\n  \"total_amount_sar\":1595.625\r\n}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/report",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"report"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoice Generate 02 Credit Report",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCQ01EQVRadlNVY0xTX1F4cTNyaXBUajZDVGJ6SXhuZ005dHh0U1BkUGZRIn0.eyJleHAiOjE2NjQxMzg3MTcsImlhdCI6MTY2NDEzODQxNywianRpIjoiYWQzOTRhNDctOTJkYS00YjcwLThhZGYtMjA2YzQxOTNkZTA2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MTgwL2F1dGgvcmVhbG1zL0VJbnZvaWNlIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjIwMjI3OTllLTAxYzktNGIxOS05NDRlLTc4NmFiZDcxNjM5MCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBvc3RtYW4tY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1laW52b2ljZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJhcHAtdXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InBvc3RtYW4tY2xpZW50Ijp7InJvbGVzIjpbInVzZXIiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZhaXNhbCBLaGFuIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmFpc2FsMTYiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJLaGFuIiwiZW1haWwiOiJmYWlzYWwudGVjaG1ldGlzQGdtYWlsLmNvbSJ9.VnUJ2PpG4Qfdi_TOLsf5u1Xuvsfg01okFzLYqFO-_DQ8rfb2wEspNv8uCdEITPoCqcrINRaSqsvE6VbQhJEaX6b6S-8fy-3SmrXcsCweQC3e2L78Az3y7sgUApmsOY-Qs2Fj39onH0gh1ow3oQYhV9q7WHf2716Mig9q26Y6pn-AZhpjKfdWgNi4dCqyq4jq1OyTxFe5KOVTN6rE1yXh_x19Vo5BtBBIYSrKoEFF0ocCz2H3hmKZDsnFVQIePQ_tZSMxevjYOoDfPnXIeF4u-tolRN2uJ1fWGSsusb8w2m5LWVZfn8Zzp5GtQaaSHttR-Wd7ZlOCOruiNIoRAVcPsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "faisal16",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "root",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "postman-client",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "aQgtjrV8fJjPHqpVR2TFyeRnareJrXTq",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "keycloak-bearer-token",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\":\r\n{\r\n  \"id\": \"123\",\r\n  \"invoice_type_code\": \"381\",\r\n  \"invoice_sub_type\": \"0200000\",\r\n  \"original_invoice_id\":\"EGS2221203000013\",\r\n  \"invoice_note_reason\":\"Credit Reson\",\r\n  \"supply_date\": \"2022-01-01\",\r\n  \"supply_end_date\":\"2022-01-02\",\r\n  \"seller_id_number\": \"2469971358\",\r\n  \"seller_id_type\": \"CRN\",\r\n  \"seller_name_english\": \"Faisal\",\r\n  \"seller_name_arabic\": \"فیصل\",\r\n  \"seller_building_no\": \"7587\",\r\n  \"seller_street\": \"Ibn Alqamah At Taimi\",\r\n  \"seller_address_line\": \"\",\r\n  \"seller_district\": \"As Suwaidi\",\r\n  \"seller_additional_no\": \"2365\",\r\n  \"seller_postal_code\": \"12313\",\r\n  \"seller_city\": \"Riyadh\",\r\n  \"seller_country\": \"SA\",\r\n  \"payment_means_code\":\"10\",\r\n  \"seller_region\":\"Riyadh\",\r\n  \"buyer_id_type\": \"IQA\",\r\n  \"buyer_postal_code\": \"12313\",\r\n  \"buyer_country\": \"SA\",\r\n  \"purchase_order_id\":\"123\",\r\n  \"contract_id\":\"456\",\r\n\"invoice_lines\": [\r\n{\r\n\t\"id\" : \"1\",\r\n\t\"item_name\" : \"Test Product 1\",\r\n\t\"invoiced_quantity\" : \"3\",\r\n\t\"unit_price\" : \"100\",\r\n\t\"net_price\" : \"300\",\r\n\t\"discount\" : \"10\",\r\n\t\"taxable_amount\" : \"290\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"43.50\",\r\n\t\"sub_total_incl_vat\" : \"333.50\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n},\r\n{\r\n\t\"id\" : \"2\",\r\n\t\"item_name\" : \"Test Product 2\",\r\n\t\"invoiced_quantity\" : \"4\",\r\n\t\"unit_price\" : \"20\",\r\n\t\"net_price\" : \"80\",\r\n\t\"discount\" : \"0\",\r\n\t\"taxable_amount\" : \"80\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"12\",\r\n\t\"sub_total_incl_vat\" : \"92\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n}\r\n  ],\r\n  \"total_amount\": 370,\r\n  \"total_discount\": 0,\r\n  \"total_exclusive_vat\": 370,\r\n  \"total_vat\": 55.5,\r\n  \"total_inclusive_vat\": 425.5,\r\n  \"invoice_currency\":\"USD\",\r\n  \"exchange_rate\":3.75,\r\n  \"total_tax_sar\":208.125,\r\n  \"total_amount_sar\":1595.625\r\n}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/report",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"report"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoice Generate 02 Debit Report",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCQ01EQVRadlNVY0xTX1F4cTNyaXBUajZDVGJ6SXhuZ005dHh0U1BkUGZRIn0.eyJleHAiOjE2NjQxMzg3MTcsImlhdCI6MTY2NDEzODQxNywianRpIjoiYWQzOTRhNDctOTJkYS00YjcwLThhZGYtMjA2YzQxOTNkZTA2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MTgwL2F1dGgvcmVhbG1zL0VJbnZvaWNlIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjIwMjI3OTllLTAxYzktNGIxOS05NDRlLTc4NmFiZDcxNjM5MCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBvc3RtYW4tY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1laW52b2ljZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJhcHAtdXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InBvc3RtYW4tY2xpZW50Ijp7InJvbGVzIjpbInVzZXIiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZhaXNhbCBLaGFuIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmFpc2FsMTYiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJLaGFuIiwiZW1haWwiOiJmYWlzYWwudGVjaG1ldGlzQGdtYWlsLmNvbSJ9.VnUJ2PpG4Qfdi_TOLsf5u1Xuvsfg01okFzLYqFO-_DQ8rfb2wEspNv8uCdEITPoCqcrINRaSqsvE6VbQhJEaX6b6S-8fy-3SmrXcsCweQC3e2L78Az3y7sgUApmsOY-Qs2Fj39onH0gh1ow3oQYhV9q7WHf2716Mig9q26Y6pn-AZhpjKfdWgNi4dCqyq4jq1OyTxFe5KOVTN6rE1yXh_x19Vo5BtBBIYSrKoEFF0ocCz2H3hmKZDsnFVQIePQ_tZSMxevjYOoDfPnXIeF4u-tolRN2uJ1fWGSsusb8w2m5LWVZfn8Zzp5GtQaaSHttR-Wd7ZlOCOruiNIoRAVcPsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "faisal16",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "root",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "postman-client",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "aQgtjrV8fJjPHqpVR2TFyeRnareJrXTq",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "keycloak-bearer-token",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\":\r\n{\r\n  \"id\": \"123\",\r\n  \"invoice_type_code\": \"383\",\r\n  \"invoice_sub_type\": \"0200000\",\r\n  \"original_invoice_id\":\"EGS2221203000013\",\r\n  \"invoice_note_reason\":\"Debit Reson\",\r\n  \"supply_date\": \"2022-01-01\",\r\n  \"supply_end_date\":\"2022-01-02\",\r\n  \"seller_id_number\": \"2469971358\",\r\n  \"seller_id_type\": \"CRN\",\r\n  \"seller_name_english\": \"Faisal\",\r\n  \"seller_name_arabic\": \"فیصل\",\r\n  \"seller_building_no\": \"7587\",\r\n  \"seller_street\": \"Ibn Alqamah At Taimi\",\r\n  \"seller_address_line\": \"\",\r\n  \"seller_district\": \"As Suwaidi\",\r\n  \"seller_additional_no\": \"2365\",\r\n  \"seller_postal_code\": \"12313\",\r\n  \"seller_city\": \"Riyadh\",\r\n  \"seller_country\": \"SA\",\r\n  \"payment_means_code\":\"10\",\r\n  \"seller_region\":\"Riyadh\",\r\n  \"buyer_id_type\": \"IQA\",\r\n  \"buyer_postal_code\": \"12313\",\r\n  \"buyer_country\": \"SA\",\r\n  \"purchase_order_id\":\"123\",\r\n  \"contract_id\":\"456\",\r\n\"invoice_lines\": [\r\n{\r\n\t\"id\" : \"1\",\r\n\t\"item_name\" : \"Test Product 1\",\r\n\t\"invoiced_quantity\" : \"3\",\r\n\t\"unit_price\" : \"100\",\r\n\t\"net_price\" : \"300\",\r\n\t\"discount\" : \"10\",\r\n\t\"taxable_amount\" : \"290\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"43.50\",\r\n\t\"sub_total_incl_vat\" : \"333.50\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n},\r\n{\r\n\t\"id\" : \"2\",\r\n\t\"item_name\" : \"Test Product 2\",\r\n\t\"invoiced_quantity\" : \"4\",\r\n\t\"unit_price\" : \"20\",\r\n\t\"net_price\" : \"80\",\r\n\t\"discount\" : \"0\",\r\n\t\"taxable_amount\" : \"80\",\r\n\t\"tax_rate\" : \"15\",\r\n\t\"tax_amount\" : \"12\",\r\n\t\"sub_total_incl_vat\" : \"92\",\r\n    \"exemption_reason_code\": \"\",\r\n    \"exemption_reason_text\": \"\",\r\n    \"tax_category_code\": \"S\"\r\n}\r\n  ],\r\n  \"total_amount\": 370,\r\n  \"total_discount\": 0,\r\n  \"total_exclusive_vat\": 370,\r\n  \"total_vat\": 55.5,\r\n  \"total_inclusive_vat\": 425.5,\r\n  \"invoice_currency\":\"USD\",\r\n  \"exchange_rate\":3.75,\r\n  \"total_tax_sar\":208.125,\r\n  \"total_amount_sar\":1595.625\r\n}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/report",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"report"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Pending Simplified Invoices To Zatca",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCQ01EQVRadlNVY0xTX1F4cTNyaXBUajZDVGJ6SXhuZ005dHh0U1BkUGZRIn0.eyJleHAiOjE2NjQxMzg3MTcsImlhdCI6MTY2NDEzODQxNywianRpIjoiYWQzOTRhNDctOTJkYS00YjcwLThhZGYtMjA2YzQxOTNkZTA2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MTgwL2F1dGgvcmVhbG1zL0VJbnZvaWNlIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjIwMjI3OTllLTAxYzktNGIxOS05NDRlLTc4NmFiZDcxNjM5MCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBvc3RtYW4tY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1laW52b2ljZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJhcHAtdXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InBvc3RtYW4tY2xpZW50Ijp7InJvbGVzIjpbInVzZXIiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZhaXNhbCBLaGFuIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmFpc2FsMTYiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJLaGFuIiwiZW1haWwiOiJmYWlzYWwudGVjaG1ldGlzQGdtYWlsLmNvbSJ9.VnUJ2PpG4Qfdi_TOLsf5u1Xuvsfg01okFzLYqFO-_DQ8rfb2wEspNv8uCdEITPoCqcrINRaSqsvE6VbQhJEaX6b6S-8fy-3SmrXcsCweQC3e2L78Az3y7sgUApmsOY-Qs2Fj39onH0gh1ow3oQYhV9q7WHf2716Mig9q26Y6pn-AZhpjKfdWgNi4dCqyq4jq1OyTxFe5KOVTN6rE1yXh_x19Vo5BtBBIYSrKoEFF0ocCz2H3hmKZDsnFVQIePQ_tZSMxevjYOoDfPnXIeF4u-tolRN2uJ1fWGSsusb8w2m5LWVZfn8Zzp5GtQaaSHttR-Wd7ZlOCOruiNIoRAVcPsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "faisal16",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "root",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "postman-client",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "aQgtjrV8fJjPHqpVR2TFyeRnareJrXTq",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "keycloak-bearer-token",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "username",
+						"value": "faisalkhan16",
+						"type": "default"
+					},
+					{
+						"key": "password",
+						"value": "abcd@1234",
+						"type": "default"
+					},
+					{
+						"key": "egs_serial_no",
+						"value": "1-EGS|2-SNP|3-V1.1=0",
+						"type": "default"
+					},
+					{
+						"key": "vat_number",
+						"value": "300075588700013",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/issuesimplified",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"issuesimplified"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "faisalkhan16",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "abcd@1234",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Pending Standard Invoices To Zatca",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCQ01EQVRadlNVY0xTX1F4cTNyaXBUajZDVGJ6SXhuZ005dHh0U1BkUGZRIn0.eyJleHAiOjE2NjQxMzg3MTcsImlhdCI6MTY2NDEzODQxNywianRpIjoiYWQzOTRhNDctOTJkYS00YjcwLThhZGYtMjA2YzQxOTNkZTA2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MTgwL2F1dGgvcmVhbG1zL0VJbnZvaWNlIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjIwMjI3OTllLTAxYzktNGIxOS05NDRlLTc4NmFiZDcxNjM5MCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBvc3RtYW4tY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1laW52b2ljZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJhcHAtdXNlciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InBvc3RtYW4tY2xpZW50Ijp7InJvbGVzIjpbInVzZXIiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjBiNTJkOTM3LTg4MTktNDI3OC05ODhmLThiMTM4ZGY1OTlkYyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkZhaXNhbCBLaGFuIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmFpc2FsMTYiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJLaGFuIiwiZW1haWwiOiJmYWlzYWwudGVjaG1ldGlzQGdtYWlsLmNvbSJ9.VnUJ2PpG4Qfdi_TOLsf5u1Xuvsfg01okFzLYqFO-_DQ8rfb2wEspNv8uCdEITPoCqcrINRaSqsvE6VbQhJEaX6b6S-8fy-3SmrXcsCweQC3e2L78Az3y7sgUApmsOY-Qs2Fj39onH0gh1ow3oQYhV9q7WHf2716Mig9q26Y6pn-AZhpjKfdWgNi4dCqyq4jq1OyTxFe5KOVTN6rE1yXh_x19Vo5BtBBIYSrKoEFF0ocCz2H3hmKZDsnFVQIePQ_tZSMxevjYOoDfPnXIeF4u-tolRN2uJ1fWGSsusb8w2m5LWVZfn8Zzp5GtQaaSHttR-Wd7ZlOCOruiNIoRAVcPsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "faisal16",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "root",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "postman-client",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "aQgtjrV8fJjPHqpVR2TFyeRnareJrXTq",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://localhost:8180/auth/realms/EInvoice/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "keycloak-bearer-token",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "username",
+						"value": "faisalkhan16",
+						"type": "default"
+					},
+					{
+						"key": "password",
+						"value": "abcd@1234",
+						"type": "default"
+					},
+					{
+						"key": "egs_serial_no",
+						"value": "1-EGS|2-SNP|3-V1.1=0",
+						"type": "default"
+					},
+					{
+						"key": "vat_number",
+						"value": "300075588700013",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/issuestandard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"issuestandard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Seller",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5004/seller",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5004",
+					"path": [
+						"seller"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,18 @@
+CREATE TABLE `invoice_line` (
+  `LINE_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `SEQ_REF` bigint(20) NOT NULL,
+  `NAME` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `QUANTITY` int(11) NOT NULL,
+  `NET_PRICE` double NOT NULL,
+  `TOTAL_AMOUNT` double NOT NULL,
+  `DISCOUNT` double NOT NULL,
+  `TOTAL_TAXABLE_AMOUNT` double NOT NULL,
+  `TAX_RATE` double NOT NULL,
+  `TAX_AMOUNT` double NOT NULL,
+  `SUBTOTAL` double NOT NULL,
+  `STATUS` varchar(3) COLLATE utf8mb4_general_ci NOT NULL,
+  `VAT_CTGRY` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `EXMP_RSN_CD` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `EXMP_RSN_TXT` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`LINE_ID`,`SEQ_REF`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
