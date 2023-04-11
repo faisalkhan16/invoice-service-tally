@@ -23,20 +23,16 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class XMLParser
-{
-    public PDFGeneratorDTO parseXMLInvoice(String invoiceXML)
-    {
-
-        PDFGeneratorDTO pdfGeneratorDTO = new PDFGeneratorDTO();
-        try
-        {
+public class XMLParser {
+    public PDFGeneratorDTO parseXMLInvoice(String invoiceXML) {
+        try {
             InvoiceMaster invoiceMaster = new InvoiceMaster();
 
             Document document = getXmlDocument(invoiceXML);
             Map<String, String> nameSpacesMap = getNameSpacesMap();
 
-            String invoiceId = this.getNodeXmlTextValue(document, nameSpacesMap, "/Invoice/cbc:ID");;
+            String invoiceId = this.getNodeXmlTextValue(document, nameSpacesMap, "/Invoice/cbc:ID");
+            ;
             String uuID = this.getNodeXmlTextValue(document, nameSpacesMap, "/Invoice/cbc:UUID");
 
             String issueDate = this.getNodeXmlTextValue(document, nameSpacesMap, "/Invoice/cbc:IssueDate");
@@ -50,15 +46,13 @@ public class XMLParser
             String documentCurrency = this.getNodeXmlTextValue(document, nameSpacesMap, "/Invoice/cbc:DocumentCurrencyCode");
             String orderReference = "";
 
-            if(this.getNodeXmlValue(document, nameSpacesMap, "/Invoice/cac:OrderReference/cbc:ID") != null)
-            {
+            if (this.getNodeXmlValue(document, nameSpacesMap, "/Invoice/cac:OrderReference/cbc:ID") != null) {
                 orderReference = this.getNodeXmlTextValue(document, nameSpacesMap, "/Invoice/cac:OrderReference/cbc:ID");
             }
 
             String contractNo = "";
 
-            if(this.getNodeXmlValue(document, nameSpacesMap, "/Invoice/cac:ContractDocumentReference/cbc:ID") != null)
-            {
+            if (this.getNodeXmlValue(document, nameSpacesMap, "/Invoice/cac:ContractDocumentReference/cbc:ID") != null) {
                 contractNo = this.getNodeXmlTextValue(document, nameSpacesMap, "/Invoice/cac:ContractDocumentReference/cbc:ID");
             }
 
@@ -115,16 +109,13 @@ public class XMLParser
             String vatAmount = "";
             String vatAmountSAR = "";
 
-            for(int i = 0; i < taxTotals.size(); i++)
-            {
+            for (int i = 0; i < taxTotals.size(); i++) {
                 Node taxTotal = (DefaultElement) taxTotals.get(i);
 
                 //taxTotal with subtotals contains TaxAmount in document currency
-                if(taxTotal.selectSingleNode("./cac:TaxSubtotal") != null)
-                {
+                if (taxTotal.selectSingleNode("./cac:TaxSubtotal") != null) {
                     vatAmount = taxTotal.selectSingleNode("./cbc:TaxAmount").getText();
-                }
-                else    //taxTotal without subtotals contains TaxAmount in accounting currency (SAR)
+                } else    //taxTotal without subtotals contains TaxAmount in accounting currency (SAR)
                 {
                     vatAmountSAR = taxTotal.selectSingleNode("./cbc:TaxAmount").getText();
                 }
@@ -170,13 +161,8 @@ public class XMLParser
             invoiceMaster.setBuyerCountry(buyerCountry);
             invoiceMaster.setSupplyDate(LocalDate.parse(supplyDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-            if(supplyEndDate != null)
-            {
+            if (!CommonUtils.isNullOrEmptyString(supplyEndDate)) {
                 invoiceMaster.setSupplyEndDate(LocalDate.parse(supplyEndDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            }
-            else
-            {
-                invoiceMaster.setSupplyEndDate(LocalDate.parse(supplyDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             }
 
             invoiceMaster.setPaymentMeansCode(paymentMeansCode);
@@ -201,8 +187,7 @@ public class XMLParser
             xpath.setNamespaceURIs(nameSpacesMap);
             List invoiceNodes = xpath.selectNodes(document);
 
-            for(int i = 0 ; i < invoiceNodes.size(); i++)
-            {
+            for (int i = 0; i < invoiceNodes.size(); i++) {
                 InvoiceLine invoiceLine = new InvoiceLine();
 
                 Node line = (DefaultElement) invoiceNodes.get(i);
@@ -210,49 +195,63 @@ public class XMLParser
                 Document lineDoc = getXmlDocument(line.asXML());
 
                 invoiceLine.setLineId(Integer.parseInt(this.getNodeXmlTextValue(lineDoc, nameSpacesMap, "/InvoiceLine/cbc:ID")));
-                invoiceLine.setQuantity(Integer.parseInt(this.getNodeXmlTextValue(lineDoc, nameSpacesMap, "/InvoiceLine/cbc:InvoicedQuantity")));
+                invoiceLine.setQuantity((int) Double.parseDouble(this.getNodeXmlTextValue(lineDoc, nameSpacesMap, "/InvoiceLine/cbc:InvoicedQuantity")));
                 invoiceLine.setTotalTaxableAmount(Double.parseDouble(this.getNodeXmlTextValue(lineDoc, nameSpacesMap, "/InvoiceLine/cbc:LineExtensionAmount")));
 
-                if(this.getNodeXmlValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:AllowanceCharge/cbc:Amount") != null)
-                {
+                if (this.getNodeXmlValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:AllowanceCharge/cbc:Amount") != null) {
                     invoiceLine.setDiscount(Double.parseDouble(this.getNodeXmlTextValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:AllowanceCharge/cbc:Amount")));
                 }
 
-                if(this.getNodeXmlValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:TaxTotal/cbc:TaxAmount") != null)
-                {
+                if (this.getNodeXmlValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:TaxTotal/cbc:TaxAmount") != null) {
                     invoiceLine.setTaxAmount(Double.parseDouble(this.getNodeXmlTextValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:TaxTotal/cbc:TaxAmount")));
                 }
 
-                if(this.getNodeXmlValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:TaxTotal/cbc:RoundingAmount") != null)
-                {
+                if (this.getNodeXmlValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:TaxTotal/cbc:RoundingAmount") != null) {
                     invoiceLine.setSubTotal(Double.parseDouble(this.getNodeXmlTextValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:TaxTotal/cbc:RoundingAmount")));
                 }
 
                 invoiceLine.setName(this.getNodeXmlTextValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:Item/cbc:Name"));
                 invoiceLine.setItemTaxCategoryCode(this.getNodeXmlTextValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:Item/cac:ClassifiedTaxCategory/cbc:ID"));
 
-                if(!invoiceLine.getItemTaxCategoryCode().equalsIgnoreCase("O"))
-                {
+                if (!invoiceLine.getItemTaxCategoryCode().equalsIgnoreCase("O")) {
                     invoiceLine.setTaxRate(Double.parseDouble(this.getNodeXmlTextValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:Item/cac:ClassifiedTaxCategory/cbc:Percent")));
                 }
 
-                if(this.getNodeXmlValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:Price/cbc:PriceAmount") != null)
-                {
+                if (this.getNodeXmlValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:Price/cbc:PriceAmount") != null) {
                     invoiceLine.setNetPrice(Double.parseDouble(this.getNodeXmlTextValue(lineDoc, nameSpacesMap, "/InvoiceLine/cac:Price/cbc:PriceAmount")));
                 }
 
-                //TODO Exemption Reason Code and Exemption Reason Text
+                for (int j = 0; j < taxTotals.size(); j++) {
+                    Node taxTotal = (DefaultElement) taxTotals.get(j);
+
+                    //taxTotal with subtotals contains TaxAmount in document currency
+                    if (taxTotal.selectSingleNode("./cac:TaxSubtotal") != null) {
+                        //TODO check category of current item and set
+                        String exemptionReasonCode = null;
+                        String exemptionReasonText = null;
+                        try {
+                            exemptionReasonCode = taxTotal.selectSingleNode("./cac:TaxSubtotal/cac:TaxCategory[cbc:ID='" + invoiceLine.getItemTaxCategoryCode() + "']/cbc:TaxExemptionReasonCode").getText();
+                        } catch (Exception e) {
+
+                        }
+
+                        try {
+                            exemptionReasonText = taxTotal.selectSingleNode("./cac:TaxSubtotal/cac:TaxCategory[cbc:ID='" + invoiceLine.getItemTaxCategoryCode() + "']/cbc:TaxExemptionReason").getText();
+                        } catch (Exception e) {
+
+                        }
+
+                        invoiceLine.setExemptionReasonCode(exemptionReasonCode);
+                        invoiceLine.setExemptionReasonText(exemptionReasonText);
+                    }
+                }
 
                 invoiceLines.add(invoiceLine);
             }
 
 
-
-            //TODO check how to get logoPath and qrCodeFilePath
-            return new PDFGeneratorDTO(invoiceMaster, invoiceLines, invoiceXML);
-        }
-        catch(Exception e)
-        {
+            return new PDFGeneratorDTO(invoiceMaster, invoiceLines, invoiceXML, qrCode);
+        } catch (Exception e) {
             log.error("Exception in XMLParser");
             e.printStackTrace();
             return null;
@@ -290,16 +289,12 @@ public class XMLParser
         return node != null ? node.asXML() : null;
     }
 
-    private String getNodeXmlTextValue(Document document, Map<String, String> nameSpaces, String attributeXpath)
-    {
-        try
-        {
+    private String getNodeXmlTextValue(Document document, Map<String, String> nameSpaces, String attributeXpath) {
+        try {
             XPath xpath = DocumentHelper.createXPath(attributeXpath);
             xpath.setNamespaceURIs(nameSpaces);
             return xpath.selectSingleNode(document).getText();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             return "";
         }
     }

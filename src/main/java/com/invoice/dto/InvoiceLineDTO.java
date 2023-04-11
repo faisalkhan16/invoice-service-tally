@@ -29,7 +29,7 @@ public class InvoiceLineDTO
     private String exemptionReasonText;
 
     @JsonProperty(value = "invoiced_quantity")
-    private int quantity;
+    private double quantity;
 
     @JsonProperty(value = "unit_price")
     private double netPrice;

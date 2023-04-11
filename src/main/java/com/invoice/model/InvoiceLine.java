@@ -15,7 +15,7 @@ public class InvoiceLine {
     private String itemTaxCategoryCode;
     private String exemptionReasonCode;
     private String exemptionReasonText;
-    private int quantity;
+    private double quantity;
     private double netPrice;
     private double totalAmount;
     private double discount;

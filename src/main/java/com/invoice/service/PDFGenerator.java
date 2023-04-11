@@ -193,14 +193,59 @@ public class PDFGenerator {
             cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
             table.addCell(cell);
 
+            if(invoiceMaster.getType().equals("381") || invoiceMaster.getType().equals("383")){
+                p = new Paragraph("Original Invoice ID:", txtFont);
+                cell = new PdfPCell(p);
+                cell.setBorderWidth(0.5f);
+                cell.setPadding(3f);
+                cell.setBorderColor(BaseColor.WHITE);
+                cell.setBackgroundColor(bgcolorText);
+                table.addCell(cell);
+
+                p = new Paragraph(invoiceMaster.getOriginalInvoiceId(), txtFont);
+                cell = new PdfPCell(p);
+                cell.setBorderWidth(0);
+                table.addCell(cell);
+
+                p = new Paragraph("معرّف الفاتورة الأصلي:", txtFont);
+                cell = new PdfPCell(p);
+                cell.setBorderWidth(0.5f);
+                cell.setPadding(3f);
+                cell.setBorderColor(BaseColor.WHITE);
+                cell.setBackgroundColor(bgcolorText);
+                cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+                table.addCell(cell);
+
+                p = new Paragraph("Invoice Note Reason:", txtFont);
+                cell = new PdfPCell(p);
+                cell.setBackgroundColor(bgcolorText);
+                cell.setBorderWidth(0.5f);
+                cell.setPadding(3f);
+                cell.setBorderColor(BaseColor.WHITE);
+                table.addCell(cell);
+
+                p = new Paragraph(invoiceMaster.getInvoiceNoteReason(), txtFont);
+                cell = new PdfPCell(p);
+                cell.setBorderWidth(0);
+                table.addCell(cell);
+
+                p = new Paragraph("سبب ملاحظة الفاتورة:", txtFont);
+                cell = new PdfPCell(p);
+                cell.setBorderWidth(0.5f);
+                cell.setPadding(3f);
+                cell.setBorderColor(BaseColor.WHITE);
+                cell.setBackgroundColor(bgcolorText);
+                cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+                table.addCell(cell);
+
+            }
+
             p = new Paragraph(new Chunk(Chunk.NEWLINE));
             cell = new PdfPCell(p);
             cell.setBorder(Rectangle.NO_BORDER);
             cell.setColspan(6);
 
             table.addCell(cell);
-
-            //TODO add original invoice reference and issue date for credit and debit note
 
             //seller/ buyer table start
             //header start

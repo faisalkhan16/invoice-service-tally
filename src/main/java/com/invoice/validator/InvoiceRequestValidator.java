@@ -11,6 +11,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class InvoiceRequestValidator implements ConstraintValidator<InvoiceRequestConstraint, InvoiceDTOWrapper> {
@@ -240,6 +241,18 @@ public class InvoiceRequestValidator implements ConstraintValidator<InvoiceReque
                     if(!validation.isValid()) {
                         errorMessage = validation.getMessage();
                         throw new RequestValidationException(errorMessage);
+                    }else{
+
+                        List<String> categoryCodes = invoiceDTO.getInvoiceLines().stream().map(invoiceLineDTO -> invoiceLineDTO.getItemTaxCategoryCode()).collect(Collectors.toList());
+                        String categoryCode = invoiceDTO.getInvoiceLines().stream().map(invoiceLineDTO -> invoiceLineDTO.getItemTaxCategoryCode()).findFirst().get();
+                        List<String> selectedCategoryCodes = invoiceDTO.getInvoiceLines().stream().filter(invoiceLineDTO -> invoiceLineDTO.getItemTaxCategoryCode().equalsIgnoreCase(categoryCode)).map(invoiceLineDTO -> invoiceLineDTO.getItemTaxCategoryCode()).collect(Collectors.toList());
+
+                        if(categoryCodes.size() != selectedCategoryCodes.size())
+                        {
+                            errorMessage = "All invoice lines should have same tax_category_code";
+                            throw new RequestValidationException(errorMessage);
+                        }
+
                     }
                 }
             }
@@ -266,6 +279,18 @@ public class InvoiceRequestValidator implements ConstraintValidator<InvoiceReque
                     if(!validation.isValid()) {
                         errorMessage = validation.getMessage();
                         throw new RequestValidationException(errorMessage);
+                    }else{
+
+                        List<String> categoryCodes = invoiceDTO.getInvoiceLines().stream().map(invoiceLineDTO -> invoiceLineDTO.getItemTaxCategoryCode()).collect(Collectors.toList());
+                        String categoryCode = invoiceDTO.getInvoiceLines().stream().map(invoiceLineDTO -> invoiceLineDTO.getItemTaxCategoryCode()).findFirst().get();
+                        List<String> selectedCategoryCodes = invoiceDTO.getInvoiceLines().stream().filter(invoiceLineDTO -> invoiceLineDTO.getItemTaxCategoryCode().equalsIgnoreCase(categoryCode)).map(invoiceLineDTO -> invoiceLineDTO.getItemTaxCategoryCode()).collect(Collectors.toList());
+
+                        if(categoryCodes.size() != selectedCategoryCodes.size())
+                        {
+                            errorMessage = "All invoice lines should have same tax_category_code";
+                            throw new RequestValidationException(errorMessage);
+                        }
+
                     }
                 }
             }
@@ -443,9 +468,13 @@ public class InvoiceRequestValidator implements ConstraintValidator<InvoiceReque
                 break;
             }
 
-            if(CommonUtils.isNullOrEmptyString(String.valueOf(invoiceLineDTO.getLineId()))){
+            if(CommonUtils.isNullOrEmptyString(String.valueOf(invoiceLineDTO.getQuantity()))){
                 validation.setValid(false);
                 validation.setMessage("invoiced_quantity is required");
+                break;
+            }else if(!CommonUtils.isUpToTwoDecimal(invoiceLineDTO.getQuantity())){
+                validation.setValid(false);
+                validation.setMessage("invoiced_quantity should be two decimal formate #.##");
                 break;
             }
 

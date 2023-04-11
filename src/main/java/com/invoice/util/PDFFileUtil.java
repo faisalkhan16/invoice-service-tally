@@ -9,6 +9,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -77,6 +78,30 @@ public class PDFFileUtil {
             return pdfFile;
         } catch (Exception e) {
             log.error("Exception in generateFile in ImageUtil :{}", e.getStackTrace());
+            return null;
+        }
+    }
+
+    private String getFilePath(String invoiceID) {
+        StringBuffer brFilePath = new StringBuffer();
+        brFilePath.append(TEMP_FILE_PATH).append(TEMP_FILE_DIR).append(File.separator).append(invoiceID).append("-").append(LocalDate.now());
+        return brFilePath.toString();
+    }
+    public File generateFile(String pdf,String invoiceID) {
+        try {
+            log.info("PDFUtil generateFile: {}",invoiceID);
+            StringBuffer fileName = new StringBuffer();
+            fileName.append(getFilePath(invoiceID)).append(FILE_EXTENSION);
+
+            byte[] data = decode(pdf);
+            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(fileName.toString()));
+            outputStream.write(data);
+
+            File pdfFile = getFile(fileName.toString());
+
+            return pdfFile;
+        } catch (Exception e) {
+            log.error("Exception in generateFile in PDFUtil invoiceID: {} :{}",invoiceID, e.getStackTrace());
             return null;
         }
     }

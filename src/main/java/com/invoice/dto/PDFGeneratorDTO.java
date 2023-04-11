@@ -16,4 +16,5 @@ public class PDFGeneratorDTO
     private InvoiceMaster invoiceMaster;
     private List<InvoiceLine> invoiceLines;
     private String xml;
+    private String qrCode;
 }

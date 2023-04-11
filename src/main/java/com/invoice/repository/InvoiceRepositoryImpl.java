@@ -535,4 +535,49 @@ public class InvoiceRepositoryImpl {
         }
     }
 
+
+
+    public boolean isReportRecord(String invoiceID){
+        try {
+            log.info("InvoiceRepositoryImpl isReportRecord invoiceID: {}",invoiceID);
+
+            String sql = "SELECT COUNT(*) FROM invoice_report WHERE ID = ? AND STS = 'V';";
+            int count = jdbcTemplateSecondary.queryForObject(sql,Integer.class,new Object[]{invoiceID});
+            if (count>0)
+            {
+                return true;
+            }else {
+                return false;
+            }
+        }catch (Exception ex){
+            log.error("Exception in InvoiceRepositoryImpl isReportRecord invoiceID: {} Exception: {}",invoiceID,ex.getMessage());
+            return false;
+        }
+    }
+
+    public String getPDFromLOB(String invoiceID){
+        try {
+            log.info("InvoiceRepositoryImpl getPDFromLOB invoiceID: {}",invoiceID);
+
+            String sql = "SELECT PDF FROM invlobs, invoice_master where SEQ_ID = SEQ_REF AND invoice_master.ID = ? AND invoice_master.STATUS = 'V';";
+            return jdbcTemplateSecondary.queryForObject(sql,String.class,new Object[]{invoiceID});
+
+        }catch (Exception ex){
+            log.error("Exception in InvoiceRepositoryImpl getPDFromLOB invoiceID: {}",invoiceID,ex.getMessage());
+            return null;
+        }
+    }
+
+    public String getPDFromReport(String invoiceID){
+        try {
+            log.info("InvoiceRepositoryImpl getPDFromReport invoiceID: {}",invoiceID);
+
+            String sql = "SELECT PDF FROM invoice_report WHERE ID = ? AND STS = 'V';";
+            return  jdbcTemplateSecondary.queryForObject(sql,String.class,new Object[]{invoiceID});
+        }catch (Exception ex){
+            log.error("Exception in InvoiceRepositoryImpl getPDFromReport invoiceID: {}",invoiceID,ex.getMessage());
+            return null;
+        }
+    }
+
 }

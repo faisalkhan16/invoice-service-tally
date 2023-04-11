@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Instant;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Getter
 @Slf4j
@@ -291,12 +292,13 @@ public class CommonUtils {
         }
     }
 
-    public static boolean isValidEmail(String email){
-        return true;
+    public static boolean isValidEmail(String emailAddress){
+        return Pattern.compile("^(.+)@(.+)$")
+                .matcher(emailAddress)
+                .matches();
     }
-
     public static BigDecimal doubleToBigDecimal(double value){
-        BigDecimal bigDecimal = new BigDecimal(value).setScale( 2 , RoundingMode.HALF_UP);
+        BigDecimal bigDecimal = new BigDecimal(value).setScale( 2 , RoundingMode.CEILING);
         return bigDecimal;
     }
 }

@@ -13,6 +13,8 @@ public class Constants
     public static String ERROR_STATUS = "E";
     public static String PENDING_STATUS = "P";
 
+    public final static String TRANSPOSE_STATUS = "T";
+    public final static String FAILURE_STATUS = "F";
     public static String VLD_STS_PASS = "PASS";
     public static String CLRNC_STS = "CLEARED";
     public static String RPRT_STS = "REPORTED";

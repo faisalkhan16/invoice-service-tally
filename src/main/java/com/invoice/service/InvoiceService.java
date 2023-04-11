@@ -990,4 +990,12 @@ public class InvoiceService {
         emailRepository.createEmail(email);
     }
 
+    public String getPDF(String invoiceID){
+        log.info("InvoiceService getPDF invoiceID: {}",invoiceID);
+        if(invoiceRepository.isReportRecord(invoiceID)){
+            return invoiceRepository.getPDFromReport(invoiceID);
+        }else{
+            return invoiceRepository.getPDFromLOB(invoiceID);
+        }
+    }
 }

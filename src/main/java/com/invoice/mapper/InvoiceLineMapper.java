@@ -18,7 +18,7 @@ public class InvoiceLineMapper implements RowMapper<InvoiceLine> {
             invoiceLine.setLineId(rs.getInt("LINE_ID"));
             invoiceLine.setSeqRef(rs.getLong("SEQ_REF"));
             invoiceLine.setName(rs.getString("NAME"));
-            invoiceLine.setQuantity(rs.getInt("QUANTITY"));
+            invoiceLine.setQuantity(rs.getDouble("QUANTITY"));
             invoiceLine.setNetPrice(rs.getDouble("NET_PRICE"));
             invoiceLine.setTotalAmount(rs.getDouble("TOTAL_AMOUNT"));
             invoiceLine.setDiscount(rs.getDouble("DISCOUNT"));
