@@ -131,4 +131,16 @@ public class InvoiceExceptionHandler {
 
         return new ResponseEntity<>(errorDetails,HttpStatus.OK);
     }
+
+    @ExceptionHandler(BuyerEmailNotFoundException.class)
+    public ResponseEntity<?> buyerEmailNotFound(BuyerEmailNotFoundException exception, WebRequest request) {
+
+        CustomError errorDetails = new CustomError();
+        errorDetails.setStatus("ERROR");
+        errorDetails.setHttpStatus(HttpStatus.NOT_FOUND.toString());
+        errorDetails.setMessage(exception.getMessage());
+        errorDetails.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
+    }
 }

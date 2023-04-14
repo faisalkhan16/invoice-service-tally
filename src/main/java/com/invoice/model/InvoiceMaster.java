@@ -76,6 +76,9 @@ public class InvoiceMaster {
     private double taxSAR;
     private double totalSAR;
 
+    private String certificate;
+    private String certificateKey;
+    private String certificateStatus;
     private String buyerEmail;
     private String buyerMobile;
 

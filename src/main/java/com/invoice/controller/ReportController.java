@@ -10,10 +10,7 @@ import com.invoice.util.HttpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -62,18 +59,36 @@ public class ReportController {
         return ResponseEntity.ok().body(invoiceResponse);
     }
 
-    /*
-    @GetMapping(produces = "application/json", value = "/issue")
-    public ResponseEntity<InvoiceReportResponse> issueReports(@RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
+    @PostMapping(produces = "application/json", value = "/email")
+    public ResponseEntity<Void> email(@RequestParam Long id, @RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
     {
         String ip = HttpUtils.getRequestIP(request);
-        log.info("request: issueReports() ip: {} {}",ip);
-        InvoiceReportResponse invoiceResponse = invoiceService.sendReportInvoiceToZatca();
+        log.info("request: email() seqID: {} ip: {}",id,ip);
+        CredentialDTO credentialDTO = validateCredential(username,password,vatNumber,egsSerialNumber,ip);
 
-        log.info("response: getInvoice(): {}", ResponseEntity.ok().body(invoiceResponse));
-        return ResponseEntity.ok().body(invoiceResponse);
+        if(!sellerService.validateCredential(credentialDTO)){
+            throw new SellerNotFoundException("Invalid Credentials");
+        }
+        invoiceService.sendEmail(id);
+        log.info("response: email() seqID: {}",id);
+        return ResponseEntity.ok().build();
     }
-*/
+
+    @PostMapping(produces = "application/json", value = "/archive")
+    public ResponseEntity<Void> archive(@RequestParam Long id,@RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
+    {
+        String ip = HttpUtils.getRequestIP(request);
+        log.info("request: archive() seqID: {} ip: {}",id,ip);
+        CredentialDTO credentialDTO = validateCredential(username,password,vatNumber,egsSerialNumber,ip);
+
+        if(!sellerService.validateCredential(credentialDTO)){
+            throw new SellerNotFoundException("Invalid Credentials");
+        }
+        invoiceService.archiveOnCloud(id);
+        log.info("response: archive() seqID: {}",id);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping(produces = "application/json", value = "/health")
     public ResponseEntity<String> invoiceReports()
     {

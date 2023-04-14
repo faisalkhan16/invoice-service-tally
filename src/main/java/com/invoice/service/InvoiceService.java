@@ -11,6 +11,7 @@ import com.invoice.dto.zakat.ZakatReportingResponseDTO;
 import com.invoice.dto.zakat.ZakatApplicationRequestDTO;
 import com.invoice.dto.zakat.model.ZakatInfoModel;
 import com.invoice.dto.zakat.model.ZakatValidationResultModel;
+import com.invoice.exception.BuyerEmailNotFoundException;
 import com.invoice.exception.SellerNotFoundException;
 import com.invoice.exception.ZakatException;
 import com.invoice.mapper.MapInvoice;
@@ -59,6 +60,9 @@ public class InvoiceService {
 
     @Value("${IS_B2C_EMAIL_SENT}")
     private boolean isB2CEmailSent;
+
+    @Value("${IS_PRINT_PDF}")
+    private boolean isPDFReturn;
     private final ZakatService zakatService;
     private final InvoiceRepositoryImpl invoiceRepository;
     private final MapInvoice mapInvoice;
@@ -306,7 +310,9 @@ public class InvoiceService {
                 if(null != pdfFile) {
                     byte[] fileContent = Files.readAllBytes(pdfFile.toPath());
                     String pdf = Base64.getEncoder().encodeToString(fileContent);
-                    response.setPdfContent(pdf);
+                    if(isPDFReturn) {
+                        response.setPdfContent(pdf);
+                    }
                     invoiceRepository.savePDF(pdf,invoiceMaster.getSeqId());
 
                     if(isB2BEmailSent && invoiceMaster.getSubType().startsWith("01")  && !CommonUtils.isNullOrEmptyString(invoiceMaster.getBuyerEmail())) {
@@ -467,7 +473,9 @@ public class InvoiceService {
                 if(null != pdfFile) {
                     byte[] fileContent = Files.readAllBytes(pdfFile.toPath());
                     String pdf = Base64.getEncoder().encodeToString(fileContent);
-                    response.setPdfContent(pdf);
+                    if(isPDFReturn) {
+                        response.setPdfContent(pdf);
+                    }
                     invoiceRepository.savePDF(pdf,invoiceMaster.getSeqId());
 
                     if(isB2CEmailSent && invoiceMaster.getSubType().startsWith("02")  && !CommonUtils.isNullOrEmptyString(invoiceMaster.getBuyerEmail())) {
@@ -913,8 +921,9 @@ public class InvoiceService {
                     response.setSeqId(String.valueOf(invoiceMaster.getSeqId()));
                     response.setInvoiceId(invoiceMaster.getId());
                     response.setQrcode(invoiceLob.getQrCode());
-                    response.setPdfContent(invoiceLob.getPdf());
-
+                    if(isPDFReturn) {
+                        response.setPdfContent(invoiceLob.getPdf());
+                    }
                     response.setXmlContent(Base64.getEncoder().encodeToString(invoiceLob.getSignedXML().getBytes(StandardCharsets.UTF_8)));
 
                     if (null != invoiceLob.getQrCode()  && !invoiceLob.getQrCode().isEmpty()) {
@@ -955,35 +964,6 @@ public class InvoiceService {
 
     }
 
-    public HashMap<String,String> importCSV(String fileName) {
-
-        int passCount = 0;
-        int failCount = 0;
-
-        HashMap<String,String> mapImportRecords = new HashMap<>();
-        mapImportRecords.put("total","0");
-        mapImportRecords.put("import","0");
-        mapImportRecords.put("fail","0");
-
-        LinkedList<InvoiceReport> invoices = csvFileUtil.readCSVFile(fileName);
-
-            for (InvoiceReport invoiceReport : invoices) {
-                long seqID = invoiceRepository.saveInvoiceReport(invoiceReport);
-
-                if(seqID>0){
-                    passCount = passCount + 1;
-                }else{
-                    failCount = failCount + 1;
-                }
-            }
-
-            mapImportRecords.put("total",String.valueOf(invoices.size()));
-            mapImportRecords.put("import",String.valueOf(passCount));
-            mapImportRecords.put("fail",String.valueOf(failCount));
-
-            return mapImportRecords;
-    }
-
     private void createEmailEntry(Email email){
 
         log.info("Invoice Service createEmailEntry: {}",email);
@@ -992,10 +972,384 @@ public class InvoiceService {
 
     public String getPDF(String invoiceID){
         log.info("InvoiceService getPDF invoiceID: {}",invoiceID);
-        if(invoiceRepository.isReportRecord(invoiceID)){
-            return invoiceRepository.getPDFromReport(invoiceID);
-        }else{
-            return invoiceRepository.getPDFromLOB(invoiceID);
+        return invoiceRepository.getPDFromLOB(invoiceID);
+
+    }
+
+    public InvoiceDTOWrapper getInvoiceByInvoiceID( String InvoiceID) {
+        log.info("Invoice Service getInvoiceByInvoiceID: InvoiceID: {}",InvoiceID);
+
+        if(null == Constants.SELLER_EXPIRE_DATE || Constants.SELLER_EXPIRE_DATE.compareTo(LocalDate.now())<0){
+            throw new SellerNotFoundException("System Expired Contact System Administrator");
         }
+
+        InvoiceMaster invoiceMaster = invoiceRepository.getInvoiceById(InvoiceID);
+
+        List<InvoiceLine> invoiceLines = invoiceRepository.getInvoiceLinesByInvoiceId(invoiceMaster.getSeqId());
+
+        InvoiceDTO  invoiceDTO = mapInvoice.invoiceToInvoiceDTO(invoiceMaster);
+        invoiceDTO.setInvoiceLines(mapInvoiceLine.invoiceLinesToInvoiceLineDTOs(invoiceLines));
+
+        InvoiceDTOWrapper invoiceDTOWrapper = new InvoiceDTOWrapper();
+        invoiceDTOWrapper.setInvoiceDTO(invoiceDTO);
+        return invoiceDTOWrapper;
+    }
+
+    public InvoiceResponse retryInvoice(CredentialDTO credentialDTO,InvoiceDTO invoiceDTO) {
+        {
+            InvoiceResponse response = new InvoiceResponse();
+            try {
+
+                if(null == Constants.SELLER_EXPIRE_DATE || Constants.SELLER_EXPIRE_DATE.compareTo(LocalDate.now())<0){
+                    throw new SellerNotFoundException("System Expired Contact System Administrator");
+                }
+
+                if (CommonUtils.isNullOrEmptyString(invoiceDTO.getCurrency())) {
+                    invoiceDTO.setCurrency("SAR");
+                }
+
+                if (invoiceDTO.getFxRate() == 0) {
+                    invoiceDTO.setFxRate(1);
+                }
+
+                if (invoiceDTO.getCurrency().equalsIgnoreCase("SAR")) {
+                    invoiceDTO.setTaxSAR(invoiceDTO.getTotalVAT());
+                    invoiceDTO.setTotalSAR(invoiceDTO.getTaxInclusiveAmount());
+                }
+
+                Result validationResult = new Result();
+
+                String xml = xmlGenerator.validateRequestViaXML(invoiceDTO);
+
+                log.info("before validation XML >>>> " + xml);
+
+                try {
+                    File f = File.createTempFile("signedInvoice", ".xml");
+                    Files.write(Path.of(f.getPath()), xml.getBytes(StandardCharsets.UTF_8));
+                    validationResult = CommonUtils.validateInvoice(f);
+                    f.delete();
+                } catch (Exception e) {
+                    log.error("Exception in getInvoiceResponse Zatca Validation: {}", e.getStackTrace());
+                    validationResult.setValid(false);
+                    e.printStackTrace();
+                }
+
+                if (validationResult.isValid()) {
+
+                    SellerDTO sellerDTO = sellerService.getSellerByVatAndSerial();
+
+                    InvoiceMaster invoiceMaster = mapInvoice.invoiceDTOToInvoice(invoiceDTO);
+                    invoiceMaster.setStatus(Constants.CREATED_STATUS);
+                    invoiceMaster = invoiceRepository.updateInvoiceMaster(invoiceMaster);
+                    invoiceMaster = invoiceRepository.getInvoiceById(invoiceMaster.getId());
+                    long seqId = invoiceMaster.getSeqId();
+                    response.setSeqId(String.valueOf(seqId));
+                    response.setInvoiceId(invoiceMaster.getId());
+                    updateInvoiceLine(invoiceDTO.getInvoiceLines(), seqId);
+
+                    List<InvoiceLine> invoiceLines = invoiceRepository.getInvoiceLinesByInvoiceId(invoiceMaster.getSeqId());
+                    String previousInvoiceHash = invoiceRepository.getPreviousInvocieHashForFailureInvoice(invoiceMaster.getSeqId(),sellerDTO);
+
+                    xml = xmlGenerator.generateXML(invoiceMaster, invoiceLines, previousInvoiceHash);
+                    invoiceMaster.setXml(xml);
+
+                    PrivateKey privateKey = loadPrivateKey(sellerDTO);
+
+                    InvoiceSigningResult result = loadCertificate(xml, privateKey,sellerDTO);
+
+                    SAXReader xmlReader = new SAXReader();
+                    org.dom4j.Document doc = xmlReader.read(new ByteArrayInputStream(result.getSingedXML().getBytes(StandardCharsets.UTF_8)));
+
+                    xml = doc.getRootElement().asXML();
+
+                    invoiceMaster.setStatus(Constants.INPROCESS_STATUS);
+                    invoiceMaster.setSignedXML(xml);
+                    invoiceMaster.setQrCode(result.getQrCode());
+                    invoiceMaster.setInvocieHash(result.getInvoiceHash());
+                    invoiceRepository.updateInvoiceStatus(invoiceMaster.getSeqId(), Constants.INPROCESS_STATUS);
+
+                    invoiceMaster.setCertificateStatus(sellerDTO.getCertificateStatus());
+                    if(Constants.COMPLIANCE_CERTIFICATE_STATUS.equalsIgnoreCase(invoiceMaster.getCertificateStatus())) {
+                        invoiceMaster.setCertificateKey(sellerDTO.getKeyCompliance());
+                        invoiceMaster.setCertificate(sellerDTO.getCertificateCompliance());
+                    }else {
+                        invoiceMaster.setCertificateKey(sellerDTO.getKeyProduction());
+                        invoiceMaster.setCertificate(sellerDTO.getCertificateProduction());
+                    }
+
+                    invoiceRepository.updateInvoiceLOBS(invoiceMaster);
+
+                    invoiceRepository.updateInvoiceStatus(invoiceMaster.getSeqId(), Constants.PENDING_STATUS);
+                    invoiceRepository.updateInvoiceLineStatus(invoiceMaster.getSeqId(), Constants.PENDING_STATUS);
+
+                    if("Y".equalsIgnoreCase(sellerDTO.getZatcaFlag()))
+                    {
+                        ZakatApplicationRequestDTO zakatApplicationRequestDTO = new ZakatApplicationRequestDTO();
+                        zakatApplicationRequestDTO.setInvoice(Base64.getEncoder().encodeToString(xml.getBytes(StandardCharsets.UTF_8)));
+                        zakatApplicationRequestDTO.setInvoiceHash(result.getInvoiceHash());
+                        zakatApplicationRequestDTO.setUuid(invoiceMaster.getUuid());
+
+                        invoiceMaster.setCertificateStatus(sellerDTO.getCertificateStatus());
+                        if(Constants.COMPLIANCE_CERTIFICATE_STATUS.equalsIgnoreCase(invoiceMaster.getCertificateStatus())) {
+                            invoiceMaster.setCertificateKey(sellerDTO.getKeyCompliance());
+                            invoiceMaster.setCertificate(sellerDTO.getCertificateCompliance());
+
+                            ZakatComplianceResponseDTO zatcaComplianceResponseDto = null;
+
+                            try {
+                                zatcaComplianceResponseDto = zakatService.compliance(zakatApplicationRequestDTO, sellerDTO.getCertificateCompliance(), sellerDTO.getKeyCompliance());
+                            }
+                            catch(WebClientResponseException ex){
+
+                                log.error("Exception In Invoice Service Zakat Compliance Service Response SEQ ID: {} = {} = {}", seqId, ex.getStatusCode(), ex.getResponseBodyAsString());
+
+                                StringBuffer errorMessageBuffer = new StringBuffer();
+                                errorMessageBuffer.append("4").append("$").append(zakatApplicationRequestDTO.getUuid()).append("$").append(ex.getStatusCode()).append("$").append(ex.getMessage()).append("$");
+                                errorMessageBuffer.append(ex.getResponseBodyAsString());
+
+                                invoiceRepository.updateInvoiceStatus(invoiceMaster.getSeqId(), Constants.FAILED_STATUS);
+                                invoiceRepository.updateInvoiceLineStatus(invoiceMaster.getSeqId(), Constants.FAILED_STATUS);
+                                invoiceMaster.setZatcaResponse(ex.getResponseBodyAsString());
+                                invoiceRepository.updatesInvoiceLOBS(invoiceMaster);
+
+                                throw new ZakatException(errorMessageBuffer.toString());
+
+                            }
+                            if (null != zatcaComplianceResponseDto) {
+                                invoiceMaster.setZatcaStatus(invoiceMaster.getSubType().startsWith("01")?zatcaComplianceResponseDto.getClearanceStatus():zatcaComplianceResponseDto.getReportingStatus());
+                                invoiceMaster.setValidationStatus(zatcaComplianceResponseDto.getValidationResults().getStatus());
+
+                                ObjectMapper objectMapper = new ObjectMapper();
+                                String zakatValidationResult = objectMapper.writeValueAsString(zatcaComplianceResponseDto.getValidationResults());
+                                invoiceMaster.setZatcaResponse(zakatValidationResult);
+
+                                response.setValidationResults(zatcaComplianceResponseDto.getValidationResults());
+                                response.setXmlContent(Base64.getEncoder().encodeToString(xml.getBytes(StandardCharsets.UTF_8)));
+                                response.setZatcaStatus(zatcaComplianceResponseDto.getClearanceStatus());
+                            }
+                        }else {
+                            invoiceMaster.setCertificateKey(sellerDTO.getKeyProduction());
+                            invoiceMaster.setCertificate(sellerDTO.getCertificateProduction());
+
+                            if (invoiceMaster.getSubType().startsWith("01"))
+                            {
+
+                                ZakatClearanceResponseDTO zakatClearanceResponseDTO = null;
+
+                                try {
+
+                                    zakatClearanceResponseDTO = zakatService.clearance(zakatApplicationRequestDTO, sellerDTO.getCertificateProduction(), sellerDTO.getKeyProduction());
+
+                                } catch(WebClientResponseException ex){
+                                    log.error("Exception In Invoice Service Zakat Clearance Service Response SEQ ID: {} = {} = {}", invoiceMaster.getSeqId(), ex.getStatusCode(), ex.getResponseBodyAsString());
+                                    StringBuffer errorMessageBuffer = new StringBuffer();
+                                    errorMessageBuffer.append("2").append("$").append(zakatApplicationRequestDTO.getUuid()).append("$").append(ex.getStatusCode()).append("$").append(ex.getMessage()).append("$");
+                                    errorMessageBuffer.append(ex.getResponseBodyAsString());
+
+                                    invoiceRepository.updateInvoiceStatus(invoiceMaster.getSeqId(), Constants.FAILED_STATUS);
+                                    invoiceRepository.updateInvoiceLineStatus(invoiceMaster.getSeqId(), Constants.FAILED_STATUS);
+                                    invoiceMaster.setZatcaResponse(ex.getResponseBodyAsString());
+                                    invoiceRepository.updatesInvoiceLOBS(invoiceMaster);
+
+                                    throw new ZakatException(errorMessageBuffer.toString());
+                                }
+
+                                response.setValidationResults(zakatClearanceResponseDTO.getValidationResults());
+                                response.setXmlContent(zakatClearanceResponseDTO.getClearedInvoice());
+                                response.setZatcaStatus(zakatClearanceResponseDTO.getClearanceStatus());
+
+                                if (null != zakatClearanceResponseDTO.getClearedInvoice()) {
+
+                                    doc = xmlReader.read(new ByteArrayInputStream(Base64.getDecoder().decode(zakatClearanceResponseDTO.getClearedInvoice())));
+
+                                    XPath xpath = DocumentHelper.createXPath("/Invoice/cac:AdditionalDocumentReference[cbc:ID='QR']/cac:Attachment/cbc:EmbeddedDocumentBinaryObject");
+                                    xpath.setNamespaceURIs(CommonUtils.getNameSpacesMap());
+
+                                    result.setQrCode(xpath.selectSingleNode(doc).getText());
+
+                                    invoiceMaster.setSignedXML(doc.getRootElement().asXML());
+                                    invoiceMaster.setQrCode(result.getQrCode());
+
+                                }
+                                invoiceMaster.setZatcaStatus(zakatClearanceResponseDTO.getClearanceStatus());
+                                invoiceMaster.setValidationStatus(zakatClearanceResponseDTO.getValidationResults().getStatus());
+
+                                ObjectMapper objectMapper = new ObjectMapper();
+                                String zakatValidationResult = objectMapper.writeValueAsString(zakatClearanceResponseDTO.getValidationResults());
+                                invoiceMaster.setZatcaResponse(zakatValidationResult);
+
+                            }
+                            else {
+                                ZakatReportingResponseDTO zakatReportingResponseDTO = null;
+
+                                try {
+                                    zakatReportingResponseDTO = zakatService.reporting(zakatApplicationRequestDTO, sellerDTO.getCertificateProduction(), sellerDTO.getKeyProduction());
+                                } catch(WebClientResponseException ex){
+                                    log.error("Exception In Invoice Service Zakat Reporting Service Response SEQ ID: {} = {} = {}", invoiceMaster.getSeqId(), ex.getStatusCode(), ex.getResponseBodyAsString());
+
+                                    StringBuffer errorMessageBuffer = new StringBuffer();
+                                    errorMessageBuffer.append("1").append("$").append(zakatApplicationRequestDTO.getUuid()).append("$").append(ex.getStatusCode()).append("$").append(ex.getMessage()).append("$");
+                                    errorMessageBuffer.append(ex.getResponseBodyAsString());
+
+                                    invoiceRepository.updateInvoiceStatus(invoiceMaster.getSeqId(), Constants.FAILED_STATUS);
+                                    invoiceRepository.updateInvoiceLineStatus(invoiceMaster.getSeqId(), Constants.FAILED_STATUS);
+                                    invoiceMaster.setZatcaResponse(ex.getResponseBodyAsString());
+                                    invoiceRepository.updatesInvoiceLOBS(invoiceMaster);
+
+                                    throw new ZakatException(errorMessageBuffer.toString());
+                                }
+
+                                invoiceMaster.setZatcaStatus(zakatReportingResponseDTO.getReportingStatus());
+                                invoiceMaster.setValidationStatus(zakatReportingResponseDTO.getValidationResults().getStatus());
+
+                                ObjectMapper objectMapper = new ObjectMapper();
+                                String zakatValidationResult = objectMapper.writeValueAsString(zakatReportingResponseDTO.getValidationResults());
+                                invoiceMaster.setZatcaResponse(zakatValidationResult);
+                            }
+                        }
+
+                        invoiceRepository.updatesInvoiceLOBS(invoiceMaster);
+                        invoiceRepository.updateInvoiceResponse(invoiceMaster);
+
+                        if (Constants.VLD_STS_PASS.equalsIgnoreCase(invoiceMaster.getValidationStatus()) && (
+                                invoiceMaster.getZatcaStatus().equalsIgnoreCase(Constants.CLRNC_STS) || invoiceMaster.getZatcaStatus().equalsIgnoreCase(Constants.RPRT_STS))) {
+                            invoiceRepository.updateInvoiceStatus(invoiceMaster.getSeqId(), Constants.PROCESSED_STATUS);
+                            invoiceRepository.updateInvoiceLineStatus(invoiceMaster.getSeqId(), Constants.PROCESSED_STATUS);
+
+                        }
+                    }
+
+                    response.setXmlContent(Base64.getEncoder().encodeToString(xml.getBytes(StandardCharsets.UTF_8)));
+
+                    File qrCodeFile = qrCodeUtil.generateQRCode(result.getQrCode(),invoiceMaster.getId());
+
+                    File imageFile = null;
+                    String imagePath = "";
+                    if(!CommonUtils.isNullOrEmptyString(sellerDTO.getImage())) {
+                        imageFile= imageUtil.generateFile(sellerDTO.getImage());
+                        imagePath = imageFile.getPath();
+                    }
+
+                    File pdfFile = pdfGenerator.generatePDF(invoiceMaster, invoiceLines, qrCodeFile.getPath(), invoiceMaster.getSignedXML(),imagePath);
+
+                    if(null != pdfFile) {
+                        byte[] fileContent = Files.readAllBytes(pdfFile.toPath());
+                        String pdf = Base64.getEncoder().encodeToString(fileContent);
+                        if(isPDFReturn) {
+                            response.setPdfContent(pdf);
+                        }
+                        invoiceRepository.savePDF(pdf,invoiceMaster.getSeqId());
+
+                        if(isB2BEmailSent && invoiceMaster.getSubType().startsWith("01")  && !CommonUtils.isNullOrEmptyString(invoiceMaster.getBuyerEmail())) {
+                            Email email = new Email();
+                            email.setId(invoiceMaster.getId());
+                            email.setBuyerEmail(invoiceMaster.getBuyerEmail());
+                            createEmailEntry(email);
+                        }
+
+                        if(isB2CEmailSent && invoiceMaster.getSubType().startsWith("02")  && !CommonUtils.isNullOrEmptyString(invoiceMaster.getBuyerEmail())) {
+                            Email email = new Email();
+                            email.setId(invoiceMaster.getId());
+                            email.setBuyerEmail(invoiceMaster.getBuyerEmail());
+                            createEmailEntry(email);
+                        }
+
+                        if(isB2BArchiveCLoud && invoiceMaster.getSubType().startsWith("01")) {
+                            String egsPrefix = invoiceMaster.getId().substring(0,invoiceMaster.getId().length()-12);
+                            awss3Service.storeInvoiceToBucket(egsPrefix, pdfFile, invoiceMaster.getId());
+                        }
+
+                        if(isB2CArchiveCLoud && invoiceMaster.getSubType().startsWith("02")) {
+                            String egsPrefix = invoiceMaster.getId().substring(0,invoiceMaster.getId().length()-12);
+                            awss3Service.storeInvoiceToBucket(egsPrefix, pdfFile, invoiceMaster.getId());
+                        }
+                    }
+
+                    response.setQrcode(result.getQrCode());
+                    response.setQrcodeFile(Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(qrCodeFile)));
+
+                    qrCodeUtil.fileCleanUp(qrCodeFile);
+                    if(null != imageFile){
+                        imageUtil.fileCleanUp(imageFile);
+                    }
+
+                } else {
+                    ZakatValidationResultModel validationResults = new ZakatValidationResultModel();
+                    validationResults.setStatus("FAIL");
+
+                    List<ZakatInfoModel> errorMessages = new ArrayList<>();
+
+                    if (validationResult.getError() != null && !validationResult.getError().isEmpty()) {
+                        for (String err : validationResult.getError().keySet()) {
+                            errorMessages.add(new ZakatInfoModel(err, "VALIDATION_ERROR", "INIT_VLD", validationResult.getError().get(err), "ERROR"));
+                        }
+                    }
+
+                    validationResults.setErrorMessages(errorMessages);
+                    response.setValidationResults(validationResults);
+
+                }
+            } catch (DocumentException | IOException ex) {
+                log.error("Exception in getInvoiceResponse DocumentException IOException SEQ ID: {} = {}",response.getSeqId(), ex.getStackTrace());
+                invoiceRepository.updateInvoiceStatus(Long.parseLong(response.getSeqId()), Constants.ERROR_STATUS);
+                invoiceRepository.updateInvoiceLineStatus(Long.parseLong(response.getSeqId()), Constants.ERROR_STATUS);
+                ex.printStackTrace();
+
+            }
+            return response;
+        }
+    }
+
+    private void updateInvoiceLine(List<InvoiceLineDTO> invoiceLineDTOList, long seqID) {
+        try {
+            List<InvoiceLine> invoiceLineList = this.mapInvoiceLine.invoiceLineDTOsToInvoiceLines(invoiceLineDTOList);
+            for (InvoiceLine invoiceLine : invoiceLineList) {
+                invoiceLine.setSeqRef(seqID);
+                invoiceLine.setStatus(Constants.CREATED_STATUS);
+                this.invoiceRepository.updateInvoiceLine(invoiceLine);
+            }
+        } catch (Exception ex) {
+            log.error("Exception in updateInvoiceLine SEQ ID: {} = {}",seqID, ex.getStackTrace());
+            invoiceRepository.updateInvoiceStatus(seqID, Constants.ERROR_STATUS);
+            ex.printStackTrace();
+        }
+    }
+
+    public void sendEmail(Long seqID) {
+        log.info("Invoice Service sendEmail: SeqID: {}",seqID);
+
+        if(null == Constants.SELLER_EXPIRE_DATE || Constants.SELLER_EXPIRE_DATE.compareTo(LocalDate.now())<0){
+            throw new SellerNotFoundException("System Expired Contact System Administrator");
+        }
+
+        InvoiceMaster invoiceMaster = invoiceRepository.getInvoice(seqID);
+
+        if(!CommonUtils.isNullOrEmptyString(invoiceMaster.getBuyerEmail())) {
+            Email email = new Email();
+            email.setId(invoiceMaster.getId());
+            email.setBuyerEmail(invoiceMaster.getBuyerEmail());
+            createEmailEntry(email);
+        }else{
+            throw new BuyerEmailNotFoundException("Buyer Email Not Found");
+        }
+    }
+
+    public void archiveOnCloud(Long seqID) {
+        log.info("Invoice Service archiveOnCloud: SeqID: {}",seqID);
+
+        if(null == Constants.SELLER_EXPIRE_DATE || Constants.SELLER_EXPIRE_DATE.compareTo(LocalDate.now())<0){
+            throw new SellerNotFoundException("System Expired Contact System Administrator");
+        }
+
+        String pdf = invoiceRepository.getPDF(seqID);
+        String invoiceID = invoiceRepository.getInvoiceId(seqID);
+
+        File pdfFile = pdfFileUtil.generateFile(pdf);
+
+        if(null != pdfFile) {
+            String egsPrefix = invoiceID.substring(0, invoiceID.length() - 12);
+            awss3Service.storeInvoiceToBucket(egsPrefix, pdfFile, invoiceID);
+        }
+
     }
 }

@@ -9,14 +9,11 @@ import com.invoice.util.CommonUtils;
 import com.invoice.util.HttpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -101,22 +98,40 @@ public class InvoiceController
         return ResponseEntity.ok().body(invoiceResponse);
     }
 
-/*    @GetMapping(produces = "application/json", value = "/import")
-    public ResponseEntity<ImportResposeDTO> importCSV(@RequestParam @NotBlank(message = "fileName can not be empty")  String fileName)
+    @GetMapping(produces = "application/json", value = "/invoice")
+    public ResponseEntity<InvoiceDTOWrapper> getInvoice(@RequestParam String invoiceId, @RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
     {
-        log.info("request: importCSV() fileName: {}",fileName);
-        Map<String,String> mapCount = invoiceService.importCSV(fileName);
+        String ip = HttpUtils.getRequestIP(request);
+        log.info("request: getInvoice() ip: {} {}", invoiceId,ip);
+        CredentialDTO credentialDTO = validateCredential(username,password,vatNumber,egsSerialNumber,ip);
 
-        ImportResposeDTO importResposeDTO = new ImportResposeDTO();
-        importResposeDTO.setRecordsCount(mapCount.get("total"));
-        importResposeDTO.setImportCount(mapCount.get("import"));
-        importResposeDTO.setFailCount(mapCount.get("fail"));
+        if(!sellerService.validateCredential(credentialDTO)){
+            throw new SellerNotFoundException("Invalid Credentials");
+        }
 
-        log.info("response: importCSV(): {}", ResponseEntity.ok().body(importResposeDTO));
+        InvoiceDTOWrapper invoiceDTOWrapper = invoiceService.getInvoiceByInvoiceID(invoiceId);
 
-        return ResponseEntity.ok().body(importResposeDTO);
+        log.info("response: getInvoice(): {}", ResponseEntity.ok().body(invoiceDTOWrapper.getInvoiceDTO().getId()));
+        return ResponseEntity.ok().body(invoiceDTOWrapper);
+    }
 
-    }*/
+    @PostMapping(produces = "application/json", value = "/retry")
+    public ResponseEntity<InvoiceResponse> retryInvoice(@Valid @RequestBody InvoiceDTOWrapper invoiceDTOWrapper,@RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
+    {
+        String ip = HttpUtils.getRequestIP(request);
+        log.info("request: retryInvoice() ip: {} {}", invoiceDTOWrapper,ip);
+        CredentialDTO credentialDTO = validateCredential(username,password,vatNumber,egsSerialNumber,ip);
+
+        if(!sellerService.validateCredential(credentialDTO)){
+            throw new SellerNotFoundException("Invalid Credentials");
+        }
+
+        InvoiceDTO invoiceDTO = invoiceDTOWrapper.getInvoiceDTO();
+        InvoiceResponse invoiceResponse = invoiceService.retryInvoice(credentialDTO,invoiceDTO);
+
+        log.info("response: retryInvoice(): {}", ResponseEntity.ok().body(invoiceResponse.getSeqId()));
+        return ResponseEntity.ok().body(invoiceResponse);
+    }
 
     private CredentialDTO validateCredential(String username, String password, String vatNumber, String egsSerialNumber, String ipAddress){
 

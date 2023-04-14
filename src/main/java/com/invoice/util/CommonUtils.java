@@ -298,7 +298,10 @@ public class CommonUtils {
                 .matches();
     }
     public static BigDecimal doubleToBigDecimal(double value){
-        BigDecimal bigDecimal = new BigDecimal(value).setScale( 2 , RoundingMode.CEILING);
-        return bigDecimal;
+        if(!isUpToTwoDecimal(value)){
+            return new BigDecimal(value).setScale(2, RoundingMode.CEILING);
+        }else{
+            return new BigDecimal(value);
+        }
     }
 }

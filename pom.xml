@@ -155,6 +155,18 @@
 			<version>3.0.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-maven-plugin</artifactId>
+			<version>4.8.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>4.8.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -192,6 +204,24 @@
 						</exclude>
 					</excludes>
 						<includeSystemScope>true</includeSystemScope>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<configuration>
+					<driver>org.h2.Driver</driver>
+					<url>jdbc:h2:file:./mem/issuer/</url>
+					<username>root</username>
+					<password>root</password>
+					<!--Alternatively provide liquibase.properties file for db details and mention the path here-->
+					<changeLogFile>src/main/resources/db/changelog/changelog-master.xml</changeLogFile>
+					<outputChangeLogFile>src/main/resources/liquibase-outputChangeLog.xml</outputChangeLogFile>
+
+					<url>jdbc:h2:file:./target/h2db/db/carapp</url>
+					<username>carapp</username>
+					<password />
+					<outputChangeLogFile>src/main/resources/liquibase-outputChangeLog.xml</outputChangeLogFile>
 				</configuration>
 			</plugin>
 		</plugins>

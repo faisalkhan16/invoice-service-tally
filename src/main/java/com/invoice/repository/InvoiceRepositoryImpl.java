@@ -1,10 +1,10 @@
 package com.invoice.repository;
 
+import com.invoice.dto.SellerDTO;
 import com.invoice.mapper.*;
 import com.invoice.model.InvoiceLine;
 import com.invoice.model.InvoiceLob;
 import com.invoice.model.InvoiceMaster;
-import com.invoice.model.InvoiceReport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -474,87 +474,6 @@ public class InvoiceRepositoryImpl {
         }
     }
 
-    public long saveInvoiceReport(InvoiceReport invoiceReport)
-    {
-        try {
-            String sql = "INSERT INTO invoice_report" +
-                    "(ID,UUID,SUB_TYPE,BUYER_EMAIL,INVOICE_HASH,SIGNED_XML,CERT,CERT_KEY,CR_DT,STS,CERT_STS,QR_CODE,PDF,VAT_NUMBER,EGS_SERIAL_NO,INVOICE_DT ) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?);";
-
-            GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-
-            jdbcTemplateSecondary.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, invoiceReport.getId());
-                ps.setString(2, invoiceReport.getUuid());
-                ps.setString(3, invoiceReport.getSubType());
-                ps.setString(4, invoiceReport.getBuyerEmail());
-                ps.setString(5, invoiceReport.getInvoiceHash());
-                ps.setString(6, invoiceReport.getInvoice());
-                ps.setString(7, invoiceReport.getCertificate());
-                ps.setString(8, invoiceReport.getSecretKey());
-                ps.setDate(9, Date.valueOf(LocalDate.now()));
-                ps.setString(10, "C");
-                ps.setString(11,invoiceReport.getCertStatus());
-                ps.setString(12,invoiceReport.getQrCode());
-                ps.setString(13,invoiceReport.getPdf());
-                ps.setString(14,invoiceReport.getVatNumber());
-                ps.setString(15,invoiceReport.getSerialNo());
-                ps.setTimestamp(16, Timestamp.valueOf(invoiceReport.getInvoiceTimeStamp()));
-                return ps;
-            },generatedKeyHolder);
-
-            long seqId = generatedKeyHolder.getKey().longValue();
-            return seqId;
-
-        } catch (Exception ex) {
-            log.error("Exeption in InvoiceRepoImpl saveInvoiceReport: ID : {} {}",invoiceReport.getId(), ex.getMessage());
-            return 0;
-        }
-    }
-
-    public void updateInvoiceReport(InvoiceReport invoiceReport)
-    {
-        try {
-            String sql = "UPDATE invoice_report SET STS = ?, UPD_DT = now(), ZATCA_RESPONSE = ?, SIGNED_XML = ?, QR_CODE = ?, PDF = ? WHERE SEQ_ID = ?;";
-
-            jdbcTemplateSecondary.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement(sql);
-                ps.setString(1, invoiceReport.getStatus());
-                ps.setString(2, invoiceReport.getZatcaResponse());
-                ps.setString(3, invoiceReport.getInvoice());
-                ps.setString(4, invoiceReport.getQrCode());
-                ps.setString(5, invoiceReport.getPdf());
-                ps.setLong(6, invoiceReport.getSeqId());
-                return ps;
-            });
-
-        } catch (Exception ex) {
-            log.error("Exeption in InvoiceRepoImpl updateInvoiceReport: SEQ ID : {} {}",invoiceReport.getSeqId(), ex.getMessage());
-
-        }
-    }
-
-
-
-    public boolean isReportRecord(String invoiceID){
-        try {
-            log.info("InvoiceRepositoryImpl isReportRecord invoiceID: {}",invoiceID);
-
-            String sql = "SELECT COUNT(*) FROM invoice_report WHERE ID = ? AND STS = 'V';";
-            int count = jdbcTemplateSecondary.queryForObject(sql,Integer.class,new Object[]{invoiceID});
-            if (count>0)
-            {
-                return true;
-            }else {
-                return false;
-            }
-        }catch (Exception ex){
-            log.error("Exception in InvoiceRepositoryImpl isReportRecord invoiceID: {} Exception: {}",invoiceID,ex.getMessage());
-            return false;
-        }
-    }
-
     public String getPDFromLOB(String invoiceID){
         try {
             log.info("InvoiceRepositoryImpl getPDFromLOB invoiceID: {}",invoiceID);
@@ -568,16 +487,171 @@ public class InvoiceRepositoryImpl {
         }
     }
 
-    public String getPDFromReport(String invoiceID){
-        try {
-            log.info("InvoiceRepositoryImpl getPDFromReport invoiceID: {}",invoiceID);
+    public InvoiceMaster updateInvoiceMaster(InvoiceMaster invoiceMaster){
+        try{
 
-            String sql = "SELECT PDF FROM invoice_report WHERE ID = ? AND STS = 'V';";
-            return  jdbcTemplateSecondary.queryForObject(sql,String.class,new Object[]{invoiceID});
+            String sql = "UPDATE invoice_master SET TYPE = ?, SUB_TYPE = ?, SUPPLY_DATE = ?, SUPPLY_END_DATE = ?,STATUS = ?, " +
+                    "SELLER_ID_NUMBER = ?, SELLER_ID_TYPE = ?,SELLER_E_NAME = ?,SELLER_A_NAME = ?, " +
+                    "SELLER_BUILDING_NO = ?,SELLER_STREET = ?,SELLER_LINE = ?,SELLER_DISTRICT = ?,SELLER_ADDITIONAL_NO = ?,SELLER_POSTAL_CD = ?, "+
+                    "SELLER_CITY = ?,SELLER_COUNTRY = ?, " +
+                    "BUYER_ID_NUMBER = ?,BUYER_ID_TYPE = ?,BUYER_VAT_NUMBER = ? ,BUYER_A_NAME = ?, " +
+                    "BUYER_BUILDING_NO = ?,BUYER_STREET = ?,BUYER_LINE = ?,BUYER_DISTRICT = ?,BUYER_ADDITIONAL_NO = ?,BUYER_POSTAL_CD = ?, " +
+                    "BUYER_CITY = ?,BUYER_COUNTRY = ?,TOTAL_AMOUNT = ?,DISCOUNT = ?,TAXABLE_AMOUNT = ?,TOTAL_VAT = ?,TAX_INCLUSIVE_AMOUNT = ?, " +
+                    "ORIGINAL_INV_ID = ?,SELLER_REGION = ?,PAYMENT_MEANS_CODE = ?,BUYER_E_NAME = ?,BUYER_REGION = ?,INVOICE_NOTE_REASON = ?, " +
+                    "INVOICE_CRNCY = ?, FX_RATE = ?, TAX_AMT_SAR = ?, TTL_AMT_SAR = ?, PO_ID = ?, CNTRCT_ID = ?, BUYER_EMAIL = ?, BUYER_MOBILE = ?, UPD_DT = ? WHERE ID = ?;";
+
+            jdbcTemplateSecondary.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ps.setString(1, invoiceMaster.getType());
+                ps.setString(2, invoiceMaster.getSubType());
+                ps.setDate(3, Date.valueOf(invoiceMaster.getSupplyDate()));
+                ps.setDate(4, (null != invoiceMaster.getSupplyEndDate()?Date.valueOf(invoiceMaster.getSupplyEndDate()):null));
+                ps.setString(5, invoiceMaster.getStatus());
+                ps.setString(6, invoiceMaster.getSellerId());
+                ps.setString(7, invoiceMaster.getSellerIdTyp());
+                ps.setString(8, invoiceMaster.getSellerEName());
+                ps.setString(9, invoiceMaster.getSellerAName());
+                ps.setString(10, invoiceMaster.getSellerBuildingNo());
+                ps.setString(11, invoiceMaster.getSellerStreet());
+                ps.setString(12, invoiceMaster.getSellerLine());
+                ps.setString(13, invoiceMaster.getSellerDistrict());
+                ps.setString(14, invoiceMaster.getSellerAdditionalNo());
+                ps.setString(15, invoiceMaster.getSellerPostalCode());
+                ps.setString(16, invoiceMaster.getSellerCity());
+                ps.setString(17, invoiceMaster.getSellerCountry());
+                ps.setString(18, invoiceMaster.getBuyerIdNumber());
+                ps.setString(19, invoiceMaster.getBuyerIdTyp());
+                ps.setString(20, invoiceMaster.getBuyerVatNumber());
+                ps.setString(21, invoiceMaster.getBuyerAName());
+                ps.setString(22, invoiceMaster.getBuyerBuildingNo());
+                ps.setString(23, invoiceMaster.getBuyerStreet());
+                ps.setString(24, invoiceMaster.getBuyerLine());
+                ps.setString(25, invoiceMaster.getBuyerDistrict());
+                ps.setString(26, invoiceMaster.getBuyerAdditionalNo());
+                ps.setString(27, invoiceMaster.getBuyerPostalCode());
+                ps.setString(28, invoiceMaster.getBuyerCity());
+                ps.setString(29, invoiceMaster.getBuyerCountry());
+                ps.setDouble(30, invoiceMaster.getTotalAmount());
+                ps.setDouble(31, invoiceMaster.getDiscount());
+                ps.setDouble(32, invoiceMaster.getTaxableAmount());
+                ps.setDouble(33, invoiceMaster.getTotalVAT());
+                ps.setDouble(34, invoiceMaster.getTaxInclusiveAmount());
+                ps.setString(35, invoiceMaster.getOriginalInvoiceId());
+                ps.setString(36, invoiceMaster.getSellerRegion());
+                ps.setString(37, invoiceMaster.getPaymentMeansCode());
+                ps.setString(38, invoiceMaster.getBuyerEName());
+                ps.setString(39, invoiceMaster.getBuyerRegion());
+                ps.setString(40,invoiceMaster.getInvoiceNoteReason());
+                ps.setString(41, invoiceMaster.getCurrency());
+                ps.setDouble(42, invoiceMaster.getFxRate());
+                ps.setDouble(43, invoiceMaster.getTaxSAR());
+                ps.setDouble(44, invoiceMaster.getTotalSAR());
+                ps.setString(45, invoiceMaster.getPurchaseOrderID());
+                ps.setString(46, invoiceMaster.getContractID());
+                ps.setString(47,invoiceMaster.getBuyerEmail());
+                ps.setString(48,invoiceMaster.getBuyerMobile());
+                ps.setDate(49, Date.valueOf(LocalDate.now()));
+                ps.setString(50,invoiceMaster.getId());
+                return ps;
+            });
+
+            return invoiceMaster;
         }catch (Exception ex){
-            log.error("Exception in InvoiceRepositoryImpl getPDFromReport invoiceID: {}",invoiceID,ex.getMessage());
+            log.error("Exeption in InvoiceRepoImpl updateInvoiceMaster : {}",ex.getMessage());
             return null;
         }
     }
 
+    public void updateInvoiceLine(InvoiceLine invoiceLine) {
+        {
+            try {
+
+                String sql = "UPDATE invoice_line" +
+                        " SET NAME = ?, QUANTITY = ?, NET_PRICE = ?, TOTAL_AMOUNT = ?, DISCOUNT = ?, TOTAL_TAXABLE_AMOUNT = ?, TAX_RATE = ?, TAX_AMOUNT = ?, SUBTOTAL = ?, STATUS = ?, VAT_CTGRY = ?, EXMP_RSN_CD = ?, EXMP_RSN_TXT = ? WHERE  LINE_ID = ? AND  SEQ_REF = ?;";
+
+                jdbcTemplateSecondary.update(connection -> {
+                    PreparedStatement ps = connection.prepareStatement(sql);
+                    ps.setString(1, invoiceLine.getName());
+                    ps.setDouble(2, invoiceLine.getQuantity());
+                    ps.setDouble(3, invoiceLine.getNetPrice());
+                    ps.setDouble(4, invoiceLine.getTotalAmount());
+                    ps.setDouble(5, invoiceLine.getDiscount());
+                    ps.setDouble(6, invoiceLine.getTotalTaxableAmount());
+                    ps.setDouble(7, invoiceLine.getTaxRate());
+                    ps.setDouble(8, invoiceLine.getTaxAmount());
+                    ps.setDouble(9, invoiceLine.getSubTotal());
+                    ps.setString(10, invoiceLine.getStatus());
+                    ps.setString(11, invoiceLine.getItemTaxCategoryCode());
+                    ps.setString(12, invoiceLine.getExemptionReasonCode());
+                    ps.setString(13, invoiceLine.getExemptionReasonText());
+                    ps.setInt(14, invoiceLine.getLineId());
+                    ps.setLong(15, invoiceLine.getSeqRef());
+
+                    return ps;
+                });
+
+            }catch (Exception ex){
+                log.error("Exeption in InvoiceRepoImpl updateInvoiceLine SEQ ID:{} {}",invoiceLine.getSeqRef(),ex.getMessage());
+
+            }
+        }
+    }
+
+    public void updateInvoiceLOBS(InvoiceMaster invoiceMaster){
+        try {
+
+            String sql = "UPDATE invlobs" +
+                    " set QR_CODE = ?, INVOICE_HASH = ?, INVOICE_XML = ?, SIGNED_XML = ?, ZATCA_RESPONSE = ? WHERE SEQ_REF = ?;";
+
+            jdbcTemplateSecondary.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ps.setString(1, invoiceMaster.getQrCode());
+                ps.setString(2, invoiceMaster.getInvocieHash());
+                ps.setString(3, invoiceMaster.getXml());
+                ps.setString(4, invoiceMaster.getSignedXML());
+                ps.setString(5, invoiceMaster.getZatcaResponse());
+                ps.setLong(6, invoiceMaster.getSeqId());
+
+                return ps;
+            });
+
+        }catch (Exception ex){
+            log.error("Exeption in InvoiceRepoImpl updateInvoiceLOBS SEQ ID:{} {}",invoiceMaster.getSeqId(),ex.getMessage());
+        }
+    }
+
+    public String getPreviousInvocieHashForFailureInvoice(Long seqRefId, SellerDTO sellerDTO)
+    {
+        try
+        {
+
+            //for first invoice return base64 hash of 0
+            if(seqRefId == 1)
+            {
+                return "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
+            }
+
+            String sql = "SELECT INVOICE_HASH from invlobs  WHERE SEQ_REF = (SELECT SEQ_ID from invoice_master where SELLER_VAT_NUMBER = ?" +
+                    " AND EGS_SERIAL_NO = ? AND SEQ_ID < ? ORDER BY SEQ_ID DESC LIMIT 1);";
+
+            return jdbcTemplateSecondary.queryForObject(sql, String.class,new Object[]{sellerDTO.getSellerVatNumber(), sellerDTO.getSerialNo(), seqRefId});
+
+        }catch(Exception ex){
+            log.error("Exeption in InvoiceRepoImpl getPreviousInvocieHashForFailureInvoice SeqRef = : {} vatNumber: {} SerialNO: {} Exception: {}",seqRefId,sellerDTO.getSellerVatNumber(), sellerDTO.getSerialNo(),ex.getMessage());
+            return null;
+        }
+    }
+
+    public String getPDF(Long seqID){
+
+        try{
+            String sql = "SELECT PDF FROM invlobs WHERE SEQ_REF = ?";
+
+            return jdbcTemplateSecondary.queryForObject(sql, String.class,new Object[]{seqID});
+
+        }catch(Exception ex){
+            log.error("Exeption in InvoiceRepoImpl getPDF seqID{}: {}",seqID,ex.getMessage());
+            return null;
+        }
+    }
 }
