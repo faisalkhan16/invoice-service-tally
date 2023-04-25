@@ -642,16 +642,4 @@ public class InvoiceRepositoryImpl {
         }
     }
 
-    public String getPDF(Long seqID){
-
-        try{
-            String sql = "SELECT PDF FROM invlobs WHERE SEQ_REF = ?";
-
-            return jdbcTemplateSecondary.queryForObject(sql, String.class,new Object[]{seqID});
-
-        }catch(Exception ex){
-            log.error("Exeption in InvoiceRepoImpl getPDF seqID{}: {}",seqID,ex.getMessage());
-            return null;
-        }
-    }
 }

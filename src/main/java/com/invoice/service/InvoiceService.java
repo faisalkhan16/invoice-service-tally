@@ -1315,14 +1315,14 @@ public class InvoiceService {
         }
     }
 
-    public void sendEmail(Long seqID) {
-        log.info("Invoice Service sendEmail: SeqID: {}",seqID);
+    public void sendEmail(String invoiceNumber) {
+        log.info("Invoice Service sendEmail: invoiceNumber: {}",invoiceNumber);
 
         if(null == Constants.SELLER_EXPIRE_DATE || Constants.SELLER_EXPIRE_DATE.compareTo(LocalDate.now())<0){
             throw new SellerNotFoundException("System Expired Contact System Administrator");
         }
 
-        InvoiceMaster invoiceMaster = invoiceRepository.getInvoice(seqID);
+        InvoiceMaster invoiceMaster = invoiceRepository.getInvoiceById(invoiceNumber);
 
         if(!CommonUtils.isNullOrEmptyString(invoiceMaster.getBuyerEmail())) {
             Email email = new Email();
@@ -1334,21 +1334,20 @@ public class InvoiceService {
         }
     }
 
-    public void archiveOnCloud(Long seqID) {
-        log.info("Invoice Service archiveOnCloud: SeqID: {}",seqID);
+    public void archiveOnCloud(String invoiceNumber) {
+        log.info("Invoice Service archiveOnCloud: invoiceNumber: {}",invoiceNumber);
 
         if(null == Constants.SELLER_EXPIRE_DATE || Constants.SELLER_EXPIRE_DATE.compareTo(LocalDate.now())<0){
             throw new SellerNotFoundException("System Expired Contact System Administrator");
         }
 
-        String pdf = invoiceRepository.getPDF(seqID);
-        String invoiceID = invoiceRepository.getInvoiceId(seqID);
+        String pdf = invoiceRepository.getPDFromLOB(invoiceNumber);
 
         File pdfFile = pdfFileUtil.generateFile(pdf);
 
         if(null != pdfFile) {
-            String egsPrefix = invoiceID.substring(0, invoiceID.length() - 12);
-            awss3Service.storeInvoiceToBucket(egsPrefix, pdfFile, invoiceID);
+            String egsPrefix = invoiceNumber.substring(0, invoiceNumber.length() - 12);
+            awss3Service.storeInvoiceToBucket(egsPrefix, pdfFile, invoiceNumber);
         }
 
     }

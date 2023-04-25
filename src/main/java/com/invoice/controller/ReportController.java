@@ -60,32 +60,32 @@ public class ReportController {
     }
 
     @PostMapping(produces = "application/json", value = "/email")
-    public ResponseEntity<Void> email(@RequestParam Long id, @RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
+    public ResponseEntity<Void> email(@RequestParam String invoiceNumber, @RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
     {
         String ip = HttpUtils.getRequestIP(request);
-        log.info("request: email() seqID: {} ip: {}",id,ip);
+        log.info("request: email() invoiceNumber: {} ip: {}",invoiceNumber,ip);
         CredentialDTO credentialDTO = validateCredential(username,password,vatNumber,egsSerialNumber,ip);
 
         if(!sellerService.validateCredential(credentialDTO)){
             throw new SellerNotFoundException("Invalid Credentials");
         }
-        invoiceService.sendEmail(id);
-        log.info("response: email() seqID: {}",id);
+        invoiceService.sendEmail(invoiceNumber);
+        log.info("response: email() invoiceNumber: {}",invoiceNumber);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(produces = "application/json", value = "/archive")
-    public ResponseEntity<Void> archive(@RequestParam Long id,@RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
+    public ResponseEntity<Void> archive(@RequestParam String invoiceNumber,@RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
     {
         String ip = HttpUtils.getRequestIP(request);
-        log.info("request: archive() seqID: {} ip: {}",id,ip);
+        log.info("request: archive() invoiceNumber: {} ip: {}",invoiceNumber,ip);
         CredentialDTO credentialDTO = validateCredential(username,password,vatNumber,egsSerialNumber,ip);
 
         if(!sellerService.validateCredential(credentialDTO)){
             throw new SellerNotFoundException("Invalid Credentials");
         }
-        invoiceService.archiveOnCloud(id);
-        log.info("response: archive() seqID: {}",id);
+        invoiceService.archiveOnCloud(invoiceNumber);
+        log.info("response: archive() invoiceNumber: {}",invoiceNumber);
         return ResponseEntity.ok().build();
     }
 
