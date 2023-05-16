@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -87,6 +88,17 @@ public class ReportController {
         invoiceService.archiveOnCloud(invoiceNumber);
         log.info("response: archive() invoiceNumber: {}",invoiceNumber);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(produces = "application/json", value = "/embedxml")
+    public ResponseEntity<String> embedXML(@RequestHeader("username") String username, @RequestHeader("password") String password, @RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, @RequestParam String invoiceNumber, @RequestParam MultipartFile file, HttpServletRequest request)
+    {
+        String ip = HttpUtils.getRequestIP(request);
+        log.info("request: embedXML() invoiceNumber: {} ip: {}",invoiceNumber,ip);
+        CredentialDTO credentialDTO = validateCredential(username,password,vatNumber,egsSerialNumber,ip);
+        String pdf = invoiceService.embedXML(credentialDTO,invoiceNumber,file);
+        log.info("response: embedXML() invoiceNumber: {}",invoiceNumber);
+        return  ResponseEntity.ok().body(pdf);
     }
 
     @GetMapping(produces = "application/json", value = "/health")

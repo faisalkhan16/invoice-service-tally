@@ -3,12 +3,10 @@ package com.invoice.util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.UUID;
@@ -108,5 +106,43 @@ public class PDFFileUtil {
 
     public static byte[] decode(String base64) throws Exception {
         return Base64.getDecoder().decode(base64.getBytes());
+    }
+
+    public File savePDF(InputStream inputStream) {
+        try {
+
+            StringBuffer fileName = new StringBuffer();
+            fileName.append(getFilePath()).append(FILE_EXTENSION);
+            File targetFile = new File(fileName.toString());
+            copyInputStreamToFile(inputStream, targetFile);
+            File pdfFile = getFile(fileName.toString());
+
+            return pdfFile;
+        } catch (Exception e) {
+            log.error("Exception in savePDF in FileUtil :{}", e.getMessage());
+            return null;
+        }
+    }
+
+    private static void copyInputStreamToFile(InputStream inputStream, File file)
+            throws IOException {
+
+        try (OutputStream output = new FileOutputStream(file, false)) {
+            inputStream.transferTo(output);
+        }
+
+    }
+
+    public File convertMultiPartToFile(MultipartFile multipartFile) {
+        File convFile = new File(getFilePath() + multipartFile.getOriginalFilename());
+        try {
+            convFile.createNewFile();
+            FileOutputStream fileOutputStream = new FileOutputStream(convFile);
+            fileOutputStream.write(multipartFile.getBytes());
+            fileOutputStream.close();
+        } catch (Exception ex) {
+            log.error("Error in ImageUtil convertMultiPartToFile :", ex);
+        }
+        return convFile;
     }
 }

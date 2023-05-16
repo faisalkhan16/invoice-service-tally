@@ -143,4 +143,16 @@ public class InvoiceExceptionHandler {
 
         return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(GeneralException.class)
+    public ResponseEntity<?> generalException(GeneralException exception, WebRequest request) {
+
+        CustomError errorDetails = new CustomError();
+        errorDetails.setStatus("ERROR");
+        errorDetails.setHttpStatus(HttpStatus.BAD_REQUEST.toString());
+        errorDetails.setMessage(exception.getMessage());
+        errorDetails.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
+    }
 }

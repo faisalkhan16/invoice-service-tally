@@ -642,4 +642,16 @@ public class InvoiceRepositoryImpl {
         }
     }
 
+    public String getXML(String invoiceNumber){
+
+        try{
+            String sql = "SELECT SIGNED_XML FROM invlobs,invoice_master WHERE invlobs.SEQ_REF = invoice_master.SEQ_ID AND invoice_master.ID = ?";
+
+            return jdbcTemplateSecondary.queryForObject(sql, String.class,new Object[]{invoiceNumber});
+
+        }catch(Exception ex){
+            log.error("Exeption in InvoiceRepoImpl getXML invoiceNumber{}: {}",invoiceNumber,ex.getMessage());
+            return null;
+        }
+    }
 }

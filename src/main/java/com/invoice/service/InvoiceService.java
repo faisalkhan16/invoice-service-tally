@@ -12,6 +12,7 @@ import com.invoice.dto.zakat.ZakatApplicationRequestDTO;
 import com.invoice.dto.zakat.model.ZakatInfoModel;
 import com.invoice.dto.zakat.model.ZakatValidationResultModel;
 import com.invoice.exception.BuyerEmailNotFoundException;
+import com.invoice.exception.GeneralException;
 import com.invoice.exception.SellerNotFoundException;
 import com.invoice.exception.ZakatException;
 import com.invoice.mapper.MapInvoice;
@@ -20,11 +21,13 @@ import com.invoice.model.*;
 import com.invoice.repository.EmailRepositoryImpl;
 import com.invoice.repository.InvoiceRepositoryImpl;
 import com.invoice.util.*;
+import com.itextpdf.text.pdf.*;
 import com.zatca.sdk.service.validation.Result;
 import com.zatca.sdk.util.ECDSAUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.XPath;
@@ -32,15 +35,18 @@ import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.PrivateKey;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -1350,5 +1356,60 @@ public class InvoiceService {
             awss3Service.storeInvoiceToBucket(egsPrefix, pdfFile, invoiceNumber);
         }
 
+    }
+
+    public String embedXML(CredentialDTO credentialDTO, String invoiceNumber, MultipartFile multipartFile) {
+        log.info("Invoice Service embedXML: invoiceNumber: {}",invoiceNumber);
+        try {
+
+            if(!"pdf".equalsIgnoreCase(FilenameUtils.getExtension(multipartFile.getOriginalFilename()))){
+                throw new GeneralException("Upload valid PDF file");
+            }
+
+            if(!sellerService.validateCredential(credentialDTO)){
+                throw new SellerNotFoundException("Invalid Credentials");
+            }
+
+            String xml = invoiceRepository.getXML(invoiceNumber);
+
+            ByteArrayOutputStream outputStreamInvoice = new ByteArrayOutputStream();
+            File pdfFile = pdfFileUtil.convertMultiPartToFile(multipartFile);
+
+            PdfStamper pdfStamper = new PdfStamper(new PdfReader(pdfFile.getPath()),outputStreamInvoice);
+
+            InvoiceMaster invoiceMaster = invoiceRepository.getInvoiceById(invoiceNumber);
+            String issueDate = invoiceMaster.getIssueDate().toString();
+            String issueTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
+
+            StringBuffer embededFileName = new StringBuffer();
+            embededFileName.append(invoiceMaster.getSellerVatNumber()).append("_")
+                    .append(issueDate.replaceAll("-","")).append("T").append(issueTime.replaceAll(":",""))
+                    .append("_").append(invoiceNumber).append(".xml");
+
+            PdfDictionary parameters = new PdfDictionary();
+            parameters.put(PdfName.MODDATE, new PdfDate());
+
+            PdfFileSpecification fileSpec = PdfFileSpecification.fileEmbedded(pdfStamper.getWriter(), null,
+                    embededFileName.toString(), xml.getBytes(),  "application/xml", parameters, 0);
+
+            fileSpec.put(new PdfName("AFRelationship"), new PdfName("Data"));
+
+            pdfStamper.getWriter().addFileAttachment(embededFileName.toString(), fileSpec);
+
+            pdfStamper.setFormFlattening(true);
+
+            pdfStamper.close();
+
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStreamInvoice.toByteArray());
+
+            File embededPDF = pdfFileUtil.savePDF(byteArrayInputStream);
+            byte[] fileContent = Files.readAllBytes(embededPDF.toPath());
+            String pdf = Base64.getEncoder().encodeToString(fileContent);
+
+            return pdf;
+        } catch (com.itextpdf.text.DocumentException | IOException ex) {
+            log.error("Exception in embedXML DocumentException IOException Invoice ID: {} = {}",invoiceNumber, ex.getStackTrace());
+            return null;
+        }
     }
 }
