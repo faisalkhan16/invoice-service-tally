@@ -81,6 +81,7 @@ public class InvoiceMaster {
     private String certificateStatus;
     private String buyerEmail;
     private String buyerMobile;
-
+    private String invoiceSrcId;
+    private String paymentTerms;
 
 }

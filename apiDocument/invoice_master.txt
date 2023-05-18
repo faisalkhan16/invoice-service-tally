@@ -57,6 +57,7 @@ CREATE TABLE `invoice_master` (
   `CNTRCT_ID` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `PO_ID` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `EGS_SERIAL_NO` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
+  `PAYMENT_TERMS` varchar(200),
   PRIMARY KEY (`SEQ_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

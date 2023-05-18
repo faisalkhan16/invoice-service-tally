@@ -27,6 +27,8 @@ public class InvoiceMasterMapper implements RowMapper<InvoiceMaster> {
             invoiceMaster.setId(rs.getString("ID"));
             invoiceMaster.setBuyerEmail(rs.getString("BUYER_EMAIL"));
             invoiceMaster.setBuyerMobile(rs.getString("BUYER_MOBILE"));
+            invoiceMaster.setInvoiceSrcId(rs.getString("SRC_ID"));
+            invoiceMaster.setPaymentTerms(rs.getString("PAYMENT_TERMS"));
 
         }
         catch (Exception ex)

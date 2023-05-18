@@ -25,4 +25,6 @@ public class InvoiceLine {
     private double subTotal;
     private String status;
 
+    private String skuCode;
+
 }

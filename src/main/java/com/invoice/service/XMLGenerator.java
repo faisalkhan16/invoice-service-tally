@@ -458,6 +458,16 @@ public class XMLGenerator
                 //Payment means end
             }
 
+            if(!CommonUtils.isNullOrEmptyString(invoiceMaster.getPaymentTerms())) {
+                xmlElement = doc.createElement("cac:PaymentTerms");
+                if (!CommonUtils.isNullOrEmptyString(invoiceMaster.getPaymentTerms())) {
+                    childElement = doc.createElement("cbc:Note");
+                    childElement.appendChild(doc.createTextNode(invoiceMaster.getPaymentTerms()));
+
+                    xmlElement.appendChild(childElement);
+                }
+                rootElement.appendChild(xmlElement);
+            }
 
             if(invoiceMaster.getDiscount() > 0d)
             {

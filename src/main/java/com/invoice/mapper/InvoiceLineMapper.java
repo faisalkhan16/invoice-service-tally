@@ -30,6 +30,7 @@ public class InvoiceLineMapper implements RowMapper<InvoiceLine> {
             invoiceLine.setItemTaxCategoryCode(rs.getString("VAT_CTGRY"));
             invoiceLine.setExemptionReasonCode(rs.getString("EXMP_RSN_CD"));
             invoiceLine.setExemptionReasonText(rs.getString("EXMP_RSN_TXT"));
+            invoiceLine.setSkuCode(rs.getString("SKU_CODE"));
 
         }catch (Exception ex){
             log.error(ex.getMessage());

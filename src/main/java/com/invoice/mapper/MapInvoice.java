@@ -61,6 +61,7 @@ public interface MapInvoice {
     @Mapping(target = "serialNumber", source = "serialNumber")
     @Mapping(target = "buyerEmail", source = "buyerEmail")
     @Mapping(target = "buyerMobile", source = "buyerMobile")
+    @Mapping(target = "paymentTerms", source = "paymentTerms")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     InvoiceMaster invoiceDTOToInvoice (InvoiceDTO invoiceDTO);
 

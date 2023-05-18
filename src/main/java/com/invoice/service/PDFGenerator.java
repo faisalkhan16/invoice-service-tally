@@ -193,6 +193,94 @@ public class PDFGenerator {
             cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
             table.addCell(cell);
 
+            p = new Paragraph("Purchase Order ID:", txtFont);
+            cell = new PdfPCell(p);
+            cell.setBackgroundColor(bgcolorText);
+            cell.setBorderWidth(0.5f);
+            cell.setPadding(3f);
+            cell.setBorderColor(BaseColor.WHITE);
+            table.addCell(cell);
+
+            p = new Paragraph(invoiceMaster.getPurchaseOrderID(), txtFont);
+            cell = new PdfPCell(p);
+            cell.setBorderWidth(0);
+            table.addCell(cell);
+
+            p = new Paragraph("معرف طلب الشراء:", txtFont);
+            cell = new PdfPCell(p);
+            cell.setBorderWidth(0.5f);
+            cell.setPadding(3f);
+            cell.setBorderColor(BaseColor.WHITE);
+            cell.setBackgroundColor(bgcolorText);
+            cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+            table.addCell(cell);
+
+            p = new Paragraph("Contract ID", txtFont);
+            cell = new PdfPCell(p);
+            cell.setBackgroundColor(bgcolorText);
+            cell.setBorderWidth(0.5f);
+            cell.setPadding(3f);
+            cell.setBorderColor(BaseColor.WHITE);
+            table.addCell(cell);
+
+            p = new Paragraph(invoiceMaster.getContractID(), txtFont);
+            cell = new PdfPCell(p);
+            cell.setBorderWidth(0);
+            table.addCell(cell);
+
+            p = new Paragraph("معرف العقد:", txtFont);
+            cell = new PdfPCell(p);
+            cell.setBorderWidth(0.5f);
+            cell.setPadding(3f);
+            cell.setBorderColor(BaseColor.WHITE);
+            cell.setBackgroundColor(bgcolorText);
+            cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+            table.addCell(cell);
+
+            p = new Paragraph("Source ID:", txtFont);
+            cell = new PdfPCell(p);
+            cell.setBackgroundColor(bgcolorText);
+            cell.setBorderWidth(0.5f);
+            cell.setPadding(3f);
+            cell.setBorderColor(BaseColor.WHITE);
+            table.addCell(cell);
+
+            p = new Paragraph(invoiceMaster.getInvoiceSrcId(), txtFont);
+            cell = new PdfPCell(p);
+            cell.setBorderWidth(0);
+            table.addCell(cell);
+
+            p = new Paragraph("معرف المصدر:", txtFont);
+            cell = new PdfPCell(p);
+            cell.setBorderWidth(0.5f);
+            cell.setPadding(3f);
+            cell.setBorderColor(BaseColor.WHITE);
+            cell.setBackgroundColor(bgcolorText);
+            cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+            table.addCell(cell);
+
+            p = new Paragraph("", txtFont);
+            cell = new PdfPCell(p);
+            cell.setBackgroundColor(bgcolorText);
+            cell.setBorderWidth(0.5f);
+            cell.setPadding(3f);
+            cell.setBorderColor(BaseColor.WHITE);
+            table.addCell(cell);
+
+            p = new Paragraph("", txtFont);
+            cell = new PdfPCell(p);
+            cell.setBorderWidth(0);
+            table.addCell(cell);
+
+            p = new Paragraph("", txtFont);
+            cell = new PdfPCell(p);
+            cell.setBorderWidth(0.5f);
+            cell.setPadding(3f);
+            cell.setBorderColor(BaseColor.WHITE);
+            cell.setBackgroundColor(bgcolorText);
+            cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+            table.addCell(cell);
+
             if(invoiceMaster.getType().equals("381") || invoiceMaster.getType().equals("383")){
                 p = new Paragraph("Original Invoice ID:", txtFont);
                 cell = new PdfPCell(p);
@@ -239,7 +327,6 @@ public class PDFGenerator {
                 table.addCell(cell);
 
             }
-
             p = new Paragraph(new Chunk(Chunk.NEWLINE));
             cell = new PdfPCell(p);
             cell.setBorder(Rectangle.NO_BORDER);
@@ -723,7 +810,7 @@ public class PDFGenerator {
             document.add(table);
 
             //invoiceLine start
-            table = new PdfPTable(8);
+            table = new PdfPTable(9);
             table.setWidthPercentage(100);
 
             //header line 1 start
@@ -732,7 +819,7 @@ public class PDFGenerator {
             cell.setBackgroundColor(bgcolorHeading);
             cell.setBorder(Rectangle.NO_BORDER);
             cell.setPadding(3f);
-            cell.setColspan(4);
+            cell.setColspan(5);
             table.addCell(cell);
 
             p = new Paragraph("وصف السلع أو الخدمات ", h2Font);
@@ -749,6 +836,19 @@ public class PDFGenerator {
             p = new Paragraph("Nature of Goods or Service", txtFont);
             p.add(Chunk.NEWLINE);
             p.add(new Chunk("تفاصيل السلعة أو الخدمة "));
+
+            cell = new PdfPCell(p);
+            cell.setBorderWidth(0.5f);
+            cell.setPadding(3f);
+            cell.setBorderColor(BaseColor.WHITE);
+            cell.setBackgroundColor(bgcolorText);
+            cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+
+            p = new Paragraph("SKU Code", txtFont);
+            p.add(Chunk.NEWLINE);
+            p.add(new Chunk("SKU Code "));
 
             cell = new PdfPCell(p);
             cell.setBorderWidth(0.5f);
@@ -854,8 +954,14 @@ public class PDFGenerator {
             amountFormat = new DecimalFormat("##,###,##0.00");
 
             for (InvoiceLine lineItem : invoiceLines) {
-                //add 8 columns for each row
+                //add 9 columns for each row
                 p = new Paragraph(lineItem.getName(), txtFont);
+                cell = new PdfPCell(p);
+                cell.setBorderWidth(0);
+                cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+                table.addCell(cell);
+
+                p = new Paragraph(lineItem.getSkuCode(), txtFont);
                 cell = new PdfPCell(p);
                 cell.setBorderWidth(0);
                 cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);

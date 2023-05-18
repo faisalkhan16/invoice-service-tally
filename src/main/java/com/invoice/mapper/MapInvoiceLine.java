@@ -26,6 +26,7 @@ public interface MapInvoiceLine {
     @Mapping(target = "taxRate", source = "taxRate")
     @Mapping(target = "taxAmount", source = "taxAmount")
     @Mapping(target = "subTotal", source = "subTotal")
+    @Mapping(target = "skuCode", source = "skuCode")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     InvoiceLine invoiceLineDTOToInvoiceLine (InvoiceLineDTO invoiceLineDTO);
 

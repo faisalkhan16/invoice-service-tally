@@ -166,4 +166,7 @@ public class InvoiceDTO
 
     @JsonProperty(value = "buyer_mobile")
     private String buyerMobile;
+
+    @JsonProperty(value = "payment_terms")
+    private String paymentTerms;
 }

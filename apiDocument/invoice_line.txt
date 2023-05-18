@@ -14,5 +14,6 @@ CREATE TABLE `invoice_line` (
   `VAT_CTGRY` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
   `EXMP_RSN_CD` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `EXMP_RSN_TXT` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `SKU_CODE` varchar(50),
   PRIMARY KEY (`LINE_ID`,`SEQ_REF`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

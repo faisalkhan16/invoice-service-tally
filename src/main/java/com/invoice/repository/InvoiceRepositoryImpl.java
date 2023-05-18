@@ -59,8 +59,8 @@ public class InvoiceRepositoryImpl {
                     "   BUYER_BUILDING_NO,BUYER_STREET,BUYER_LINE,BUYER_DISTRICT,BUYER_ADDITIONAL_NO,BUYER_POSTAL_CD," +
                     "   BUYER_CITY,BUYER_COUNTRY,TOTAL_AMOUNT,DISCOUNT,TAXABLE_AMOUNT,TOTAL_VAT,TAX_INCLUSIVE_AMOUNT," +
                     "   ORIGINAL_INV_ID,SELLER_REGION,PAYMENT_MEANS_CODE,BUYER_E_NAME,BUYER_REGION,INVOICE_NOTE_REASON, UUID, SRC_ID," +
-                    "   INVOICE_CRNCY, FX_RATE, TAX_AMT_SAR, TTL_AMT_SAR, PO_ID, CNTRCT_ID, EGS_SERIAL_NO,BUYER_EMAIL,BUYER_MOBILE" +
-                    " ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    "   INVOICE_CRNCY, FX_RATE, TAX_AMT_SAR, TTL_AMT_SAR, PO_ID, CNTRCT_ID, EGS_SERIAL_NO,BUYER_EMAIL,BUYER_MOBILE,PAYMENT_TERMS" +
+                    " ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
@@ -120,6 +120,7 @@ public class InvoiceRepositoryImpl {
                 ps.setString(52, invoiceMaster.getSerialNumber());
                 ps.setString(53,invoiceMaster.getBuyerEmail());
                 ps.setString(54,invoiceMaster.getBuyerMobile());
+                ps.setString(55,invoiceMaster.getPaymentTerms());
 
                 return ps;
             },generatedKeyHolder);
@@ -138,8 +139,8 @@ public class InvoiceRepositoryImpl {
         try {
 
             String sql = "INSERT INTO invoice_line" +
-                    "(LINE_ID, SEQ_REF, NAME, QUANTITY, NET_PRICE, TOTAL_AMOUNT, DISCOUNT, TOTAL_TAXABLE_AMOUNT, TAX_RATE, TAX_AMOUNT, SUBTOTAL, STATUS, VAT_CTGRY, EXMP_RSN_CD, EXMP_RSN_TXT) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                    "(LINE_ID, SEQ_REF, NAME, QUANTITY, NET_PRICE, TOTAL_AMOUNT, DISCOUNT, TOTAL_TAXABLE_AMOUNT, TAX_RATE, TAX_AMOUNT, SUBTOTAL, STATUS, VAT_CTGRY, EXMP_RSN_CD, EXMP_RSN_TXT, SKU_CODE) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
 
             jdbcTemplateSecondary.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql);
@@ -158,6 +159,7 @@ public class InvoiceRepositoryImpl {
                 ps.setString(13, invoiceLine.getItemTaxCategoryCode());
                 ps.setString(14, invoiceLine.getExemptionReasonCode());
                 ps.setString(15, invoiceLine.getExemptionReasonText());
+                ps.setString(16, invoiceLine.getSkuCode());
                 return ps;
             });
 
@@ -200,7 +202,7 @@ public class InvoiceRepositoryImpl {
                     "BUYER_BUILDING_NO, BUYER_STREET, BUYER_LINE, BUYER_DISTRICT, BUYER_ADDITIONAL_NO, BUYER_POSTAL_CD, " +
                     "BUYER_CITY, BUYER_COUNTRY, TOTAL_AMOUNT, DISCOUNT, TAXABLE_AMOUNT, TOTAL_VAT, TAX_INCLUSIVE_AMOUNT, " +
                     "ORIGINAL_INV_ID,SELLER_REGION,PAYMENT_MEANS_CODE,BUYER_E_NAME,BUYER_REGION,INVOICE_NOTE_REASON, UUID, " +
-                    "INVOICE_CRNCY, FX_RATE, TAX_AMT_SAR, TTL_AMT_SAR, PO_ID, CNTRCT_ID, EGS_SERIAL_NO, CLRNC_STS,BUYER_EMAIL,BUYER_MOBILE " +
+                    "INVOICE_CRNCY, FX_RATE, TAX_AMT_SAR, TTL_AMT_SAR, PO_ID, CNTRCT_ID, EGS_SERIAL_NO, CLRNC_STS,BUYER_EMAIL,BUYER_MOBILE,SRC_ID,PAYMENT_TERMS " +
                     "FROM invoice_master WHERE STATUS = 'C' ORDER BY SEQ_ID ASC;";
 
             return jdbcTemplateSecondary.query(sql, new InvoiceMapper());
@@ -215,7 +217,7 @@ public class InvoiceRepositoryImpl {
     public List<InvoiceMaster> getSimplifiedInvoices(){
 
         try{
-            String sql = "SELECT SEQ_ID, SUB_TYPE, UUID, INVOICE_HASH, INVOICE_XML, SIGNED_XML ,QR_CODE, SELLER_VAT_NUMBER, EGS_SERIAL_NO,invoice_master.ID,BUYER_EMAIL,BUYER_MOBILE FROM invoice_master,invlobs  WHERE STATUS = 'P' and SEQ_ID = SEQ_REF AND SUB_TYPE LIKE '02%' ORDER BY SEQ_ID ASC;";
+            String sql = "SELECT SEQ_ID, SUB_TYPE, UUID, INVOICE_HASH, INVOICE_XML, SIGNED_XML ,QR_CODE, SELLER_VAT_NUMBER, EGS_SERIAL_NO,invoice_master.ID,BUYER_EMAIL,BUYER_MOBILE,SRC_ID,PAYMENT_TERMS FROM invoice_master,invlobs  WHERE STATUS = 'P' and SEQ_ID = SEQ_REF AND SUB_TYPE LIKE '02%' ORDER BY SEQ_ID ASC;";
 
             return jdbcTemplateSecondary.query(sql, new InvoiceMasterMapper());
 
@@ -228,7 +230,7 @@ public class InvoiceRepositoryImpl {
     public List<InvoiceMaster> getStandardInvoices(){
 
         try{
-            String sql = "SELECT SEQ_ID,SUB_TYPE, UUID, INVOICE_HASH, INVOICE_XML, SIGNED_XML ,QR_CODE, SELLER_VAT_NUMBER, EGS_SERIAL_NO,invoice_master.ID,BUYER_EMAIL,BUYER_MOBILE FROM invoice_master,invlobs  WHERE STATUS = 'P' and SEQ_ID = SEQ_REF AND SUB_TYPE LIKE '01%' ORDER BY SEQ_ID ASC;";
+            String sql = "SELECT SEQ_ID,SUB_TYPE, UUID, INVOICE_HASH, INVOICE_XML, SIGNED_XML ,QR_CODE, SELLER_VAT_NUMBER, EGS_SERIAL_NO,invoice_master.ID,BUYER_EMAIL,BUYER_MOBILE,SRC_ID,PAYMENT_TERMS FROM invoice_master,invlobs  WHERE STATUS = 'P' and SEQ_ID = SEQ_REF AND SUB_TYPE LIKE '01%' ORDER BY SEQ_ID ASC;";
 
             return jdbcTemplateSecondary.query(sql, new InvoiceMasterMapper());
 
@@ -249,7 +251,7 @@ public class InvoiceRepositoryImpl {
                     "BUYER_BUILDING_NO, BUYER_STREET, BUYER_LINE, BUYER_DISTRICT, BUYER_ADDITIONAL_NO, BUYER_POSTAL_CD, " +
                     "BUYER_CITY, BUYER_COUNTRY, TOTAL_AMOUNT, DISCOUNT, TAXABLE_AMOUNT, TOTAL_VAT, TAX_INCLUSIVE_AMOUNT, " +
                     "ORIGINAL_INV_ID, SELLER_REGION, PAYMENT_MEANS_CODE, BUYER_E_NAME, BUYER_REGION, INVOICE_NOTE_REASON, UUID, " +
-                    "INVOICE_CRNCY, FX_RATE, TAX_AMT_SAR, TTL_AMT_SAR, PO_ID, CNTRCT_ID, EGS_SERIAL_NO, CLRNC_STS,BUYER_EMAIL,BUYER_MOBILE " +
+                    "INVOICE_CRNCY, FX_RATE, TAX_AMT_SAR, TTL_AMT_SAR, PO_ID, CNTRCT_ID, EGS_SERIAL_NO, CLRNC_STS,BUYER_EMAIL,BUYER_MOBILE,SRC_ID,PAYMENT_TERMS " +
                     "FROM invoice_master WHERE SEQ_ID = ?;";
 
             return jdbcTemplateSecondary.queryForObject(sql, new InvoiceMapper(),new Object[]{id});
@@ -288,7 +290,7 @@ public class InvoiceRepositoryImpl {
 
         try{
             String sql = "SELECT LINE_ID, SEQ_REF, NAME, QUANTITY, NET_PRICE, TOTAL_AMOUNT, DISCOUNT, TOTAL_TAXABLE_AMOUNT, TAX_RATE, " +
-                    "TAX_AMOUNT, SUBTOTAL, STATUS, VAT_CTGRY, EXMP_RSN_CD, EXMP_RSN_TXT " +
+                    "TAX_AMOUNT, SUBTOTAL, STATUS, VAT_CTGRY, EXMP_RSN_CD, EXMP_RSN_TXT, SKU_CODE " +
                     "FROM invoice_line WHERE STATUS = 'V';";
 
             return jdbcTemplateSecondary.query(sql, new InvoiceLineMapper());
@@ -303,8 +305,8 @@ public class InvoiceRepositoryImpl {
     public List<InvoiceLine> getInvoiceLinesByInvoiceId(long invoiceMasterId){
 
         try{
-            String sql = "SELECT LINE_ID, SEQ_REF, NAME, QUANTITY, NET_PRICE, TOTAL_AMOUNT, DISCOUNT, TOTAL_TAXABLE_AMOUNT, TAX_RATE, " +
-                    "TAX_AMOUNT, SUBTOTAL, STATUS, VAT_CTGRY, EXMP_RSN_CD, EXMP_RSN_TXT " +
+            String sql = "SELECT LINE_ID, SEQ_REF, NAME, QUANTITY, NET_PRICE, TOTAL_AMOUNT, DISCOUNT, TOTAL_TAXABLE_AMOUNT, TAX_RATE, SKU_CODE " +
+                    "TAX_AMOUNT, SUBTOTAL, STATUS, VAT_CTGRY, EXMP_RSN_CD, EXMP_RSN_TXT, SKU_CODE " +
                     "FROM invoice_line WHERE SEQ_REF = ?;";
 
             return jdbcTemplateSecondary.query(sql,new InvoiceLineMapper(), new Object[]{invoiceMasterId});
@@ -400,7 +402,7 @@ public class InvoiceRepositoryImpl {
                     "BUYER_BUILDING_NO, BUYER_STREET, BUYER_LINE, BUYER_DISTRICT, BUYER_ADDITIONAL_NO, BUYER_POSTAL_CD, " +
                     "BUYER_CITY, BUYER_COUNTRY, TOTAL_AMOUNT, DISCOUNT, TAXABLE_AMOUNT, TOTAL_VAT, TAX_INCLUSIVE_AMOUNT, " +
                     "ORIGINAL_INV_ID,SELLER_REGION,PAYMENT_MEANS_CODE,BUYER_E_NAME,BUYER_REGION,INVOICE_NOTE_REASON, UUID, " +
-                    "INVOICE_CRNCY, FX_RATE, TAX_AMT_SAR, TTL_AMT_SAR, PO_ID, CNTRCT_ID, EGS_SERIAL_NO, CLRNC_STS,BUYER_EMAIL,BUYER_MOBILE " +
+                    "INVOICE_CRNCY, FX_RATE, TAX_AMT_SAR, TTL_AMT_SAR, PO_ID, CNTRCT_ID, EGS_SERIAL_NO, CLRNC_STS,BUYER_EMAIL,BUYER_MOBILE,SRC_ID,PAYMENT_TERMS " +
                     "FROM invoice_master WHERE STATUS = 'P' ORDER BY SEQ_ID ASC;";
 
             return jdbcTemplateSecondary.query(sql, new InvoiceMapper());
@@ -451,7 +453,7 @@ public class InvoiceRepositoryImpl {
                     "BUYER_BUILDING_NO, BUYER_STREET, BUYER_LINE, BUYER_DISTRICT, BUYER_ADDITIONAL_NO, BUYER_POSTAL_CD, " +
                     "BUYER_CITY, BUYER_COUNTRY, TOTAL_AMOUNT, DISCOUNT, TAXABLE_AMOUNT, TOTAL_VAT, TAX_INCLUSIVE_AMOUNT, " +
                     "ORIGINAL_INV_ID,SELLER_REGION,PAYMENT_MEANS_CODE,BUYER_E_NAME,BUYER_REGION,INVOICE_NOTE_REASON, UUID, " +
-                    "INVOICE_CRNCY, FX_RATE, TAX_AMT_SAR, TTL_AMT_SAR, PO_ID, CNTRCT_ID, EGS_SERIAL_NO, CLRNC_STS,BUYER_EMAIL,BUYER_MOBILE " +
+                    "INVOICE_CRNCY, FX_RATE, TAX_AMT_SAR, TTL_AMT_SAR, PO_ID, CNTRCT_ID, EGS_SERIAL_NO, CLRNC_STS,BUYER_EMAIL,BUYER_MOBILE,SRC_ID,PAYMENT_TERMS " +
                     "FROM invoice_master WHERE ID = ? ORDER BY SEQ_ID DESC;";
 
             return jdbcTemplateSecondary.queryForObject(sql, new InvoiceMapper(), new Object[]{idNumber});
@@ -498,7 +500,7 @@ public class InvoiceRepositoryImpl {
                     "BUYER_BUILDING_NO = ?,BUYER_STREET = ?,BUYER_LINE = ?,BUYER_DISTRICT = ?,BUYER_ADDITIONAL_NO = ?,BUYER_POSTAL_CD = ?, " +
                     "BUYER_CITY = ?,BUYER_COUNTRY = ?,TOTAL_AMOUNT = ?,DISCOUNT = ?,TAXABLE_AMOUNT = ?,TOTAL_VAT = ?,TAX_INCLUSIVE_AMOUNT = ?, " +
                     "ORIGINAL_INV_ID = ?,SELLER_REGION = ?,PAYMENT_MEANS_CODE = ?,BUYER_E_NAME = ?,BUYER_REGION = ?,INVOICE_NOTE_REASON = ?, " +
-                    "INVOICE_CRNCY = ?, FX_RATE = ?, TAX_AMT_SAR = ?, TTL_AMT_SAR = ?, PO_ID = ?, CNTRCT_ID = ?, BUYER_EMAIL = ?, BUYER_MOBILE = ?, UPD_DT = ? WHERE ID = ?;";
+                    "INVOICE_CRNCY = ?, FX_RATE = ?, TAX_AMT_SAR = ?, TTL_AMT_SAR = ?, PO_ID = ?, CNTRCT_ID = ?, BUYER_EMAIL = ?, BUYER_MOBILE = ?, UPD_DT = ?, PAYMENT_TERMS = ? WHERE ID = ?;";
 
             jdbcTemplateSecondary.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql);
@@ -551,7 +553,8 @@ public class InvoiceRepositoryImpl {
                 ps.setString(47,invoiceMaster.getBuyerEmail());
                 ps.setString(48,invoiceMaster.getBuyerMobile());
                 ps.setDate(49, Date.valueOf(LocalDate.now()));
-                ps.setString(50,invoiceMaster.getId());
+                ps.setString(50,invoiceMaster.getPaymentTerms());
+                ps.setString(51,invoiceMaster.getId());
                 return ps;
             });
 
@@ -567,7 +570,7 @@ public class InvoiceRepositoryImpl {
             try {
 
                 String sql = "UPDATE invoice_line" +
-                        " SET NAME = ?, QUANTITY = ?, NET_PRICE = ?, TOTAL_AMOUNT = ?, DISCOUNT = ?, TOTAL_TAXABLE_AMOUNT = ?, TAX_RATE = ?, TAX_AMOUNT = ?, SUBTOTAL = ?, STATUS = ?, VAT_CTGRY = ?, EXMP_RSN_CD = ?, EXMP_RSN_TXT = ? WHERE  LINE_ID = ? AND  SEQ_REF = ?;";
+                        " SET NAME = ?, QUANTITY = ?, NET_PRICE = ?, TOTAL_AMOUNT = ?, DISCOUNT = ?, TOTAL_TAXABLE_AMOUNT = ?, TAX_RATE = ?, TAX_AMOUNT = ?, SUBTOTAL = ?, STATUS = ?, VAT_CTGRY = ?, EXMP_RSN_CD = ?, EXMP_RSN_TXT = ?, SKU_CODE = ? WHERE  LINE_ID = ? AND  SEQ_REF = ?;";
 
                 jdbcTemplateSecondary.update(connection -> {
                     PreparedStatement ps = connection.prepareStatement(sql);
@@ -584,8 +587,9 @@ public class InvoiceRepositoryImpl {
                     ps.setString(11, invoiceLine.getItemTaxCategoryCode());
                     ps.setString(12, invoiceLine.getExemptionReasonCode());
                     ps.setString(13, invoiceLine.getExemptionReasonText());
-                    ps.setInt(14, invoiceLine.getLineId());
-                    ps.setLong(15, invoiceLine.getSeqRef());
+                    ps.setString(14, invoiceLine.getSkuCode());
+                    ps.setInt(15, invoiceLine.getLineId());
+                    ps.setLong(16, invoiceLine.getSeqRef());
 
                     return ps;
                 });

@@ -51,4 +51,7 @@ public class InvoiceLineDTO
 
     @JsonProperty(value = "sub_total_incl_vat")
     private double subTotal;
+
+    @JsonProperty(value = "sku_code")
+    private String skuCode;
 }

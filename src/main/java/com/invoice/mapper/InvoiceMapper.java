@@ -79,6 +79,8 @@ public class InvoiceMapper implements RowMapper<InvoiceMaster> {
             invoiceMaster.setSerialNumber(rs.getString("EGS_SERIAL_NO"));
             invoiceMaster.setBuyerEmail(rs.getString("BUYER_EMAIL"));
             invoiceMaster.setBuyerMobile(rs.getString("BUYER_MOBILE"));
+            invoiceMaster.setInvoiceSrcId(rs.getString("SRC_ID"));
+            invoiceMaster.setPaymentTerms(rs.getString("PAYMENT_TERMS"));
 
             if(null != rs.getString("CLRNC_STS")) {
                 invoiceMaster.setZatcaStatus(rs.getString("CLRNC_STS"));
