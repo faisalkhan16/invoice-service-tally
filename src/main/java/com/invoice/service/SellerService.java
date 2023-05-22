@@ -1,18 +1,14 @@
 package com.invoice.service;
 
-import com.invoice.dto.CredentialDTO;
 import com.invoice.dto.ImageDTO;
 import com.invoice.dto.SellerDTO;
-import com.invoice.exception.SellerNotFoundException;
 import com.invoice.mapper.MapSeller;
 import com.invoice.model.Seller;
 import com.invoice.repository.SellerRepositoryImpl;
 import com.invoice.util.CommonUtils;
 import com.invoice.util.Constants;
-import com.invoice.util.HttpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -28,19 +24,15 @@ public class SellerService {
     private  final MapSeller mapSeller;
     private final SellerServiceApplication sellerServiceApplication;
 
-    public SellerDTO getSellerByVatAndSerial(CredentialDTO credentialDTO){
+    public SellerDTO getSellerByVatAndSerial(String vatNumber,String egsSerialNumber){
 
         log.info("Seller Service getSellerByVatAndSerial()");
 
-        if(!validateCredential(credentialDTO)){
-            throw new SellerNotFoundException("Invalid Credentials");
-        }
-
-        SellerDTO sellerDTO = sellerServiceApplication.getSellerByVatAndSerial(credentialDTO.getSellerVatNumber(), credentialDTO.getSerialNo());
+        SellerDTO sellerDTO = sellerServiceApplication.getSellerByVatAndSerial(vatNumber, egsSerialNumber);
 
         log.info("Seller Service getSellerByVatAndSerial Response {}", sellerDTO);
 
-        ImageDTO imageDTO = sellerServiceApplication.getImageByVatAndSerial(credentialDTO.getSellerVatNumber(), credentialDTO.getSerialNo());
+        ImageDTO imageDTO = sellerServiceApplication.getImageByVatAndSerial(vatNumber, egsSerialNumber);
 
         log.info("Seller Service getSellerByVatAndSerial Response {}", imageDTO);
 
@@ -141,20 +133,6 @@ public class SellerService {
         }
 
         return seller;
-    }
-
-    public boolean validateCredential(CredentialDTO credentialDTO) {
-        {
-
-            log.info("SellerService validateCredential username: {} ipAddress: {}", credentialDTO.getUsername(),credentialDTO.getIpAddress());
-
-            boolean isValidCredential = sellerServiceApplication.validateCredential(credentialDTO);
-
-            log.info("SellerService validateCredential Response {}", isValidCredential);
-
-            return isValidCredential;
-
-        }
     }
 
     @Scheduled(cron = "0 0 23 * * *")

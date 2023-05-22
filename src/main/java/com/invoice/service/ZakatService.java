@@ -1,8 +1,5 @@
 package com.invoice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.invoice.dto.CredentialDTO;
 import com.invoice.dto.PDFGeneratorDTO;
 import com.invoice.dto.SellerDTO;
 import com.invoice.dto.ZakatRequestDTO;
@@ -10,7 +7,6 @@ import com.invoice.dto.zakat.ZakatClearanceResponseDTO;
 import com.invoice.dto.zakat.ZakatComplianceResponseDTO;
 import com.invoice.dto.zakat.ZakatReportingResponseDTO;
 import com.invoice.dto.zakat.ZakatApplicationRequestDTO;
-import com.invoice.exception.SellerNotFoundException;
 import com.invoice.exception.ZakatException;
 import com.invoice.model.Email;
 import com.invoice.repository.EmailRepositoryImpl;
@@ -27,8 +23,6 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Base64;
 
 @Service
@@ -98,13 +92,10 @@ public class ZakatService {
         return zakatComplianceResponseDTO;
     }
 
-    public ZakatClearanceResponseDTO clearance(CredentialDTO credentialDTO,ZakatRequestDTO zakatRequestDTO) {
+    public ZakatClearanceResponseDTO clearance(ZakatRequestDTO zakatRequestDTO) {
 
         log.info("ZakatService clearance Request {}", zakatRequestDTO);
 
-        if(!sellerService.validateCredential(credentialDTO)){
-            throw new SellerNotFoundException("Invalid Credentials");
-        }
 
         ZakatClearanceResponseDTO zakatClearanceResponseDTO = new ZakatClearanceResponseDTO();
 
@@ -180,13 +171,9 @@ public class ZakatService {
 
     }
 
-    public ZakatReportingResponseDTO reporting(CredentialDTO credentialDTO,ZakatRequestDTO zakatRequestDTO) {
+    public ZakatReportingResponseDTO reporting(ZakatRequestDTO zakatRequestDTO) {
 
         log.info("ZakatService reporting Request {}", zakatRequestDTO);
-
-        if(!sellerService.validateCredential(credentialDTO)){
-            throw new SellerNotFoundException("Invalid Credentials");
-        }
 
         ZakatReportingResponseDTO zakatReportingResponseDTO = new ZakatReportingResponseDTO();
 
@@ -231,14 +218,9 @@ public class ZakatService {
 
     }
 
-    public ZakatComplianceResponseDTO compliance(CredentialDTO credentialDTO,ZakatRequestDTO zakatRequestDTO) {
+    public ZakatComplianceResponseDTO compliance(ZakatRequestDTO zakatRequestDTO) {
 
         log.info("ZakatService compliance Request {}", zakatRequestDTO);
-
-
-        if(!sellerService.validateCredential(credentialDTO)){
-            throw new SellerNotFoundException("Invalid Credentials");
-        }
 
         ZakatComplianceResponseDTO zakatComplianceResponseDTO = new ZakatComplianceResponseDTO();
 

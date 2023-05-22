@@ -309,7 +309,7 @@ public class XMLGenerator
 
             childElement = doc.createElement("cac:PartyLegalEntity");
             subChildElement = doc.createElement("cbc:RegistrationName");
-            subChildElement.appendChild(doc.createTextNode(invoiceMaster.getSellerAName()));
+            subChildElement.appendChild(doc.createTextNode(invoiceMaster.getSellerEName()));
 
             childElement.appendChild(subChildElement);
 
@@ -401,7 +401,7 @@ public class XMLGenerator
 
             childElement = doc.createElement("cac:PartyLegalEntity");
             subChildElement = doc.createElement("cbc:RegistrationName");
-            subChildElement.appendChild(doc.createTextNode(invoiceMaster.getBuyerAName()));
+            subChildElement.appendChild(doc.createTextNode(invoiceMaster.getBuyerEName()));
 
             childElement.appendChild(subChildElement);
 

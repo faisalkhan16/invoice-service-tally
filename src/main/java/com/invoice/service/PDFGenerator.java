@@ -94,31 +94,20 @@ public class PDFGenerator {
             PdfPTable table = new PdfPTable(6);
             table.setWidthPercentage(100);
 
-            String invoiceNoEng = "Invoice #:";
-            String invoiceNoArb = "رقم الفاتورة:";
-
-            if (invoiceMaster.getType().equals("381")) {
-                invoiceNoArb = "رقم الاشعار:";
-                invoiceNoEng = "Credit Note #:";
-            } else if (invoiceMaster.getType().equals("383")) {
-                invoiceNoArb = "رقم الاشعار:";
-                invoiceNoEng = "Debit Note #:";
-            }
-
-            Paragraph p = new Paragraph(invoiceNoEng, txtFont);
+            Paragraph p = new Paragraph("Source ID:", txtFont);
             PdfPCell cell = new PdfPCell(p);
+            cell.setBackgroundColor(bgcolorText);
             cell.setBorderWidth(0.5f);
             cell.setPadding(3f);
             cell.setBorderColor(BaseColor.WHITE);
-            cell.setBackgroundColor(bgcolorText);
             table.addCell(cell);
 
-            p = new Paragraph(invoiceMaster.getId(), txtFont);
+            p = new Paragraph(invoiceMaster.getInvoiceSrcId(), txtFont);
             cell = new PdfPCell(p);
             cell.setBorderWidth(0);
             table.addCell(cell);
 
-            p = new Paragraph(invoiceNoArb, txtFont);
+            p = new Paragraph("معرف المصدر:", txtFont);
             cell = new PdfPCell(p);
             cell.setBorderWidth(0.5f);
             cell.setPadding(3f);
@@ -237,20 +226,32 @@ public class PDFGenerator {
             cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
             table.addCell(cell);
 
-            p = new Paragraph("Source ID:", txtFont);
+
+            String invoiceNoEng = "E-Invoice #:";
+            String invoiceNoArb = "رقم الفاتورة:";
+
+            if (invoiceMaster.getType().equals("381")) {
+                invoiceNoArb = "رقم الاشعار:";
+                invoiceNoEng = "Credit Note #:";
+            } else if (invoiceMaster.getType().equals("383")) {
+                invoiceNoArb = "رقم الاشعار:";
+                invoiceNoEng = "Debit Note #:";
+            }
+
+            p = new Paragraph(invoiceNoEng, txtFont);
             cell = new PdfPCell(p);
-            cell.setBackgroundColor(bgcolorText);
             cell.setBorderWidth(0.5f);
             cell.setPadding(3f);
             cell.setBorderColor(BaseColor.WHITE);
+            cell.setBackgroundColor(bgcolorText);
             table.addCell(cell);
 
-            p = new Paragraph(invoiceMaster.getInvoiceSrcId(), txtFont);
+            p = new Paragraph(invoiceMaster.getId(), txtFont);
             cell = new PdfPCell(p);
             cell.setBorderWidth(0);
             table.addCell(cell);
 
-            p = new Paragraph("معرف المصدر:", txtFont);
+            p = new Paragraph(invoiceNoArb, txtFont);
             cell = new PdfPCell(p);
             cell.setBorderWidth(0.5f);
             cell.setPadding(3f);

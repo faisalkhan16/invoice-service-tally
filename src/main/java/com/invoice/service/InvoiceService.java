@@ -78,8 +78,6 @@ public class InvoiceService {
     private final XMLGenerator xmlGenerator;
     private final QRCodeUtil qrCodeUtil;
     private final ImageUtil imageUtil;
-    private final CSVFileUtil csvFileUtil;
-
     private final EmailRepositoryImpl emailRepository;
 
     private final AWSS3Service awss3Service;
@@ -1001,7 +999,7 @@ public class InvoiceService {
         return invoiceDTOWrapper;
     }
 
-    public InvoiceResponse retryInvoice(CredentialDTO credentialDTO,InvoiceDTO invoiceDTO) {
+    public InvoiceResponse retryInvoice(InvoiceDTO invoiceDTO) {
         {
             InvoiceResponse response = new InvoiceResponse();
             try {
@@ -1358,16 +1356,12 @@ public class InvoiceService {
 
     }
 
-    public String embedXML(CredentialDTO credentialDTO, String invoiceNumber, MultipartFile multipartFile) {
+    public String embedXML(String invoiceNumber, MultipartFile multipartFile) {
         log.info("Invoice Service embedXML: invoiceNumber: {}",invoiceNumber);
         try {
 
             if(!"pdf".equalsIgnoreCase(FilenameUtils.getExtension(multipartFile.getOriginalFilename()))){
                 throw new GeneralException("Upload valid PDF file");
-            }
-
-            if(!sellerService.validateCredential(credentialDTO)){
-                throw new SellerNotFoundException("Invalid Credentials");
             }
 
             String xml = invoiceRepository.getXML(invoiceNumber);

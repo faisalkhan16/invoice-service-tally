@@ -2,9 +2,9 @@ package com.invoice.controller;
 
 import com.invoice.dto.*;
 import com.invoice.exception.RequestValidationException;
-import com.invoice.exception.SellerNotFoundException;
+import com.invoice.security.JwtTokenUtil;
+import com.invoice.security.SecurityConstants;
 import com.invoice.service.InvoiceService;
-import com.invoice.service.SellerService;
 import com.invoice.util.CommonUtils;
 import com.invoice.util.HttpUtils;
 import lombok.RequiredArgsConstructor;
@@ -23,17 +23,17 @@ public class ReportController {
 
     private final InvoiceService invoiceService;
 
-    private final SellerService sellerService;
+    private final JwtTokenUtil jwtTokenUtil;
     @GetMapping(produces = "application/json", value = "/pending")
-    public ResponseEntity<PendingReportResponse> pendingReports(@RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
+    public ResponseEntity<PendingReportResponse> pendingReports(@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
     {
-        String ip = HttpUtils.getRequestIP(request);
-        log.info("request: pendingReports() ip: {}",ip);
-        CredentialDTO credentialDTO = validateCredential(username,password,vatNumber,egsSerialNumber,ip);
+        log.info("request: pendingReports()");
 
-        if(!sellerService.validateCredential(credentialDTO)){
-            throw new SellerNotFoundException("Invalid Credentials");
-        }
+        String token = jwtTokenUtil.getTokenFromAuthHeader(request.getHeader(SecurityConstants.AUTHORIZATION_HEADER));
+        String vatNumberToken = jwtTokenUtil.getVatNumberFromToken(token);
+        String egsSerialNumberToken = jwtTokenUtil.getEgsSerialNumberFromToken(token);
+
+        validateCredential(vatNumber,egsSerialNumber,vatNumberToken,egsSerialNumberToken);
 
         List<InvoiceDTO> invoiceDTOList = invoiceService.getPendingInvoice();
         PendingReportResponse pendingReportResponse = new PendingReportResponse();
@@ -44,15 +44,15 @@ public class ReportController {
 
 
     @GetMapping(produces = "application/json", value = "/report")
-    public ResponseEntity<InvoiceResponse> getInvoice(@RequestParam String invoiceNumber,@RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
+    public ResponseEntity<InvoiceResponse> report(@RequestParam String invoiceNumber,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
     {
-        String ip = HttpUtils.getRequestIP(request);
-        log.info("request: getInvoice() ip: {} {}", invoiceNumber,ip);
-        CredentialDTO credentialDTO = validateCredential(username,password,vatNumber,egsSerialNumber,ip);
+        log.info("request: report() invoiceNumber: {}", invoiceNumber);
 
-        if(!sellerService.validateCredential(credentialDTO)){
-            throw new SellerNotFoundException("Invalid Credentials");
-        }
+        String token = jwtTokenUtil.getTokenFromAuthHeader(request.getHeader(SecurityConstants.AUTHORIZATION_HEADER));
+        String vatNumberToken = jwtTokenUtil.getVatNumberFromToken(token);
+        String egsSerialNumberToken = jwtTokenUtil.getEgsSerialNumberFromToken(token);
+
+        validateCredential(vatNumber,egsSerialNumber,vatNumberToken,egsSerialNumberToken);
 
         InvoiceResponse invoiceResponse = invoiceService.getInvoiceResponse(invoiceNumber);
 
@@ -61,42 +61,49 @@ public class ReportController {
     }
 
     @PostMapping(produces = "application/json", value = "/email")
-    public ResponseEntity<Void> email(@RequestParam String invoiceNumber, @RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
+    public ResponseEntity<Void> email(@RequestParam String invoiceNumber,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
     {
-        String ip = HttpUtils.getRequestIP(request);
-        log.info("request: email() invoiceNumber: {} ip: {}",invoiceNumber,ip);
-        CredentialDTO credentialDTO = validateCredential(username,password,vatNumber,egsSerialNumber,ip);
+        log.info("request: email() invoiceNumber: {}",invoiceNumber);
 
-        if(!sellerService.validateCredential(credentialDTO)){
-            throw new SellerNotFoundException("Invalid Credentials");
-        }
+        String token = jwtTokenUtil.getTokenFromAuthHeader(request.getHeader(SecurityConstants.AUTHORIZATION_HEADER));
+        String vatNumberToken = jwtTokenUtil.getVatNumberFromToken(token);
+        String egsSerialNumberToken = jwtTokenUtil.getEgsSerialNumberFromToken(token);
+
+        validateCredential(vatNumber,egsSerialNumber,vatNumberToken,egsSerialNumberToken);
+
         invoiceService.sendEmail(invoiceNumber);
         log.info("response: email() invoiceNumber: {}",invoiceNumber);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(produces = "application/json", value = "/archive")
-    public ResponseEntity<Void> archive(@RequestParam String invoiceNumber,@RequestHeader("username") String username, @RequestHeader("password") String password,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
+    public ResponseEntity<Void> archive(@RequestParam String invoiceNumber,@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, HttpServletRequest request)
     {
-        String ip = HttpUtils.getRequestIP(request);
-        log.info("request: archive() invoiceNumber: {} ip: {}",invoiceNumber,ip);
-        CredentialDTO credentialDTO = validateCredential(username,password,vatNumber,egsSerialNumber,ip);
+        log.info("request: archive() invoiceNumber: {}",invoiceNumber);
 
-        if(!sellerService.validateCredential(credentialDTO)){
-            throw new SellerNotFoundException("Invalid Credentials");
-        }
+        String token = jwtTokenUtil.getTokenFromAuthHeader(request.getHeader(SecurityConstants.AUTHORIZATION_HEADER));
+        String vatNumberToken = jwtTokenUtil.getVatNumberFromToken(token);
+        String egsSerialNumberToken = jwtTokenUtil.getEgsSerialNumberFromToken(token);
+
+        validateCredential(vatNumber,egsSerialNumber,vatNumberToken,egsSerialNumberToken);
+
         invoiceService.archiveOnCloud(invoiceNumber);
         log.info("response: archive() invoiceNumber: {}",invoiceNumber);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(produces = "application/json", value = "/embedxml")
-    public ResponseEntity<String> embedXML(@RequestHeader("username") String username, @RequestHeader("password") String password, @RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, @RequestParam String invoiceNumber, @RequestParam MultipartFile file, HttpServletRequest request)
+    public ResponseEntity<String> embedXML(@RequestHeader("vat_number") String vatNumber, @RequestHeader("egs_serial_no") String egsSerialNumber, @RequestParam String invoiceNumber, @RequestParam MultipartFile file, HttpServletRequest request)
     {
-        String ip = HttpUtils.getRequestIP(request);
-        log.info("request: embedXML() invoiceNumber: {} ip: {}",invoiceNumber,ip);
-        CredentialDTO credentialDTO = validateCredential(username,password,vatNumber,egsSerialNumber,ip);
-        String pdf = invoiceService.embedXML(credentialDTO,invoiceNumber,file);
+        log.info("request: embedXML() invoiceNumber: {}",invoiceNumber);
+
+        String token = jwtTokenUtil.getTokenFromAuthHeader(request.getHeader(SecurityConstants.AUTHORIZATION_HEADER));
+        String vatNumberToken = jwtTokenUtil.getVatNumberFromToken(token);
+        String egsSerialNumberToken = jwtTokenUtil.getEgsSerialNumberFromToken(token);
+
+        validateCredential(vatNumber,egsSerialNumber,vatNumberToken,egsSerialNumberToken);
+
+        String pdf = invoiceService.embedXML(invoiceNumber,file);
         log.info("response: embedXML() invoiceNumber: {}",invoiceNumber);
         return  ResponseEntity.ok().body(pdf);
     }
@@ -107,25 +114,18 @@ public class ReportController {
         return ResponseEntity.ok().body("up");
     }
 
-    private CredentialDTO validateCredential(String username, String password, String vatNumber, String egsSerialNumber, String ipAddress){
+    private boolean validateCredential(String VAT_NUMBER, String EGS_SERIAL_NUMBER,String vatNumber, String egsSerialNumber){
 
-        log.info("invoiceController: validateCredential() username: {} IpAddres: {} vat_number: {} egs_serial_no: {}",username,ipAddress,vatNumber,egsSerialNumber);
+        log.info("zakatController: validateCredential() vatNumber: {} egsSerialNumber: {}",vatNumber,egsSerialNumber);
 
-        if(CommonUtils.isNullOrEmptyString(username) || CommonUtils.isNullOrEmptyString(password)){
-            throw new RequestValidationException("username and password is required");
+        if(CommonUtils.isNullOrEmptyString(VAT_NUMBER) || CommonUtils.isNullOrEmptyString(EGS_SERIAL_NUMBER)){
+            throw new RequestValidationException("vat_number and egs_serial_no in header param is required");
         }
 
-        if(CommonUtils.isNullOrEmptyString(vatNumber) || CommonUtils.isNullOrEmptyString(egsSerialNumber)){
-            throw new RequestValidationException("vat_number and egs_serial_no is required");
+        if(CommonUtils.isNullOrEmptyString(vatNumber) || CommonUtils.isNullOrEmptyString(egsSerialNumber) || !VAT_NUMBER.equalsIgnoreCase(vatNumber)|| !EGS_SERIAL_NUMBER.equalsIgnoreCase(egsSerialNumber)){
+            throw new RequestValidationException("Invalid User token");
         }
 
-        CredentialDTO credentialDTO = new CredentialDTO();
-        credentialDTO.setUsername(username);
-        credentialDTO.setPassword(password);
-        credentialDTO.setSellerVatNumber(vatNumber);
-        credentialDTO.setSerialNo(egsSerialNumber);
-        credentialDTO.setIpAddress(ipAddress);
-
-        return credentialDTO;
+        return true;
     }
 }
