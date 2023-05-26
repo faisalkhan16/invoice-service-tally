@@ -305,7 +305,7 @@ public class InvoiceRepositoryImpl {
     public List<InvoiceLine> getInvoiceLinesByInvoiceId(long invoiceMasterId){
 
         try{
-            String sql = "SELECT LINE_ID, SEQ_REF, NAME, QUANTITY, NET_PRICE, TOTAL_AMOUNT, DISCOUNT, TOTAL_TAXABLE_AMOUNT, TAX_RATE, SKU_CODE " +
+            String sql = "SELECT LINE_ID, SEQ_REF, NAME, QUANTITY, NET_PRICE, TOTAL_AMOUNT, DISCOUNT, TOTAL_TAXABLE_AMOUNT, TAX_RATE, " +
                     "TAX_AMOUNT, SUBTOTAL, STATUS, VAT_CTGRY, EXMP_RSN_CD, EXMP_RSN_TXT, SKU_CODE " +
                     "FROM invoice_line WHERE SEQ_REF = ?;";
 

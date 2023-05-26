@@ -152,6 +152,11 @@ public class InvoiceRequestValidator implements ConstraintValidator<InvoiceReque
             throw new RequestValidationException(errorMessage);
         }
 
+        if(CommonUtils.isNullOrEmptyString(invoiceDTO.getBuyerEName())) {
+            errorMessage = "buyer_name_english is required";
+            throw new RequestValidationException(errorMessage);
+        }
+
         if(!CommonUtils.isNullOrEmptyString(invoiceDTO.getBuyerEmail()) && !CommonUtils.isValidEmail(invoiceDTO.getBuyerEmail())) {
             errorMessage = "buyer_email is invalid";
             throw new RequestValidationException(errorMessage);

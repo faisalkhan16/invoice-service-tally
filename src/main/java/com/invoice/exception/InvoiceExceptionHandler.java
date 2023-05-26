@@ -4,6 +4,7 @@ package com.invoice.exception;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.invoice.dto.zakat.ZakatClearanceResponseDTO;
 import com.invoice.dto.zakat.ZakatComplianceCISDResponseDTO;
 import com.invoice.dto.zakat.ZakatComplianceResponseDTO;
@@ -86,6 +87,7 @@ public class InvoiceExceptionHandler {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.registerModule(new JavaTimeModule());
         CustomError errorDetails = null;
         try {
             errorDetails = objectMapper.readValue(exception.getMessage(), CustomError.class);

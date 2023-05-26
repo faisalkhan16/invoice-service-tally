@@ -95,6 +95,7 @@ public class XMLParser {
 
             String paymentMeansCode = this.getNodeXmlTextValue(document, nameSpacesMap, "/Invoice/cac:PaymentMeans/cbc:PaymentMeansCode");
             String invoiceNoteReason = this.getNodeXmlTextValue(document, nameSpacesMap, "/Invoice/cac:PaymentMeans/cbc:InstructionNote");
+            String paymentTerms = this.getNodeXmlTextValue(document, nameSpacesMap, "/Invoice/cac:PaymentTerms/cbc:Note");
 
             String totalAmount = this.getNodeXmlTextValue(document, nameSpacesMap, "/Invoice/cac:LegalMonetaryTotal/cbc:LineExtensionAmount");
             String discount = this.getNodeXmlTextValue(document, nameSpacesMap, "/Invoice/cac:LegalMonetaryTotal/cbc:AllowanceTotalAmount");
@@ -166,6 +167,7 @@ public class XMLParser {
             }
 
             invoiceMaster.setPaymentMeansCode(paymentMeansCode);
+            invoiceMaster.setPaymentTerms(paymentTerms);
             invoiceMaster.setInvoiceNoteReason(invoiceNoteReason);
 
             invoiceMaster.setTotalAmount(Double.parseDouble(totalAmount));
