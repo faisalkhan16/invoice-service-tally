@@ -1255,7 +1255,7 @@ public class XMLGenerator
 
             childElement = doc.createElement("cac:PartyLegalEntity");
             subChildElement = doc.createElement("cbc:RegistrationName");
-            subChildElement.appendChild(doc.createTextNode(invoiceDTO.getSellerAName()));
+            subChildElement.appendChild(doc.createTextNode(invoiceDTO.getSellerEName()));
 
             childElement.appendChild(subChildElement);
 
@@ -1402,6 +1402,17 @@ public class XMLGenerator
 
                 rootElement.appendChild(xmlElement);
                 //Payment means end
+            }
+
+            if(!CommonUtils.isNullOrEmptyString(invoiceDTO.getPaymentTerms())) {
+                xmlElement = doc.createElement("cac:PaymentTerms");
+                if (!CommonUtils.isNullOrEmptyString(invoiceDTO.getPaymentTerms())) {
+                    childElement = doc.createElement("cbc:Note");
+                    childElement.appendChild(doc.createTextNode(invoiceDTO.getPaymentTerms()));
+
+                    xmlElement.appendChild(childElement);
+                }
+                rootElement.appendChild(xmlElement);
             }
 
             if(invoiceDTO.getDiscount() > 0d)
