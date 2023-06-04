@@ -9,7 +9,7 @@ import com.invoice.dto.zakat.ZakatReportingResponseDTO;
 import com.invoice.dto.zakat.ZakatApplicationRequestDTO;
 import com.invoice.exception.ZakatException;
 import com.invoice.model.Email;
-import com.invoice.repository.EmailRepositoryImpl;
+import com.invoice.repository.EmailRepository;
 import com.invoice.util.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +17,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -32,8 +34,9 @@ public class ZakatService {
 
     private final ZakatServiceApplication zakatServiceApplication;
     private final SellerService sellerService;
-
-    private final EmailRepositoryImpl emailRepository;
+    @Autowired
+    @Qualifier("SQLService")
+    private EmailRepository emailRepository;
 
     private final XMLParser xmlParser;
 

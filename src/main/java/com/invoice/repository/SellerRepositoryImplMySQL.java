@@ -15,14 +15,15 @@ import java.time.LocalDate;
 
 @Slf4j
 @Repository
-public class SellerRepositoryImpl {
+@Qualifier("MYSQLService")
+public class SellerRepositoryImplMySQL implements SellerRepository {
 
     @Autowired
-    @Qualifier("JdbcTemplate2")
+    @Qualifier("JdbcTemplateMysql")
     private JdbcTemplate jdbcTemplateSecondary;
 
     @Autowired
-    @Qualifier("JdbcTemplate1")
+    @Qualifier("JdbcTemplateH2")
     private JdbcTemplate jdbcTemplatePrimary;
 
     public Seller getSellerByVatAndSerial(){

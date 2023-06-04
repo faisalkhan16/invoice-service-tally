@@ -38,7 +38,7 @@ CREATE TABLE `invoice_master` (
   `TAXABLE_AMOUNT` double DEFAULT NULL,
   `TOTAL_VAT` double DEFAULT NULL,
   `TAX_INCLUSIVE_AMOUNT` double DEFAULT NULL,
-  `ORIGINAL_INV_ID` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `ORIGINAL_INV_ID` varchar(4000) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `SELLER_REGION` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `PAYMENT_MEANS_CODE` varchar(2) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `BUYER_E_NAME` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,

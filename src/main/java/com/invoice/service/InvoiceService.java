@@ -18,8 +18,10 @@ import com.invoice.exception.ZakatException;
 import com.invoice.mapper.MapInvoice;
 import com.invoice.mapper.MapInvoiceLine;
 import com.invoice.model.*;
-import com.invoice.repository.EmailRepositoryImpl;
-import com.invoice.repository.InvoiceRepositoryImpl;
+import com.invoice.repository.EmailRepository;
+import com.invoice.repository.EmailRepositoryImplMySQL;
+import com.invoice.repository.InvoiceRepository;
+import com.invoice.repository.InvoiceRepositoryImplMySQL;
 import com.invoice.util.*;
 import com.itextpdf.text.pdf.*;
 import com.zatca.sdk.service.validation.Result;
@@ -32,6 +34,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -70,7 +74,9 @@ public class InvoiceService {
     @Value("${IS_PRINT_PDF}")
     private boolean isPDFReturn;
     private final ZakatService zakatService;
-    private final InvoiceRepositoryImpl invoiceRepository;
+    @Autowired
+    @Qualifier("SQLService")
+    private InvoiceRepository invoiceRepository;
     private final MapInvoice mapInvoice;
     private final MapInvoiceLine mapInvoiceLine;
     private final SellerService sellerService;
@@ -78,7 +84,9 @@ public class InvoiceService {
     private final XMLGenerator xmlGenerator;
     private final QRCodeUtil qrCodeUtil;
     private final ImageUtil imageUtil;
-    private final EmailRepositoryImpl emailRepository;
+    @Autowired
+    @Qualifier("SQLService")
+    private EmailRepository emailRepository;
 
     private final AWSS3Service awss3Service;
 

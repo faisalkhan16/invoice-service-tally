@@ -15,10 +15,11 @@ import java.util.List;
 
 @Repository
 @Slf4j
-public class EmailRepositoryImpl {
+@Qualifier("MYSQLService")
+public class EmailRepositoryImplMySQL  implements  EmailRepository{
 
     @Autowired
-    @Qualifier("JdbcTemplate2")
+    @Qualifier("JdbcTemplateMysql")
     private JdbcTemplate jdbcTemplateSecondary;
 
     public List<Email> getPendingEmails(){

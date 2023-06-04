@@ -4,23 +4,25 @@ import com.invoice.dto.ImageDTO;
 import com.invoice.dto.SellerDTO;
 import com.invoice.mapper.MapSeller;
 import com.invoice.model.Seller;
-import com.invoice.repository.SellerRepositoryImpl;
+import com.invoice.repository.SellerRepository;
 import com.invoice.util.CommonUtils;
 import com.invoice.util.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class SellerService {
 
-
-    private final SellerRepositoryImpl sellerRepository;
+    @Autowired
+    @Qualifier("SQLService")
+    private SellerRepository sellerRepository;
     private  final MapSeller mapSeller;
     private final SellerServiceApplication sellerServiceApplication;
 

@@ -81,6 +81,11 @@ public class InvoiceRequestValidator implements ConstraintValidator<InvoiceReque
             throw new RequestValidationException(errorMessage);
         }
 
+        if(CommonUtils.isNullOrEmptyString(String.valueOf(invoiceDTO.getSupplyDate()))){
+            errorMessage = "supply_date is required";
+            throw new RequestValidationException(errorMessage);
+        }
+
         if(!paymentMeansCodes.contains(invoiceDTO.getPaymentMeansCode())){
             errorMessage = "payment_means_code must be 10 for In cash, 30 for Credit, 42 for Payment to bank account, 48 for Bank card, 1 for Instrument not defined";
             throw new RequestValidationException(errorMessage);
@@ -164,6 +169,11 @@ public class InvoiceRequestValidator implements ConstraintValidator<InvoiceReque
 
         if(!CommonUtils.isNullOrEmptyString(invoiceDTO.getBuyerMobile()) && invoiceDTO.getBuyerMobile().length()!=9) {
             errorMessage = "buyer_mobile should be length 9 and without prefix 0";
+            throw new RequestValidationException(errorMessage);
+        }
+
+        if(CommonUtils.isNullOrEmptyString(invoiceDTO.getBuyerStreet())){
+            errorMessage = "buyer_street is required";
             throw new RequestValidationException(errorMessage);
         }
 
@@ -333,19 +343,11 @@ public class InvoiceRequestValidator implements ConstraintValidator<InvoiceReque
     private Validation validateClearanceInvoice(InvoiceDTO invoiceDTO){
         Validation validation = new Validation();
 
-        if(CommonUtils.isNullOrEmptyString(String.valueOf(invoiceDTO.getSupplyDate()))){
+        if(invoiceDTO.getSubType().substring(5,6).equalsIgnoreCase("1") && CommonUtils.isNullOrEmptyString(String.valueOf(invoiceDTO.getSupplyEndDate()))){
             validation.setValid(false);
-            validation.setMessage("supply_date is required");
+            validation.setMessage("supply_end_date is required for summary invoice");
             return validation;
         }
-
-/*
-        if(CommonUtils.isNullOrEmptyString(String.valueOf(invoiceDTO.getSupplyEndDate()))){
-            validation.setValid(false);
-            validation.setMessage("supply_end_date is required");
-            return validation;
-        }
-*/
 
         if(CommonUtils.isNullOrEmptyString(invoiceDTO.getBuyerIdNumber()) || invoiceDTO.getBuyerIdNumber().length() != 10){
             validation.setValid(false);
@@ -380,12 +382,6 @@ public class InvoiceRequestValidator implements ConstraintValidator<InvoiceReque
         if(CommonUtils.isNullOrEmptyString(invoiceDTO.getBuyerBuildingNo()) || invoiceDTO.getBuyerBuildingNo().length() != 4){
             validation.setValid(false);
             validation.setMessage("buyer_building_no is invalid");
-            return validation;
-        }
-
-        if(CommonUtils.isNullOrEmptyString(invoiceDTO.getBuyerStreet())){
-            validation.setValid(false);
-            validation.setMessage("buyer_street is required");
             return validation;
         }
 
@@ -431,11 +427,17 @@ public class InvoiceRequestValidator implements ConstraintValidator<InvoiceReque
     private Validation validateReportInvoice(InvoiceDTO invoiceDTO){
         Validation validation = new Validation();
 
-        if(CommonUtils.isNullOrEmptyString(invoiceDTO.getBuyerPostalCode()) || invoiceDTO.getBuyerPostalCode().length() != 5){
+        if(invoiceDTO.getSubType().substring(5,6).equalsIgnoreCase("1") && CommonUtils.isNullOrEmptyString(String.valueOf(invoiceDTO.getSupplyEndDate()))){
+            validation.setValid(false);
+            validation.setMessage("supply_end_date is required for summary invoice");
+            return validation;
+        }
+
+/*        if(CommonUtils.isNullOrEmptyString(invoiceDTO.getBuyerPostalCode()) || invoiceDTO.getBuyerPostalCode().length() != 5){
             validation.setValid(false);
             validation.setMessage("buyer_postal_code is invalid");
             return validation;
-        }
+        }*/
         if(!buyerNinTypes.contains(invoiceDTO.getBuyerIdTyp())){
             validation.setValid(false);
             validation.setMessage("buyer_id_type is invalid");

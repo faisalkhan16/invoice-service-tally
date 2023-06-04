@@ -22,7 +22,7 @@ public class DBConfiguration {
     }
 
     @Bean
-    @ConfigurationProperties("spring.datasource-secondary")
+    @ConfigurationProperties("spring.datasource-mysql")
     public DataSourceProperties mysqlDataSourceProperties() {
         return new DataSourceProperties();
     }
@@ -43,12 +43,29 @@ public class DBConfiguration {
     }
 
     @Bean
-    public JdbcTemplate JdbcTemplate1(@Qualifier("h2DataSource") DataSource dataSource) {
+    public JdbcTemplate JdbcTemplateH2(@Qualifier("h2DataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
     @Bean
-    public JdbcTemplate JdbcTemplate2(@Qualifier("mysqlDataSource") DataSource dataSource) {
+    public JdbcTemplate JdbcTemplateMysql(@Qualifier("mysqlDataSource") DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+
+    @Bean
+    @ConfigurationProperties("spring.datasource-sql")
+    public DataSourceProperties sqlDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    public DataSource sqlDataSource() {
+        return sqlDataSourceProperties()
+                .initializeDataSourceBuilder()
+                .build();
+    }
+    @Bean
+    public JdbcTemplate JdbcTemplateSQL(@Qualifier("sqlDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 }

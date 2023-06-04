@@ -1,6 +1,6 @@
 package com.invoice;
 
-import com.invoice.repository.SellerRepositoryImpl;
+import com.invoice.repository.SellerRepositoryImplMySQL;
 import com.invoice.util.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +17,7 @@ public class App implements CommandLineRunner {
 	@Value("${STANDARD_TAX_RATE}")
 	private String STANDARD_TAX_RATE;
 
-	private final SellerRepositoryImpl sellerRepository;
+	private final SellerRepositoryImplMySQL sellerRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(App.class);

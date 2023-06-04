@@ -1,7 +1,10 @@
 package com.invoice.repository;
 
 import com.invoice.dto.SellerDTO;
-import com.invoice.mapper.*;
+import com.invoice.mapper.InvoiceLineMapper;
+import com.invoice.mapper.InvoiceLobMapper;
+import com.invoice.mapper.InvoiceMapper;
+import com.invoice.mapper.InvoiceMasterMapper;
 import com.invoice.model.InvoiceLine;
 import com.invoice.model.InvoiceLob;
 import com.invoice.model.InvoiceMaster;
@@ -13,7 +16,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,10 +26,11 @@ import java.util.UUID;
 
 @Repository
 @Slf4j
-public class InvoiceRepositoryImpl {
+@Qualifier("SQLService")
+public class InvoiceRepositoryImplSQL implements InvoiceRepository{
 
     @Autowired
-    @Qualifier("JdbcTemplate2")
+    @Qualifier("JdbcTemplateMysql")
     private JdbcTemplate jdbcTemplateSecondary;
 
     @Value("${INVOICE_ID_PREFIX}")
@@ -34,7 +40,7 @@ public class InvoiceRepositoryImpl {
     {
         try
         {
-            String sql = "SELECT IFNULL(MAX(CONVERT(SUBSTRING(ID, 11), DECIMAL)),0) + 1 FROM invoice_master WHERE SUBSTRING(ID, 5, 6) = DATE_FORMAT(now(), '%y%m%d')";
+            String sql = "SELECT IFNULL(MAX(CONVERT(SUBSTRING(ID, 11), DECIMAL)),0) + 1 FROM invoice_master WHERE SUBSTRING(ID, 5, 6) = DATE_FORMAT(GETDATE(), '%y%m%d')";
 
             int id = jdbcTemplateSecondary.queryForObject(sql, Integer.class);
 
@@ -321,7 +327,7 @@ public class InvoiceRepositoryImpl {
     public void updateInvoiceStatus(Long sequenceNo, String status){
         try {
 
-            String sql = "UPDATE invoice_master SET STATUS = ?, UPD_DT = now() WHERE SEQ_ID = ?";
+            String sql = "UPDATE invoice_master SET STATUS = ?, UPD_DT = GETDATE() WHERE SEQ_ID = ?";
 
             jdbcTemplateSecondary.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql);
@@ -374,7 +380,7 @@ public class InvoiceRepositoryImpl {
     public void updateInvoiceResponse(InvoiceMaster invoiceMaster) {
         try {
 
-            String sql = "UPDATE invoice_master SET CLRNC_STS = ?, VLD_STS = ?, STS_DT = now() WHERE SEQ_ID = ?";
+            String sql = "UPDATE invoice_master SET CLRNC_STS = ?, VLD_STS = ?, STS_DT = GETDATE() WHERE SEQ_ID = ?";
 
             jdbcTemplateSecondary.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql);
@@ -635,8 +641,8 @@ public class InvoiceRepositoryImpl {
                 return "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
             }
 
-            String sql = "SELECT INVOICE_HASH from invlobs  WHERE SEQ_REF = (SELECT SEQ_ID from invoice_master where SELLER_VAT_NUMBER = ?" +
-                    " AND EGS_SERIAL_NO = ? AND SEQ_ID < ? ORDER BY SEQ_ID DESC LIMIT 1);";
+            String sql = "SELECT INVOICE_HASH from invlobs  WHERE SEQ_REF = (SELECT TOP (1) SEQ_ID from invoice_master where SELLER_VAT_NUMBER = ?" +
+                    " AND EGS_SERIAL_NO = ? AND SEQ_ID < ? ORDER BY SEQ_ID DESC);";
 
             return jdbcTemplateSecondary.queryForObject(sql, String.class,new Object[]{sellerDTO.getSellerVatNumber(), sellerDTO.getSerialNo(), seqRefId});
 

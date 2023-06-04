@@ -1,14 +1,15 @@
 package com.invoice.service;
 
-
 import com.invoice.dto.EmailDetailsDTO;
 import com.invoice.model.Email;
-import com.invoice.repository.EmailRepositoryImpl;
+import com.invoice.repository.EmailRepository;
 import com.invoice.util.CommonUtils;
 import com.invoice.util.Constants;
 import com.invoice.util.PDFFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,10 @@ public class EmailService {
 
     @Value("${MAIL_SENDER}")
     private String MAIL_SENDER;
-    private final EmailRepositoryImpl emailRepository;
+
+    @Autowired
+    @Qualifier("SQLService")
+    private EmailRepository emailRepository;
 
     private final InvoiceService invoiceService;
 
