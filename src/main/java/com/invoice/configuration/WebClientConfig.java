@@ -44,11 +44,11 @@ public class WebClientConfig {
     public WebClient webClientSeller(WebClient.Builder webClientBuilder) {
 
         HttpClient httpClient = HttpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000) // millis
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30000) // millis
                 .doOnConnected(connection ->
                         connection
-                                .addHandlerLast(new ReadTimeoutHandler(10)) // seconds
-                                .addHandlerLast(new WriteTimeoutHandler(10))); //seconds
+                                .addHandlerLast(new ReadTimeoutHandler(30)) // seconds
+                                .addHandlerLast(new WriteTimeoutHandler(30))); //seconds
 
         return webClientBuilder
                 .baseUrl(SELLER_BASE_URL)
@@ -60,11 +60,11 @@ public class WebClientConfig {
     public WebClient webClientZatca(WebClient.Builder webClientBuilder) {
 
         HttpClient httpClient = HttpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000) // millis
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30000) // millis
                 .doOnConnected(connection ->
                         connection
-                                .addHandlerLast(new ReadTimeoutHandler(10)) // seconds
-                                .addHandlerLast(new WriteTimeoutHandler(10))); //seconds
+                                .addHandlerLast(new ReadTimeoutHandler(30)) // seconds
+                                .addHandlerLast(new WriteTimeoutHandler(30))); //seconds
 
         return webClientBuilder
                 .baseUrl(ZATCA_BASE_URL)

@@ -299,7 +299,7 @@ public class CommonUtils {
     }
     public static BigDecimal doubleToBigDecimal(double value){
         if(!isUpToTwoDecimal(value)){
-            return new BigDecimal(value).setScale(2, RoundingMode.CEILING);
+            return new BigDecimal(value).setScale(2, RoundingMode.HALF_UP);
         }else{
             return new BigDecimal(value);
         }

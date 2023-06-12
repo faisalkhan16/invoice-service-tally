@@ -19,9 +19,7 @@ import com.invoice.mapper.MapInvoice;
 import com.invoice.mapper.MapInvoiceLine;
 import com.invoice.model.*;
 import com.invoice.repository.EmailRepository;
-import com.invoice.repository.EmailRepositoryImplMySQL;
 import com.invoice.repository.InvoiceRepository;
-import com.invoice.repository.InvoiceRepositoryImplMySQL;
 import com.invoice.util.*;
 import com.itextpdf.text.pdf.*;
 import com.zatca.sdk.service.validation.Result;
@@ -127,9 +125,8 @@ public class InvoiceService {
                 validationResult = CommonUtils.validateInvoice(f);
                 f.delete();
             } catch (Exception e) {
-                log.error("Exception in getInvoiceResponse Zatca Validation: {}", e.getStackTrace());
+                log.error("Exception in getInvoiceResponse Zatca Validation: {}", e.getMessage());
                 validationResult.setValid(false);
-                e.printStackTrace();
             }
 
             if (validationResult.isValid()) {
@@ -165,7 +162,7 @@ public class InvoiceService {
                 invoiceMaster.setQrCode(result.getQrCode());
                 invoiceMaster.setInvocieHash(result.getInvoiceHash());
 
-                invoiceRepository.createInvoiceLOBS(invoiceMaster);
+                createInvoiceLob(invoiceMaster);
 
                 invoiceRepository.updateInvoiceStatus(invoiceMaster.getSeqId(), Constants.PENDING_STATUS);
                 invoiceRepository.updateInvoiceLineStatus(invoiceMaster.getSeqId(), Constants.PENDING_STATUS);
@@ -377,10 +374,9 @@ public class InvoiceService {
 
             }
         } catch (DocumentException | IOException ex) {
-            log.error("Exception in getInvoiceResponse DocumentException IOException SEQ ID: {} = {}",response.getSeqId(), ex.getStackTrace());
+            log.error("Exception in getInvoiceResponse DocumentException IOException SEQ ID: {} = {}",response.getSeqId(), ex.getMessage());
             invoiceRepository.updateInvoiceStatus(Long.parseLong(response.getSeqId()), Constants.ERROR_STATUS);
             invoiceRepository.updateInvoiceLineStatus(Long.parseLong(response.getSeqId()), Constants.ERROR_STATUS);
-            ex.printStackTrace();
 
         }
         return response;
@@ -425,9 +421,8 @@ public class InvoiceService {
                 validationResult = CommonUtils.validateInvoice(f);
                 f.delete();
             } catch (Exception e) {
-                log.error("Exception in getInvoiceResponse Zatca Validation: {}", e.getStackTrace());
+                log.error("Exception in getInvoiceResponse Zatca Validation: {}", e.getMessage());
                 validationResult.setValid(false);
-                e.printStackTrace();
             }
 
             if (validationResult.isValid()) {
@@ -464,7 +459,7 @@ public class InvoiceService {
                 invoiceMaster.setInvocieHash(result.getInvoiceHash());
                 invoiceRepository.updateInvoiceStatus(invoiceMaster.getSeqId(), Constants.INPROCESS_STATUS);
 
-                invoiceRepository.createInvoiceLOBS(invoiceMaster);
+                createInvoiceLob(invoiceMaster);
 
                 invoiceRepository.updateInvoiceStatus(invoiceMaster.getSeqId(), Constants.PENDING_STATUS);
                 invoiceRepository.updateInvoiceLineStatus(invoiceMaster.getSeqId(), Constants.PENDING_STATUS);
@@ -535,10 +530,9 @@ public class InvoiceService {
 
             }
         } catch (DocumentException | IOException ex) {
-            log.error("Exception in getInvoiceResponse DocumentException IOException SEQ ID: {} = {}",response.getSeqId(), ex.getStackTrace());
+            log.error("Exception in getInvoiceResponse DocumentException IOException SEQ ID: {} = {}",response.getSeqId(), ex.getMessage());
             invoiceRepository.updateInvoiceStatus(Long.parseLong(response.getSeqId()), Constants.ERROR_STATUS);
             invoiceRepository.updateInvoiceLineStatus(Long.parseLong(response.getSeqId()), Constants.ERROR_STATUS);
-            ex.printStackTrace();
 
         }
         return response;
@@ -692,10 +686,9 @@ public class InvoiceService {
             }
 
         } catch (IOException | DocumentException ex) {
-            log.error("IOException | DocumentException in InvoiceService reportInvoices Exception SEQ ID: {} = {}",seqId, ex.getStackTrace());
+            log.error("IOException | DocumentException in InvoiceService reportInvoices Exception SEQ ID: {} = {}",seqId, ex.getMessage());
             invoiceRepository.updateInvoiceStatus(seqId, Constants.ERROR_STATUS);
             invoiceRepository.updateInvoiceLineStatus(seqId, Constants.ERROR_STATUS);
-            ex.printStackTrace();
             response.setStatus("Error");
         }
         return response;
@@ -805,10 +798,9 @@ public class InvoiceService {
             }
 
         } catch (JsonProcessingException ex) {
-            log.error("JsonProcessingException in InvoiceService sendSimplifiedInvoiceToZatca Exception SEQ ID: {} = {}",seqId, ex.getStackTrace());
+            log.error("JsonProcessingException in InvoiceService sendSimplifiedInvoiceToZatca Exception SEQ ID: {} = {}",seqId, ex.getMessage());
             invoiceRepository.updateInvoiceStatus(seqId, Constants.ERROR_STATUS);
             invoiceRepository.updateInvoiceLineStatus(seqId, Constants.ERROR_STATUS);
-            ex.printStackTrace();
             response.setStatus("Error");
         }
         return response;
@@ -828,8 +820,7 @@ public class InvoiceService {
         }
         catch (Exception ex)
         {
-            log.error("Exception in createInvoice SEQ ID: {} = {}",seqId, ex.getStackTrace());
-            ex.printStackTrace();
+            log.error("Exception in createInvoice SEQ ID: {} = {}",seqId, ex.getMessage());
         }
 
         return seqId;
@@ -840,8 +831,7 @@ public class InvoiceService {
         try {
             invoiceId = invoiceRepository.getInvoiceId(seqId);
         } catch (Exception ex) {
-            log.error("Exception in getInvoiceId SEQ ID: {} = {}", seqId,ex.getStackTrace());
-            ex.printStackTrace();
+            log.error("Exception in getInvoiceId SEQ ID: {} = {}", seqId,ex.getMessage());
         }
 
         return invoiceId;
@@ -857,9 +847,8 @@ public class InvoiceService {
                 this.invoiceRepository.createInvoiceLine(invoiceLine);
             }
         } catch (Exception ex) {
-            log.error("Exception in createInvoiceLine SEQ ID: {} = {}",seqID, ex.getStackTrace());
+            log.error("Exception in createInvoiceLine SEQ ID: {} = {}",seqID, ex.getMessage());
             invoiceRepository.updateInvoiceStatus(seqID, Constants.ERROR_STATUS);
-            ex.printStackTrace();
         }
     }
 
@@ -874,8 +863,7 @@ public class InvoiceService {
                 try {
                     privateKey = ECDSAUtil.loadPrivateKey(key);
                 } catch (Exception ex2) {
-                    log.error("Exception in InvoiceService loadPrivateKey EGSSerialNumber: {} = {}",sellerDTO.getSerialNo(), ex.getStackTrace());
-                    ex2.printStackTrace();
+                    log.error("Exception in InvoiceService loadPrivateKey EGSSerialNumber: {} = {}",sellerDTO.getSerialNo(), ex.getMessage());
                 }
             }
         }
@@ -889,8 +877,7 @@ public class InvoiceService {
         try {
             result = new SigningServiceImpl().signDocument(xml, privateKey, certificateStr, "changeit");
         } catch (Exception ex) {
-            log.error("Exception in InvoiceService loadCertificate signDocument EGSSerialNumber: {} = {}",sellerDTO.getSerialNo(), ex.getStackTrace());
-            ex.printStackTrace();
+            log.error("Exception in InvoiceService loadCertificate signDocument EGSSerialNumber: {} = {}",sellerDTO.getSerialNo(), ex.getMessage());
         }
         return result;
 
@@ -953,7 +940,7 @@ public class InvoiceService {
                 }
             }
         }catch (IOException ex){
-            log.error("IOException in InvoiceService getInvoiceResponse Exception ID: {} = {}",invoiceID, ex.getStackTrace());
+            log.error("IOException in InvoiceService getInvoiceResponse Exception ID: {} = {}",invoiceID, ex.getMessage());
         }
 
         return response;
@@ -1041,9 +1028,8 @@ public class InvoiceService {
                     validationResult = CommonUtils.validateInvoice(f);
                     f.delete();
                 } catch (Exception e) {
-                    log.error("Exception in getInvoiceResponse Zatca Validation: {}", e.getStackTrace());
+                    log.error("Exception in getInvoiceResponse Zatca Validation: {}", e.getMessage());
                     validationResult.setValid(false);
-                    e.printStackTrace();
                 }
 
                 if (validationResult.isValid()) {
@@ -1302,10 +1288,9 @@ public class InvoiceService {
 
                 }
             } catch (DocumentException | IOException ex) {
-                log.error("Exception in getInvoiceResponse DocumentException IOException SEQ ID: {} = {}",response.getSeqId(), ex.getStackTrace());
+                log.error("Exception in getInvoiceResponse DocumentException IOException SEQ ID: {} = {}",response.getSeqId(), ex.getMessage());
                 invoiceRepository.updateInvoiceStatus(Long.parseLong(response.getSeqId()), Constants.ERROR_STATUS);
                 invoiceRepository.updateInvoiceLineStatus(Long.parseLong(response.getSeqId()), Constants.ERROR_STATUS);
-                ex.printStackTrace();
 
             }
             return response;
@@ -1321,9 +1306,17 @@ public class InvoiceService {
                 this.invoiceRepository.updateInvoiceLine(invoiceLine);
             }
         } catch (Exception ex) {
-            log.error("Exception in updateInvoiceLine SEQ ID: {} = {}",seqID, ex.getStackTrace());
+            log.error("Exception in updateInvoiceLine SEQ ID: {} = {}",seqID, ex.getMessage());
             invoiceRepository.updateInvoiceStatus(seqID, Constants.ERROR_STATUS);
-            ex.printStackTrace();
+        }
+    }
+
+    private void createInvoiceLob(InvoiceMaster invoiceMaster) {
+        try {
+            invoiceRepository.createInvoiceLOBS(invoiceMaster);
+        } catch (Exception ex) {
+            log.error("Exception in createInvoiceLob SEQ ID: {} = {}",invoiceMaster.getSeqId(), ex.getMessage());
+            invoiceRepository.updateInvoiceStatus(invoiceMaster.getSeqId(), Constants.ERROR_STATUS);
         }
     }
 
@@ -1410,7 +1403,7 @@ public class InvoiceService {
 
             return pdf;
         } catch (com.itextpdf.text.DocumentException | IOException ex) {
-            log.error("Exception in embedXML DocumentException IOException Invoice ID: {} = {}",invoiceNumber, ex.getStackTrace());
+            log.error("Exception in embedXML DocumentException IOException Invoice ID: {} = {}",invoiceNumber, ex.getMessage());
             return null;
         }
     }
