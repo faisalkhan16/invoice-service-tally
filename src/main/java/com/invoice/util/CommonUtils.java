@@ -298,10 +298,6 @@ public class CommonUtils {
                 .matches();
     }
     public static BigDecimal doubleToBigDecimal(double value){
-        if(!isUpToTwoDecimal(value)){
-            return new BigDecimal(value).setScale(2, RoundingMode.HALF_UP);
-        }else{
-            return new BigDecimal(value);
-        }
+        return new BigDecimal(value).setScale(2, RoundingMode.HALF_UP);
     }
 }
